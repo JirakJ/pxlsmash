@@ -254,10 +254,10 @@
 
 ## Fáze 15: Post-launch email sequence
 
-- [ ] Day 0: Welcome email (download link, quick start)
-- [ ] Day 3: Tips email (--json, --quality 85, --format webp)
-- [ ] Day 7: Cloud upsell email (web dashboard, API)
-- [ ] Day 14: API upsell email (developer tier €29/mo)
+- [x] Day 0: Welcome email (download link, quick start)
+- [x] Day 3: Tips email (--json, --quality 85, --format webp)
+- [x] Day 7: Cloud upsell email (web dashboard, API)
+- [x] Day 14: API upsell email (developer tier €29/mo)
 - [ ] ConvertKit automation setup
 
 ---
