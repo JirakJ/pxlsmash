@@ -124,10 +124,12 @@ public enum ImageProcessor {
             )
         }
 
-        let image = try ImageLoader.load(at: path)
+        var image = try ImageLoader.load(at: path)
 
-        // TODO: Metal resize will be added in Phase 2
-        let processedImage = image
+        // Metal GPU resize (with CPU fallback for Intel)
+        if let spec = options.resize {
+            image = try ImageResizer.resize(image, to: spec, verbose: options.verbose)
+        }
 
         // Ensure output directory exists
         let outputDir = (outputPath as NSString).deletingLastPathComponent
@@ -135,7 +137,7 @@ public enum ImageProcessor {
             try fm.createDirectory(atPath: outputDir, withIntermediateDirectories: true)
         }
 
-        try ImageSaver.save(processedImage, to: outputPath, format: outputFormat, quality: options.quality)
+        try ImageSaver.save(image, to: outputPath, format: outputFormat, quality: options.quality)
 
         let optimizedSize = try fileSize(at: outputPath)
         let timeMs = (CFAbsoluteTimeGetCurrent() - fileStart) * 1000
