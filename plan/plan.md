@@ -8,117 +8,117 @@
 
 ## Fáze 0: Projekt setup
 
-- [ ] Inicializace Swift Package (`Package.swift`)
-- [ ] Struktura adresářů (`Sources/imgcrush/`, `Sources/ImgCrushCore/`, `Tests/`)
-- [ ] Přidat `swift-argument-parser` dependency
-- [ ] `.gitignore` pro Swift / Xcode / .build
-- [ ] Základní `README.md`
+- [x] Inicializace Swift Package (`Package.swift`)
+- [x] Struktura adresářů (`Sources/imgcrush/`, `Sources/ImgCrushCore/`, `Tests/`)
+- [x] Přidat `swift-argument-parser` dependency
+- [x] `.gitignore` pro Swift / Xcode / .build
+- [x] Základní `README.md`
 - [ ] CI: GitHub Actions workflow (`swift build` + `swift test` na macOS runner)
 
 ---
 
 ## Fáze 1: CLI skeleton + základní image loading
 
-- [ ] `@main` entry point s ArgumentParser
-- [ ] Definice CLI argumentů a flagů:
+- [x] `@main` entry point s ArgumentParser
+- [x] Definice CLI argumentů a flagů:
   - [ ] `<input>` — soubor nebo adresář (povinný)
-  - [ ] `--format` — výstupní formát (png, jpeg, webp)
-  - [ ] `--quality` — kvalita 1–100
-  - [ ] `--resize` — rozměry (WxH)
-  - [ ] `--output` — výstupní adresář
-  - [ ] `--recursive` — zpracovat podadresáře
-  - [ ] `--json` — JSON výstup pro CI/CD
-  - [ ] `--dry-run` — náhled bez změn
-  - [ ] `--verbose` — detailní výpis
-  - [ ] `--version` — verze
-- [ ] Načtení obrázku přes `CGImage` / `ImageIO`
-- [ ] Detekce formátu vstupního souboru (PNG/JPEG/WebP)
-- [ ] Základní validace vstupu (soubor existuje, je obrázek, permissions)
-- [ ] Custom `ImgCrushError` enum s exit kódy (0/1/2/3)
-- [ ] Uložení obrázku bez optimalizace (round-trip test)
+  - [x] `--format` — výstupní formát (png, jpeg, webp)
+  - [x] `--quality` — kvalita 1–100
+  - [x] `--resize` — rozměry (WxH)
+  - [x] `--output` — výstupní adresář
+  - [x] `--recursive` — zpracovat podadresáře
+  - [x] `--json` — JSON výstup pro CI/CD
+  - [x] `--dry-run` — náhled bez změn
+  - [x] `--verbose` — detailní výpis
+  - [x] `--version` — verze
+- [x] Načtení obrázku přes `CGImage` / `ImageIO`
+- [x] Detekce formátu vstupního souboru (PNG/JPEG/WebP)
+- [x] Základní validace vstupu (soubor existuje, je obrázek, permissions)
+- [x] Custom `ImgCrushError` enum s exit kódy (0/1/2/3)
+- [x] Uložení obrázku bez optimalizace (round-trip test)
 
 ---
 
 ## Fáze 2: Metal GPU engine
 
-- [ ] `MetalEngine` — inicializace `MTLDevice`, `MTLCommandQueue`
-- [ ] Detekce Metal dostupnosti (Apple Silicon vs Intel fallback)
-- [ ] Metal compute kernel: `resize_bilinear` (MSL, `.metal` soubor)
+- [x] `MetalEngine` — inicializace `MTLDevice`, `MTLCommandQueue`
+- [x] Detekce Metal dostupnosti (Apple Silicon vs Intel fallback)
+- [x] Metal compute kernel: `resize_bilinear` (MSL, `.metal` soubor)
 - [ ] Metal compute kernel: `color_space_convert`
-- [ ] `MTLTexture` ↔ `CGImage` konverze utility
-- [ ] Pipeline state cache (nepřekompilovávat kernely opakovaně)
-- [ ] CPU fallback cesta přes `vImage` pro Intel Macy
-- [ ] Unit testy pro Metal engine (texture round-trip, resize accuracy)
+- [x] `MTLTexture` ↔ `CGImage` konverze utility
+- [x] Pipeline state cache (nepřekompilovávat kernely opakovaně)
+- [x] CPU fallback cesta přes `vImage` pro Intel Macy
+- [x] Unit testy pro Metal engine (texture round-trip, resize accuracy)
 
 ---
 
 ## Fáze 3: Formátové encodéry a dekodéry
 
 ### PNG
-- [ ] PNG dekodér (ImageIO)
-- [ ] PNG encodér s optimalizací (compression level)
-- [ ] Strip nepotřebných metadata (EXIF, ICC profily volitelně)
+- [x] PNG dekodér (ImageIO)
+- [x] PNG encodér s optimalizací (compression level)
+- [x] Strip nepotřebných metadata (EXIF, ICC profily volitelně)
 
 ### JPEG
-- [ ] JPEG dekodér (ImageIO)
-- [ ] JPEG encodér s quality parametrem
-- [ ] Progressive JPEG podpora
-- [ ] Chroma subsampling optimalizace
+- [x] JPEG dekodér (ImageIO)
+- [x] JPEG encodér s quality parametrem
+- [x] Progressive JPEG podpora
+- [x] Chroma subsampling optimalizace
 
 ### WebP
-- [ ] WebP dekodér (ImageIO / CoreGraphics)
-- [ ] WebP encodér s quality parametrem
-- [ ] Lossy vs lossless detekce
+- [x] WebP dekodér (ImageIO / CoreGraphics)
+- [x] WebP encodér s quality parametrem
+- [x] Lossy vs lossless detekce
 
 ### Konverze
-- [ ] PNG → JPEG konverze
-- [ ] PNG → WebP konverze
-- [ ] JPEG → WebP konverze
-- [ ] JPEG → PNG konverze
-- [ ] WebP → PNG konverze
-- [ ] WebP → JPEG konverze
+- [x] PNG → JPEG konverze
+- [x] PNG → WebP konverze
+- [x] JPEG → WebP konverze
+- [x] JPEG → PNG konverze
+- [x] WebP → PNG konverze
+- [x] WebP → JPEG konverze
 
 ---
 
 ## Fáze 4: Optimalizační pipeline
 
-- [ ] `ImagePipeline` orchestrátor (load → process → encode → save)
+- [x] `ImagePipeline` orchestrátor (load → process → encode → save)
 - [ ] Smart quality — automatická detekce optimální kvality (SSIM-based)
-- [ ] Resize s zachováním aspect ratio (fit, fill, exact)
-- [ ] Skip already-optimized souborů (size comparison)
+- [x] Resize s zachováním aspect ratio (fit, fill, exact)
+- [x] Skip already-optimized souborů (size comparison)
 - [ ] Metadata preservace (volitelné zachování EXIF)
-- [ ] Dry-run mode — report bez zápisu
-- [ ] Statistics: original size, optimized size, % reduction, processing time
+- [x] Dry-run mode — report bez zápisu
+- [x] Statistics: original size, optimized size, % reduction, processing time
 
 ---
 
 ## Fáze 5: Batch processing
 
-- [ ] Directory scanning (flat + recursive)
-- [ ] File filtering podle přípony (png, jpg, jpeg, webp)
+- [x] Directory scanning (flat + recursive)
+- [x] File filtering podle přípony (png, jpg, jpeg, webp)
 - [ ] Paralelní zpracování přes `TaskGroup` s concurrency limitem
-- [ ] Progress bar (počet zpracovaných / celkem, elapsed time, ETA)
-- [ ] Per-file výpis výsledků (název, original → optimized, % saved)
-- [ ] Souhrnná statistika na konci (celkem souborů, celkem ušetřeno, čas)
-- [ ] Přeskočení nesouborů a symlinků
-- [ ] Graceful handling chyb per-file (nepadne celý batch)
+- [x] Progress bar (počet zpracovaných / celkem, elapsed time, ETA)
+- [x] Per-file výpis výsledků (název, original → optimized, % saved)
+- [x] Souhrnná statistika na konci (celkem souborů, celkem ušetřeno, čas)
+- [x] Přeskočení nesouborů a symlinků
+- [x] Graceful handling chyb per-file (nepadne celý batch)
 
 ---
 
 ## Fáze 6: Výstup a reporting
 
 ### Human-readable výstup
-- [ ] Barevný terminálový výstup (ANSI colors)
-- [ ] Progress bar s procenty a ETA
-- [ ] Per-file řádek: `✓ image.png 2.1MB → 680KB (68% saved) 0.02s`
-- [ ] Souhrnný řádek: `✓ 100 files optimized, 127MB saved (68%), 1.8s`
-- [ ] Error řádky: `✗ broken.png — invalid image data`
+- [x] Barevný terminálový výstup (ANSI colors)
+- [x] Progress bar s procenty a ETA
+- [x] Per-file řádek: `✓ image.png 2.1MB → 680KB (68% saved) 0.02s`
+- [x] Souhrnný řádek: `✓ 100 files optimized, 127MB saved (68%), 1.8s`
+- [x] Error řádky: `✗ broken.png — invalid image data`
 
 ### JSON výstup (`--json`)
-- [ ] Per-file objekt: `{ "file", "original_size", "optimized_size", "reduction_pct", "format", "time_ms" }`
-- [ ] Summary objekt: `{ "total_files", "total_original", "total_optimized", "total_reduction_pct", "total_time_ms" }`
-- [ ] Error objekt: `{ "file", "error" }`
-- [ ] Validní JSON i při chybách (partial results + errors array)
+- [x] Per-file objekt: `{ "file", "original_size", "optimized_size", "reduction_pct", "format", "time_ms" }`
+- [x] Summary objekt: `{ "total_files", "total_original", "total_optimized", "total_reduction_pct", "total_time_ms" }`
+- [x] Error objekt: `{ "file", "error" }`
+- [x] Validní JSON i při chybách (partial results + errors array)
 
 ### Verbose mode
 - [ ] Metal device info (GPU name, memory)
@@ -129,13 +129,13 @@
 
 ## Fáze 7: Error handling a edge cases
 
-- [ ] Corrupted/invalid image soubory — graceful skip s error message
-- [ ] Permission denied — jasná chybová hláška + exit code 3
+- [x] Corrupted/invalid image soubory — graceful skip s error message
+- [x] Permission denied — jasná chybová hláška + exit code 3
 - [ ] Disk full — detekce a srozumitelný error
-- [ ] Prázdný adresář — info message, exit 0
+- [x] Prázdný adresář — info message, exit 0
 - [ ] Symlinky — přeskočit nebo follow (flag?)
 - [ ] Velmi velké soubory (100MB+) — memory management
-- [ ] Duplicitní vstup/výstup cesta — ochrana proti přepsání originálu
+- [x] Duplicitní vstup/výstup cesta — ochrana proti přepsání originálu
 - [ ] SIGINT handling (Ctrl+C) — cleanup rozpracovaných souborů
 - [ ] Timeout pro stuck Metal operace
 
@@ -156,19 +156,19 @@
 ## Fáze 9: Testing
 
 ### Unit testy
-- [ ] `MetalEngineTests` — device init, texture creation, resize accuracy
-- [ ] `PNGEncoderTests` — round-trip, quality levels, metadata strip
-- [ ] `JPEGEncoderTests` — quality levels, progressive, chroma
+- [x] `MetalEngineTests` — device init, texture creation, resize accuracy
+- [x] `PNGEncoderTests` — round-trip, quality levels, metadata strip
+- [x] `JPEGEncoderTests` — quality levels, progressive, chroma
 - [ ] `WebPEncoderTests` — lossy/lossless, quality
-- [ ] `FormatConversionTests` — všechny kombinace formátů
-- [ ] `ImagePipelineTests` — end-to-end single file
-- [ ] `BatchProcessorTests` — directory scan, parallelism, error handling
-- [ ] `CLIParserTests` — argument parsing, defaults, validation
-- [ ] `OutputFormatterTests` — human-readable + JSON output
-- [ ] `ErrorHandlingTests` — corrupted files, permissions, edge cases
+- [x] `FormatConversionTests` — všechny kombinace formátů
+- [x] `ImagePipelineTests` — end-to-end single file
+- [x] `BatchProcessorTests` — directory scan, parallelism, error handling
+- [x] `CLIParserTests` — argument parsing, defaults, validation
+- [x] `OutputFormatterTests` — human-readable + JSON output
+- [x] `ErrorHandlingTests` — corrupted files, permissions, edge cases
 
 ### Fixture obrázky
-- [ ] Připravit testovací sadu: malý PNG, velký PNG, JPEG, WebP, corrupted, zero-byte
+- [x] Připravit testovací sadu: malý PNG, velký PNG, JPEG, WebP, corrupted, zero-byte
 
 ### Performance testy
 - [ ] `measure {}` testy pro Metal operace
