@@ -32,20 +32,32 @@ public enum ImageProcessor {
             return
         }
 
+        if !options.jsonOutput {
+            let accel = MetalEngine.isAvailable ? "Metal GPU" : "CPU (vImage)"
+            print("⚡ Processing \(files.count) file\(files.count == 1 ? "" : "s") with \(accel)...")
+        }
+
         let startTime = CFAbsoluteTimeGetCurrent()
+        let pipeline = OptimizationPipeline(options: options)
         var results: [FileResult] = []
         var errors: [FileError] = []
 
-        for file in files {
+        for (index, file) in files.enumerated() {
             do {
-                let result = try processFile(file, options: options)
+                let result = try pipeline.process(filePath: file)
                 results.append(result)
 
                 if !options.jsonOutput {
                     printFileResult(result)
+                    if files.count > 1 {
+                        printProgress(current: index + 1, total: files.count)
+                    }
                 }
             } catch {
-                let fileError = FileError(file: file, error: error.localizedDescription)
+                let fileError = FileError(
+                    file: file,
+                    error: (error as? ImgCrushError)?.message ?? error.localizedDescription
+                )
                 errors.append(fileError)
 
                 if !options.jsonOutput {
@@ -65,7 +77,7 @@ public enum ImageProcessor {
 
     // MARK: - File collection
 
-    private static func collectFiles(in directory: String, recursive: Bool) throws -> [String] {
+    static func collectFiles(in directory: String, recursive: Bool) throws -> [String] {
         let fm = FileManager.default
         let supportedExtensions: Set<String> = ["png", "jpg", "jpeg", "webp"]
 
@@ -77,17 +89,24 @@ public enum ImageProcessor {
             }
             while let relative = enumerator.nextObject() as? String {
                 let full = (directory as NSString).appendingPathComponent(relative)
-                let ext = (relative as NSString).pathExtension.lowercased()
-                if supportedExtensions.contains(ext) {
-                    files.append(full)
+                var isDir: ObjCBool = false
+                if fm.fileExists(atPath: full, isDirectory: &isDir), !isDir.boolValue {
+                    let ext = (relative as NSString).pathExtension.lowercased()
+                    if supportedExtensions.contains(ext) {
+                        files.append(full)
+                    }
                 }
             }
         } else {
             let contents = try fm.contentsOfDirectory(atPath: directory)
             for item in contents {
-                let ext = (item as NSString).pathExtension.lowercased()
-                if supportedExtensions.contains(ext) {
-                    files.append((directory as NSString).appendingPathComponent(item))
+                let full = (directory as NSString).appendingPathComponent(item)
+                var isDir: ObjCBool = false
+                if fm.fileExists(atPath: full, isDirectory: &isDir), !isDir.boolValue {
+                    let ext = (item as NSString).pathExtension.lowercased()
+                    if supportedExtensions.contains(ext) {
+                        files.append(full)
+                    }
                 }
             }
         }
@@ -95,96 +114,19 @@ public enum ImageProcessor {
         return files.sorted()
     }
 
-    // MARK: - Single file processing
+    // MARK: - Progress
 
-    private static func processFile(_ path: String, options: ProcessingOptions) throws -> FileResult {
-        let fileStart = CFAbsoluteTimeGetCurrent()
-        let fm = FileManager.default
-
-        let originalSize = try fileSize(at: path)
-        let format = try ImageFormatDetector.detect(at: path)
-
-        guard format != .unknown else {
-            throw ImgCrushError.invalidInput("Unsupported format: \(path)")
-        }
-
-        let outputFormat = options.outputFormat ?? outputFormatFromDetected(format)
-        let outputPath = resolveOutputPath(input: path, outputDir: options.outputPath, format: outputFormat)
-
-        if options.dryRun {
-            let timeMs = (CFAbsoluteTimeGetCurrent() - fileStart) * 1000
-            return FileResult(
-                file: path,
-                outputFile: outputPath,
-                originalSize: originalSize,
-                optimizedSize: originalSize,
-                format: outputFormat.rawValue,
-                timeMs: timeMs,
-                dryRun: true
-            )
-        }
-
-        var image = try ImageLoader.load(at: path)
-
-        // Metal GPU resize (with CPU fallback for Intel)
-        if let spec = options.resize {
-            image = try ImageResizer.resize(image, to: spec, verbose: options.verbose)
-        }
-
-        // Ensure output directory exists
-        let outputDir = (outputPath as NSString).deletingLastPathComponent
-        if !fm.fileExists(atPath: outputDir) {
-            try fm.createDirectory(atPath: outputDir, withIntermediateDirectories: true)
-        }
-
-        try ImageEncoder.save(image, to: outputPath, format: outputFormat, quality: options.quality)
-
-        let optimizedSize = try fileSize(at: outputPath)
-        let timeMs = (CFAbsoluteTimeGetCurrent() - fileStart) * 1000
-
-        return FileResult(
-            file: path,
-            outputFile: outputPath,
-            originalSize: originalSize,
-            optimizedSize: optimizedSize,
-            format: outputFormat.rawValue,
-            timeMs: timeMs,
-            dryRun: false
-        )
-    }
-
-    // MARK: - Helpers
-
-    private static func fileSize(at path: String) throws -> Int64 {
-        let attrs = try FileManager.default.attributesOfItem(atPath: path)
-        return (attrs[.size] as? Int64) ?? 0
-    }
-
-    private static func outputFormatFromDetected(_ detected: ImageFormatDetector.DetectedFormat) -> OutputFormat {
-        switch detected {
-        case .png: return .png
-        case .jpeg: return .jpeg
-        case .webp: return .webp
-        case .unknown: return .png
-        }
-    }
-
-    private static func resolveOutputPath(input: String, outputDir: String?, format: OutputFormat) -> String {
-        let baseName = ((input as NSString).lastPathComponent as NSString).deletingPathExtension
-        let newExtension: String
-        switch format {
-        case .png: newExtension = "png"
-        case .jpeg: newExtension = "jpg"
-        case .webp: newExtension = "webp"
-        }
-
-        let fileName = "\(baseName).\(newExtension)"
-
-        if let dir = outputDir {
-            return (dir as NSString).appendingPathComponent(fileName)
-        } else {
-            let dir = (input as NSString).deletingLastPathComponent
-            return (dir as NSString).appendingPathComponent(fileName)
+    private static func printProgress(current: Int, total: Int) {
+        guard total > 1 else { return }
+        let pct = Int(round(Double(current) / Double(total) * 100))
+        let barWidth = 30
+        let filled = Int(round(Double(current) / Double(total) * Double(barWidth)))
+        let empty = barWidth - filled
+        let bar = String(repeating: "█", count: filled) + String(repeating: "░", count: empty)
+        let line = "  \(bar) \(pct)% (\(current)/\(total))\r"
+        FileHandle.standardError.write(Data(line.utf8))
+        if current == total {
+            FileHandle.standardError.write(Data("\n".utf8))
         }
     }
 
@@ -266,7 +208,7 @@ public enum ImageProcessor {
 
 // MARK: - Result types
 
-struct FileResult {
+public struct FileResult {
     let file: String
     let outputFile: String
     let originalSize: Int64
@@ -276,7 +218,7 @@ struct FileResult {
     let dryRun: Bool
 }
 
-struct FileError {
+public struct FileError {
     let file: String
     let error: String
 }
