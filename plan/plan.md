@@ -304,13 +304,13 @@
 
 ## Fáze 17: v1.1 — AVIF a rozšíření
 
-- [ ] AVIF dekodér podpora
-- [ ] AVIF encodér (lossy + lossless)
-- [ ] `--format avif` flag
-- [ ] HEIC input podpora (macOS native)
+- [x] AVIF dekodér podpora
+- [x] AVIF encodér (lossy + lossless)
+- [x] `--format avif` flag
+- [x] HEIC input podpora (macOS native)
 - [ ] SVG → PNG/WebP rasterizace
-- [ ] Watch mode (`--watch`) — sledování adresáře pro nové soubory
-- [ ] Config file (`.imgcrushrc`) — defaultní nastavení per-projekt
+- [x] Watch mode (`--watch`) — sledování adresáře pro nové soubory
+- [x] Config file (`.imgcrushrc`) — defaultní nastavení per-projekt
 - [ ] Plugin systém pro custom processing steps
 
 ---

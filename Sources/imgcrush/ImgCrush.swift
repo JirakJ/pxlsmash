@@ -37,6 +37,9 @@ struct ImgCrush: ParsableCommand {
     @Flag(name: .long, help: "Show detailed processing information")
     var verbose = false
 
+    @Flag(name: .long, help: "Watch directory for changes")
+    var watch = false
+
     @Option(name: .long, help: "Activate license key")
     var activate: String?
 
@@ -66,7 +69,7 @@ struct ImgCrush: ParsableCommand {
         }
         if let f = format {
             guard OutputFormat(rawValue: f) != nil else {
-                throw ValidationError("Unsupported format '\(f)'. Use: png, jpeg, webp")
+                throw ValidationError("Unsupported format '\(f)'. Use: png, jpeg, webp, avif, heic")
             }
         }
         if let r = resize {
@@ -130,17 +133,41 @@ struct ImgCrush: ParsableCommand {
             }
         }
 
-        let options = ProcessingOptions(
-            inputPath: inputPath,
-            outputFormat: format.flatMap { OutputFormat(rawValue: $0) },
-            quality: quality,
-            resize: resize.flatMap { ResizeSpec.parse($0) },
-            outputPath: output,
-            recursive: recursive,
-            jsonOutput: json,
-            dryRun: dryRun,
-            verbose: verbose
-        )
+        // Build options — merge with .imgcrushrc if present
+        let config = ProjectConfig.load()
+        let options: ProcessingOptions
+        if let config = config {
+            options = config.mergeWith(
+                inputPath: inputPath,
+                outputFormat: format.flatMap { OutputFormat(rawValue: $0) },
+                quality: quality,
+                resize: resize.flatMap { ResizeSpec.parse($0) },
+                outputPath: output,
+                recursive: recursive,
+                jsonOutput: json,
+                dryRun: dryRun,
+                verbose: verbose
+            )
+        } else {
+            options = ProcessingOptions(
+                inputPath: inputPath,
+                outputFormat: format.flatMap { OutputFormat(rawValue: $0) },
+                quality: quality,
+                resize: resize.flatMap { ResizeSpec.parse($0) },
+                outputPath: output,
+                recursive: recursive,
+                jsonOutput: json,
+                dryRun: dryRun,
+                verbose: verbose
+            )
+        }
+
+        // Watch mode
+        if watch {
+            let watcher = FileWatcher(path: inputPath, options: options)
+            try watcher.start()
+            return
+        }
 
         do {
             try ImageProcessor.run(with: options)

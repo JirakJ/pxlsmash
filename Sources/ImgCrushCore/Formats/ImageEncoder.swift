@@ -33,6 +33,16 @@ public enum ImageEncoder {
                 stripMetadata: stripMetadata
             )
             try WebPEncoder.save(image, to: path, options: opts)
+
+        case .avif:
+            let intQuality = quality ?? 80
+            let data = try AVIFEncoder.encode(image: image, quality: intQuality)
+            try data.write(to: URL(fileURLWithPath: path))
+
+        case .heic:
+            let intQuality = quality ?? 80
+            let data = try HEICEncoder.encode(image: image, quality: intQuality)
+            try data.write(to: URL(fileURLWithPath: path))
         }
     }
 }

@@ -5,6 +5,8 @@ public enum OutputFormat: String, Sendable {
     case png
     case jpeg
     case webp
+    case avif
+    case heic
 }
 
 /// Resize specification.

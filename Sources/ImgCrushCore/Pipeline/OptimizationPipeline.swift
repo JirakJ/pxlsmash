@@ -127,6 +127,8 @@ public final class OptimizationPipeline {
         case .png: return .png
         case .jpeg: return .jpeg
         case .webp: return .webp
+        case .avif: return .avif
+        case .heic: return .heic
         case .unknown: return .png
         }
     }
@@ -138,6 +140,8 @@ public final class OptimizationPipeline {
         case .png: ext = "png"
         case .jpeg: ext = "jpg"
         case .webp: ext = "webp"
+        case .avif: ext = "avif"
+        case .heic: ext = "heic"
         }
 
         let fileName = "\(baseName).\(ext)"

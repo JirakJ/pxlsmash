@@ -8,7 +8,7 @@ public enum ImageFormatDetector {
 
     /// Detected image format.
     public enum DetectedFormat: String, Sendable {
-        case png, jpeg, webp, unknown
+        case png, jpeg, webp, avif, heic, unknown
     }
 
     /// Detect format from file path using both magic bytes and extension.
@@ -57,6 +57,18 @@ public enum ImageFormatDetector {
             return .webp
         }
 
+        // HEIC/AVIF: ftyp box (offset 4)
+        if bytes.count >= 12 && bytes[4] == 0x66 && bytes[5] == 0x74 && bytes[6] == 0x79 && bytes[7] == 0x70 {
+            // Check brand
+            let brand = String(bytes: Array(bytes[8..<12]), encoding: .ascii) ?? ""
+            if brand.hasPrefix("heic") || brand.hasPrefix("heix") || brand.hasPrefix("mif1") {
+                return .heic
+            }
+            if brand.hasPrefix("avif") || brand.hasPrefix("avis") {
+                return .avif
+            }
+        }
+
         return nil
     }
 
@@ -65,6 +77,8 @@ public enum ImageFormatDetector {
         case "png": return .png
         case "jpg", "jpeg": return .jpeg
         case "webp": return .webp
+        case "avif": return .avif
+        case "heic", "heif": return .heic
         default: return .unknown
         }
     }
@@ -116,6 +130,8 @@ public enum ImageSaver {
         case .png: return "public.png"
         case .jpeg: return "public.jpeg"
         case .webp: return "public.webp"
+        case .avif: return "public.avif"
+        case .heic: return "public.heic"
         }
     }
 }
