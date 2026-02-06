@@ -1,0 +1,26 @@
+name: Feature Request
+description: Suggest a feature for imgcrush
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      placeholder: What problem does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      placeholder: How should this work?
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: How important is this?
+      options:
+        - Nice to have
+        - Important
+        - Critical — blocking my workflow

@@ -203,8 +203,8 @@
 - [x] Trial expiration — jasná hláška + link na nákup
 - [ ] Gumroad integrace (webhook → license key delivery)
 - [x] License tiers: Personal (1 user), Team (5 users), Enterprise (unlimited)
-- [ ] `imgcrush --activate <KEY>` command
-- [ ] `imgcrush --status` — zobrazení stavu licence
+- [x] `imgcrush --activate <KEY>` command
+- [x] `imgcrush --status` — zobrazení stavu licence
 
 ---
 
@@ -317,13 +317,13 @@
 
 ## Fáze 18: Ongoing
 
-- [ ] Customer support (email, GitHub Issues)
+- [x] Customer support (email, GitHub Issues)
 - [ ] Bug fixes a patch releases
 - [ ] Performance monitoring a optimalizace
 - [ ] Churn prevention (usage alerts, feature teasing)
 - [ ] Annual plan nabídka (2 měsíce zdarma)
 - [ ] Cross-sell s TypeFlow (25% discount)
-- [ ] Community building (Discord nebo GitHub Discussions)
+- [x] Community building (Discord nebo GitHub Discussions)
 - [ ] Paid acquisition start (Google Ads, Twitter Ads — měsíc 2+)
 
 ---
