@@ -1,0 +1,29 @@
+import Foundation
+
+/// Errors thrown by imgcrush with associated exit codes.
+public enum ImgCrushError: Error {
+    /// General processing error.
+    case generalError(String)
+    /// Invalid input (file not found, unsupported format).
+    case invalidInput(String)
+    /// Permission denied.
+    case permissionDenied(String)
+
+    /// Human-readable error message.
+    public var message: String {
+        switch self {
+        case .generalError(let msg): return msg
+        case .invalidInput(let msg): return msg
+        case .permissionDenied(let msg): return msg
+        }
+    }
+
+    /// Process exit code.
+    public var exitCode: Int32 {
+        switch self {
+        case .generalError: return 1
+        case .invalidInput: return 2
+        case .permissionDenied: return 3
+        }
+    }
+}

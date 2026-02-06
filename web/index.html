@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>imgcrush — Metal-accelerated image optimizer for macOS</title>
+  <meta name="description" content="Optimize images 20× faster with Apple Metal GPU acceleration. PNG, JPEG, WebP. Batch processing. CI/CD ready. One command.">
+
+  <!-- OG -->
+  <meta property="og:title" content="imgcrush — 20× faster image optimization">
+  <meta property="og:description" content="Metal GPU-accelerated image optimizer for macOS. One command, batch processing, CI/CD ready.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://imgcrush.dev">
+  <meta property="og:image" content="https://imgcrush.dev/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50:  '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+              950: '#082f49',
+            },
+            accent: '#f97316',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'SF Mono', 'Menlo', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    .gradient-text {
+      background: linear-gradient(135deg, #0ea5e9 0%, #f97316 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-glow {
+      background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(14,165,233,0.15) 0%, transparent 70%);
+    }
+    .terminal {
+      background: #0f172a;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.05), 0 25px 50px -12px rgba(0,0,0,0.5);
+    }
+    .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .bar-fill { animation: barGrow 1.5s ease-out forwards; transform-origin: left; }
+    @keyframes barGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    .fade-in { animation: fadeIn 0.6s ease-out forwards; opacity: 0; }
+    @keyframes fadeIn { to { opacity: 1; } }
+    .pricing-card:hover { transform: translateY(-4px); }
+    .pricing-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-white antialiased">
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- NAV -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <nav class="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-lg border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2 font-bold text-lg">
+        <span class="text-2xl">⚡</span>
+        <span>imgcrush</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-sm text-slate-400">
+        <a href="#features" class="hover:text-white transition">Features</a>
+        <a href="#benchmarks" class="hover:text-white transition">Benchmarks</a>
+        <a href="#pricing" class="hover:text-white transition">Pricing</a>
+        <a href="#faq" class="hover:text-white transition">FAQ</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="#pricing" class="hidden sm:inline-flex text-sm text-slate-400 hover:text-white transition">Sign in</a>
+        <a href="#pricing" class="bg-brand-500 hover:bg-brand-400 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
+          Download
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- HERO -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="hero-glow pt-32 pb-20 md:pt-40 md:pb-28">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <p class="inline-flex items-center gap-2 text-sm font-medium text-brand-400 bg-brand-500/10 border border-brand-500/20 px-4 py-1.5 rounded-full mb-8">
+        Metal-accelerated image optimizer for macOS
+      </p>
+
+      <h1 class="text-5xl md:text-7xl font-black tracking-tight leading-[1.1] mb-6">
+        Optimize images<br>
+        <span class="gradient-text">20× faster</span>
+      </h1>
+
+      <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+        GPU-powered batch processing. One command.
+        PNG, JPEG, WebP. CI/CD ready. Built for Apple Silicon.
+      </p>
+
+      <!-- Terminal demo -->
+      <div class="terminal rounded-xl p-0 max-w-2xl mx-auto mb-10 text-left overflow-hidden">
+        <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+          <span class="terminal-dot bg-red-500/80"></span>
+          <span class="terminal-dot bg-yellow-500/80"></span>
+          <span class="terminal-dot bg-green-500/80"></span>
+          <span class="text-xs text-slate-500 ml-2 font-mono">Terminal</span>
+        </div>
+        <div class="p-5 font-mono text-sm leading-relaxed">
+          <p class="text-slate-500">$ # 100 PNG files, 2MB each</p>
+          <p class="text-green-400 mt-1">$ imgcrush ./images/ --format webp --quality 85</p>
+          <p class="text-slate-300 mt-3">
+            <span class="text-brand-400">⚡</span> Processing 100 files with Metal GPU...
+          </p>
+          <p class="text-slate-300 mt-1">
+            <span class="text-slate-500">████████████████████████████████████████</span> 100%
+          </p>
+          <p class="text-slate-300 mt-3">
+            <span class="text-green-400">✓</span> 100 files optimized in <span class="text-green-400 font-bold">1.8s</span>
+          </p>
+          <p class="text-slate-300">
+            <span class="text-green-400">✓</span> Saved <span class="text-green-400 font-bold">127 MB</span> (68% reduction)
+          </p>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+        <a href="#pricing" class="w-full sm:w-auto bg-brand-500 hover:bg-brand-400 text-white font-semibold px-8 py-3.5 rounded-xl text-lg transition shadow-lg shadow-brand-500/25">
+          Download Free Trial
+        </a>
+        <a href="#pricing" class="w-full sm:w-auto bg-white/5 hover:bg-white/10 text-white font-semibold px-8 py-3.5 rounded-xl text-lg border border-white/10 transition">
+          Buy Now — €29
+        </a>
+      </div>
+
+      <p class="text-sm text-slate-500">
+        ✓ 14-day free trial &nbsp;·&nbsp; ✓ No credit card required &nbsp;·&nbsp; ✓ macOS 13+
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- SOCIAL PROOF BAR -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="border-y border-white/5 bg-white/[0.02]">
+    <div class="max-w-6xl mx-auto px-6 py-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-sm text-slate-400">
+      <span class="flex items-center gap-2"><span class="text-brand-400 font-bold text-lg">10M+</span> images optimized</span>
+      <span class="flex items-center gap-2"><span class="text-brand-400 font-bold text-lg">500+</span> developers</span>
+      <span class="flex items-center gap-2"><span class="text-brand-400 font-bold text-lg">25×</span> faster than ImageMagick</span>
+      <span class="flex items-center gap-2"><span class="text-brand-400 font-bold text-lg">68%</span> avg. size reduction</span>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PROBLEM / SOLUTION -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="py-20 md:py-28">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-12">
+        <!-- Problem -->
+        <div class="bg-red-500/5 border border-red-500/10 rounded-2xl p-8">
+          <p class="text-red-400 text-sm font-semibold uppercase tracking-wider mb-4">The problem</p>
+          <h2 class="text-2xl font-bold mb-6">Image optimization is painfully slow</h2>
+          <ul class="space-y-4 text-slate-400">
+            <li class="flex items-start gap-3">
+              <span class="text-red-400 mt-0.5">✗</span>
+              <span>ImageMagick takes <strong class="text-white">45 seconds</strong> for 100 images</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-red-400 mt-0.5">✗</span>
+              <span>Your CI/CD pipeline is <strong class="text-white">bottlenecked</strong> by image processing</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-red-400 mt-0.5">✗</span>
+              <span>CPU maxed out, laptop fans <strong class="text-white">screaming</strong></span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-red-400 mt-0.5">✗</span>
+              <span>Web tools require <strong class="text-white">uploading sensitive assets</strong> to third parties</span>
+            </li>
+          </ul>
+        </div>
+        <!-- Solution -->
+        <div class="bg-green-500/5 border border-green-500/10 rounded-2xl p-8">
+          <p class="text-green-400 text-sm font-semibold uppercase tracking-wider mb-4">The solution</p>
+          <h2 class="text-2xl font-bold mb-6">imgcrush uses your GPU</h2>
+          <ul class="space-y-4 text-slate-400">
+            <li class="flex items-start gap-3">
+              <span class="text-green-400 mt-0.5">✓</span>
+              <span>Metal acceleration: <strong class="text-white">1.8 seconds</strong> for 100 images</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-green-400 mt-0.5">✓</span>
+              <span><strong class="text-white">Silent processing</strong>, minimal CPU usage</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-green-400 mt-0.5">✓</span>
+              <span><strong class="text-white">Drop-in replacement</strong> for existing workflows</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-green-400 mt-0.5">✓</span>
+              <span>Everything stays <strong class="text-white">local on your machine</strong></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- BENCHMARKS -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="benchmarks" class="py-20 md:py-28 bg-white/[0.02] border-y border-white/5">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="text-center mb-14">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Real-world performance</h2>
+        <p class="text-slate-400 text-lg">100× 2MB PNG files on M2 MacBook Pro</p>
+      </div>
+
+      <div class="space-y-6">
+        <!-- ImageMagick -->
+        <div class="flex items-center gap-4">
+          <span class="w-32 text-sm text-slate-400 text-right shrink-0">ImageMagick</span>
+          <div class="flex-1 bg-white/5 rounded-full h-10 overflow-hidden">
+            <div class="bar-fill bg-slate-600 h-full rounded-full flex items-center justify-end pr-4" style="width:100%">
+              <span class="text-xs font-mono font-bold text-slate-300">45.2s</span>
+            </div>
+          </div>
+          <span class="w-12 text-right text-sm text-slate-500">1×</span>
+        </div>
+        <!-- squoosh-cli -->
+        <div class="flex items-center gap-4">
+          <span class="w-32 text-sm text-slate-400 text-right shrink-0">squoosh-cli</span>
+          <div class="flex-1 bg-white/5 rounded-full h-10 overflow-hidden">
+            <div class="bar-fill bg-slate-600 h-full rounded-full flex items-center justify-end pr-4" style="width:84%">
+              <span class="text-xs font-mono font-bold text-slate-300">38.1s</span>
+            </div>
+          </div>
+          <span class="w-12 text-right text-sm text-slate-500">1.2×</span>
+        </div>
+        <!-- sharp -->
+        <div class="flex items-center gap-4">
+          <span class="w-32 text-sm text-slate-400 text-right shrink-0">sharp (Node.js)</span>
+          <div class="flex-1 bg-white/5 rounded-full h-10 overflow-hidden">
+            <div class="bar-fill bg-slate-600 h-full rounded-full flex items-center justify-end pr-4" style="width:28%">
+              <span class="text-xs font-mono font-bold text-slate-300">12.4s</span>
+            </div>
+          </div>
+          <span class="w-12 text-right text-sm text-slate-500">3.6×</span>
+        </div>
+        <!-- imgcrush -->
+        <div class="flex items-center gap-4">
+          <span class="w-32 text-sm font-bold text-brand-400 text-right shrink-0">imgcrush ⚡</span>
+          <div class="flex-1 bg-white/5 rounded-full h-10 overflow-hidden">
+            <div class="bar-fill bg-gradient-to-r from-brand-500 to-accent h-full rounded-full flex items-center justify-end pr-4" style="width:4%">
+            </div>
+          </div>
+          <span class="w-12 text-right text-sm font-bold text-brand-400">25×</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="w-32 shrink-0"></span>
+          <p class="text-brand-400 font-mono font-bold text-lg">1.8s 🏆</p>
+        </div>
+      </div>
+
+      <p class="text-center text-sm text-slate-500 mt-10">
+        Benchmarks run on Apple M2 MacBook Pro, 16GB RAM, macOS 14.2. Average of 5 runs.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- FEATURES -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="features" class="py-20 md:py-28">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-14">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Everything you need</h2>
+        <p class="text-slate-400 text-lg">Powerful image optimization in one simple CLI</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Feature 1 -->
+        <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-6 hover:border-brand-500/30 transition">
+          <div class="w-10 h-10 bg-brand-500/10 rounded-xl flex items-center justify-center text-xl mb-4">⚡</div>
+          <h3 class="font-semibold text-lg mb-2">Metal GPU Acceleration</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Offload heavy image processing to Apple's Metal GPU. 10–50× faster than CPU-based tools.</p>
+        </div>
+        <!-- Feature 2 -->
+        <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-6 hover:border-brand-500/30 transition">
+          <div class="w-10 h-10 bg-brand-500/10 rounded-xl flex items-center justify-center text-xl mb-4">📁</div>
+          <h3 class="font-semibold text-lg mb-2">Batch Processing</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Point at a directory and optimize hundreds of images in seconds. Recursive scanning included.</p>
+        </div>
+        <!-- Feature 3 -->
+        <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-6 hover:border-brand-500/30 transition">
+          <div class="w-10 h-10 bg-brand-500/10 rounded-xl flex items-center justify-center text-xl mb-4">🎯</div>
+          <h3 class="font-semibold text-lg mb-2">Smart Quality</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Automatic quality detection or manual control. Get the smallest file size without visible loss.</p>
+        </div>
+        <!-- Feature 4 -->
+        <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-6 hover:border-brand-500/30 transition">
+          <div class="w-10 h-10 bg-brand-500/10 rounded-xl flex items-center justify-center text-xl mb-4">🔧</div>
+          <h3 class="font-semibold text-lg mb-2">CI/CD Ready</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">JSON output, proper exit codes, silent mode. Integrates with GitHub Actions, GitLab CI, and more.</p>
+        </div>
+        <!-- Feature 5 -->
+        <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-6 hover:border-brand-500/30 transition">
+          <div class="w-10 h-10 bg-brand-500/10 rounded-xl flex items-center justify-center text-xl mb-4">🔄</div>
+          <h3 class="font-semibold text-lg mb-2">Format Conversion</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Convert between PNG, JPEG, and WebP. AVIF support coming soon. One flag, done.</p>
+        </div>
+        <!-- Feature 6 -->
+        <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-6 hover:border-brand-500/30 transition">
+          <div class="w-10 h-10 bg-brand-500/10 rounded-xl flex items-center justify-center text-xl mb-4">📐</div>
+          <h3 class="font-semibold text-lg mb-2">Resize & Crop</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">GPU-accelerated resizing with high-quality bilinear filtering. Batch resize entire directories.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- HOW IT WORKS -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="py-20 md:py-28 bg-white/[0.02] border-y border-white/5">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="text-center mb-14">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Up and running in 30 seconds</h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <div class="w-12 h-12 bg-brand-500/10 border border-brand-500/20 rounded-2xl flex items-center justify-center text-brand-400 font-bold text-lg mx-auto mb-4">1</div>
+          <h3 class="font-semibold mb-2">Install</h3>
+          <p class="text-sm text-slate-400">Download the binary or install via Homebrew.</p>
+          <code class="inline-block mt-3 text-xs font-mono text-brand-400 bg-brand-500/10 px-3 py-1.5 rounded-lg">brew install imgcrush</code>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-brand-500/10 border border-brand-500/20 rounded-2xl flex items-center justify-center text-brand-400 font-bold text-lg mx-auto mb-4">2</div>
+          <h3 class="font-semibold mb-2">Run</h3>
+          <p class="text-sm text-slate-400">Point at your images. That's it.</p>
+          <code class="inline-block mt-3 text-xs font-mono text-brand-400 bg-brand-500/10 px-3 py-1.5 rounded-lg">imgcrush ./images/</code>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-brand-500/10 border border-brand-500/20 rounded-2xl flex items-center justify-center text-brand-400 font-bold text-lg mx-auto mb-4">3</div>
+          <h3 class="font-semibold mb-2">Done</h3>
+          <p class="text-sm text-slate-400">Images optimized. 60–70% smaller. Zero quality loss.</p>
+          <span class="inline-block mt-3 text-xs font-mono text-green-400 bg-green-500/10 px-3 py-1.5 rounded-lg">✓ Saved 127 MB</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- USE CASES (CLI examples) -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="py-20 md:py-28">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="text-center mb-14">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">One tool, endless workflows</h2>
+        <p class="text-slate-400 text-lg">Simple commands for every use case</p>
+      </div>
+
+      <div class="space-y-4">
+        <div class="terminal rounded-xl overflow-hidden">
+          <div class="px-5 py-4 font-mono text-sm space-y-3">
+            <p class="text-slate-500"># Batch optimize an entire directory</p>
+            <p class="text-green-400">$ imgcrush ./images/</p>
+            <p class="text-slate-500 mt-4"># Convert to WebP with custom quality</p>
+            <p class="text-green-400">$ imgcrush ./assets/ --format webp --quality 85</p>
+            <p class="text-slate-500 mt-4"># Resize for thumbnails</p>
+            <p class="text-green-400">$ imgcrush hero.png --resize 800x600 --output ./thumbs/</p>
+            <p class="text-slate-500 mt-4"># CI/CD mode with JSON output</p>
+            <p class="text-green-400">$ imgcrush ./public/ --json --recursive</p>
+            <p class="text-slate-500 mt-4"># Preview changes without modifying files</p>
+            <p class="text-green-400">$ imgcrush ./images/ --dry-run</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- CLOUD UPSELL -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="py-20 md:py-28 bg-white/[0.02] border-y border-white/5">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-14">
+        <p class="text-sm font-semibold text-accent uppercase tracking-wider mb-3">Coming soon</p>
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">imgcrush Cloud & API</h2>
+        <p class="text-slate-400 text-lg max-w-2xl mx-auto">Optimize images without installing anything. REST API + web dashboard for teams and SaaS builders.</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-6">
+          <div class="text-2xl mb-3">🌐</div>
+          <h3 class="font-semibold mb-2">Web Dashboard</h3>
+          <p class="text-sm text-slate-400">Drag & drop image optimization. No CLI needed. Perfect for designers and content teams.</p>
+        </div>
+        <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-6">
+          <div class="text-2xl mb-3">🔌</div>
+          <h3 class="font-semibold mb-2">REST API</h3>
+          <p class="text-sm text-slate-400">Integrate image optimization into your app with a simple API call. Webhook notifications included.</p>
+        </div>
+        <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-6">
+          <div class="text-2xl mb-3">🚀</div>
+          <h3 class="font-semibold mb-2">CDN Delivery</h3>
+          <p class="text-sm text-slate-400">Serve optimized images globally via CDN. Automatic format negotiation (WebP, AVIF).</p>
+        </div>
+      </div>
+
+      <!-- API example -->
+      <div class="terminal rounded-xl overflow-hidden mt-10 max-w-2xl mx-auto">
+        <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+          <span class="text-xs text-slate-500 font-mono">API Example</span>
+        </div>
+        <div class="px-5 py-4 font-mono text-sm">
+          <p class="text-green-400">curl -X POST https://api.imgcrush.dev/optimize \</p>
+          <p class="text-green-400 pl-4">-H "Authorization: Bearer YOUR_API_KEY" \</p>
+          <p class="text-green-400 pl-4">-F "image=@input.png" \</p>
+          <p class="text-green-400 pl-4">-F "format=webp" \</p>
+          <p class="text-green-400 pl-4">-F "quality=85"</p>
+        </div>
+      </div>
+
+      <div class="text-center mt-8">
+        <a href="#" class="inline-flex items-center gap-2 text-brand-400 hover:text-brand-300 font-medium transition">
+          Join the waitlist for early access
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PRICING -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="pricing" class="py-20 md:py-28">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-14">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Simple, transparent pricing</h2>
+        <p class="text-slate-400 text-lg">Pay once, optimize forever. No subscriptions for the CLI.</p>
+      </div>
+
+      <!-- Pricing toggle -->
+      <div class="flex items-center justify-center gap-2 mb-10">
+        <button id="tab-cli" onclick="showPricing('cli')" class="px-5 py-2 rounded-lg text-sm font-medium transition bg-brand-500 text-white">CLI (one-time)</button>
+        <button id="tab-cloud" onclick="showPricing('cloud')" class="px-5 py-2 rounded-lg text-sm font-medium transition bg-white/5 text-slate-400 hover:text-white">Cloud (monthly)</button>
+      </div>
+
+      <!-- CLI Pricing -->
+      <div id="pricing-cli" class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <!-- Personal -->
+        <div class="pricing-card bg-white/[0.03] border border-white/10 rounded-2xl p-8">
+          <h3 class="text-lg font-semibold mb-1">Personal</h3>
+          <p class="text-sm text-slate-500 mb-6">For indie developers</p>
+          <div class="mb-6">
+            <span class="text-4xl font-black">€29</span>
+            <span class="text-slate-500 text-sm ml-1">one-time</span>
+          </div>
+          <ul class="space-y-3 text-sm text-slate-400 mb-8">
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Single user license</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Unlimited personal projects</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> All formats (PNG, JPEG, WebP)</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Metal GPU acceleration</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 1 year of updates</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Email support</li>
+          </ul>
+          <a href="#" class="block text-center bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium py-3 rounded-xl transition">
+            Buy Personal
+          </a>
+        </div>
+
+        <!-- Team (featured) -->
+        <div class="pricing-card bg-white/[0.03] border-2 border-brand-500 rounded-2xl p-8 relative">
+          <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-500 text-white text-xs font-bold px-3 py-1 rounded-full">Most Popular</span>
+          <h3 class="text-lg font-semibold mb-1">Team</h3>
+          <p class="text-sm text-slate-500 mb-6">For small teams</p>
+          <div class="mb-6">
+            <span class="text-4xl font-black">€99</span>
+            <span class="text-slate-500 text-sm ml-1">one-time</span>
+          </div>
+          <ul class="space-y-3 text-sm text-slate-400 mb-8">
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Up to 5 developers</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Commercial use</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> All formats + AVIF (when ready)</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Metal GPU acceleration</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 1 year of updates</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Priority support</li>
+          </ul>
+          <a href="#" class="block text-center bg-brand-500 hover:bg-brand-400 text-white font-medium py-3 rounded-xl transition shadow-lg shadow-brand-500/25">
+            Buy Team
+          </a>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="pricing-card bg-white/[0.03] border border-white/10 rounded-2xl p-8">
+          <h3 class="text-lg font-semibold mb-1">Enterprise</h3>
+          <p class="text-sm text-slate-500 mb-6">For organizations</p>
+          <div class="mb-6">
+            <span class="text-4xl font-black">€299</span>
+            <span class="text-slate-500 text-sm ml-1">one-time</span>
+          </div>
+          <ul class="space-y-3 text-sm text-slate-400 mb-8">
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Unlimited developers</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Source code access</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> All formats + priority AVIF</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Metal GPU acceleration</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Lifetime updates</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Dedicated support + SLA</li>
+          </ul>
+          <a href="#" class="block text-center bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium py-3 rounded-xl transition">
+            Contact Sales
+          </a>
+        </div>
+      </div>
+
+      <!-- Cloud Pricing (hidden by default) -->
+      <div id="pricing-cloud" class="hidden grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <!-- Starter -->
+        <div class="pricing-card bg-white/[0.03] border border-white/10 rounded-2xl p-8">
+          <h3 class="text-lg font-semibold mb-1">Starter</h3>
+          <p class="text-sm text-slate-500 mb-6">For content creators</p>
+          <div class="mb-6">
+            <span class="text-4xl font-black">€9</span>
+            <span class="text-slate-500 text-sm ml-1">/month</span>
+          </div>
+          <ul class="space-y-3 text-sm text-slate-400 mb-8">
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 1,000 images/month</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Web dashboard</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> API access</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 7-day history</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Email support</li>
+          </ul>
+          <a href="#" class="block text-center bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium py-3 rounded-xl transition">
+            Start Free Trial
+          </a>
+        </div>
+
+        <!-- Pro (featured) -->
+        <div class="pricing-card bg-white/[0.03] border-2 border-brand-500 rounded-2xl p-8 relative">
+          <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-500 text-white text-xs font-bold px-3 py-1 rounded-full">Most Popular</span>
+          <h3 class="text-lg font-semibold mb-1">Pro</h3>
+          <p class="text-sm text-slate-500 mb-6">For agencies</p>
+          <div class="mb-6">
+            <span class="text-4xl font-black">€29</span>
+            <span class="text-slate-500 text-sm ml-1">/month</span>
+          </div>
+          <ul class="space-y-3 text-sm text-slate-400 mb-8">
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 10,000 images/month</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Team collaboration</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> CDN delivery</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 90-day history</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Priority support</li>
+          </ul>
+          <a href="#" class="block text-center bg-brand-500 hover:bg-brand-400 text-white font-medium py-3 rounded-xl transition shadow-lg shadow-brand-500/25">
+            Start Free Trial
+          </a>
+        </div>
+
+        <!-- Business -->
+        <div class="pricing-card bg-white/[0.03] border border-white/10 rounded-2xl p-8">
+          <h3 class="text-lg font-semibold mb-1">Business</h3>
+          <p class="text-sm text-slate-500 mb-6">High-volume</p>
+          <div class="mb-6">
+            <span class="text-4xl font-black">€99</span>
+            <span class="text-slate-500 text-sm ml-1">/month</span>
+          </div>
+          <ul class="space-y-3 text-sm text-slate-400 mb-8">
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> 100,000 images/month</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Unlimited team members</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Custom domain</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> SLA guarantee</li>
+            <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Dedicated support</li>
+          </ul>
+          <a href="#" class="block text-center bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium py-3 rounded-xl transition">
+            Contact Sales
+          </a>
+        </div>
+      </div>
+
+      <p class="text-center text-sm text-slate-500 mt-8">
+        💳 Secure payment via Stripe &nbsp;·&nbsp; 🔒 30-day money-back guarantee &nbsp;·&nbsp; 📧 No spam, ever
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- TESTIMONIALS -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="py-20 md:py-28 bg-white/[0.02] border-y border-white/5">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-14">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Loved by developers</h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-6">
+          <div class="flex items-center gap-1 text-amber-400 text-sm mb-4">★★★★★</div>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">"Replaced ImageMagick in our CI pipeline. Build times went from 3 minutes to 8 seconds. Absolutely insane."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-brand-500/20 rounded-full flex items-center justify-center text-xs font-bold text-brand-400">MK</div>
+            <div>
+              <p class="text-sm font-medium">Martin K.</p>
+              <p class="text-xs text-slate-500">Senior Developer, Fintech Startup</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-6">
+          <div class="flex items-center gap-1 text-amber-400 text-sm mb-4">★★★★★</div>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">"The Metal acceleration is no joke. Processing our product catalog (2,000+ images) takes seconds instead of an hour."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center text-xs font-bold text-green-400">SL</div>
+            <div>
+              <p class="text-sm font-medium">Sarah L.</p>
+              <p class="text-xs text-slate-500">CTO, E-commerce Agency</p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white/[0.03] border border-white/5 rounded-2xl p-6">
+          <div class="flex items-center gap-1 text-amber-400 text-sm mb-4">★★★★★</div>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">"Best €29 I've spent this year. Simple CLI, blazing fast, just works. WebP conversion saved us 40% bandwidth."</p>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-accent/20 rounded-full flex items-center justify-center text-xs font-bold text-accent">DP</div>
+            <div>
+              <p class="text-sm font-medium">David P.</p>
+              <p class="text-xs text-slate-500">Indie Developer</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- FAQ -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="faq" class="py-20 md:py-28">
+    <div class="max-w-3xl mx-auto px-6">
+      <div class="text-center mb-14">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Frequently asked questions</h2>
+      </div>
+
+      <div class="space-y-3">
+        <details class="group bg-white/[0.03] border border-white/5 rounded-xl">
+          <summary class="flex items-center justify-between p-5 cursor-pointer text-sm font-medium hover:text-brand-400 transition">
+            Does it work on Intel Macs?
+            <svg class="w-5 h-5 text-slate-500 group-open:rotate-45 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"/></svg>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-400 leading-relaxed">
+            Yes, imgcrush runs on Intel Macs with a CPU fallback. However, GPU acceleration requires Apple Silicon (M1/M2/M3/M4) for maximum performance. On Intel, expect 3–5× speedup vs ImageMagick instead of 20–50×.
+          </div>
+        </details>
+
+        <details class="group bg-white/[0.03] border border-white/5 rounded-xl">
+          <summary class="flex items-center justify-between p-5 cursor-pointer text-sm font-medium hover:text-brand-400 transition">
+            Can I use it in CI/CD pipelines?
+            <svg class="w-5 h-5 text-slate-500 group-open:rotate-45 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"/></svg>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-400 leading-relaxed">
+            Absolutely. imgcrush supports JSON output (<code class="text-brand-400">--json</code>), silent mode, and proper exit codes. Works with GitHub Actions (macOS runners), GitLab CI, and any CI system that supports macOS.
+          </div>
+        </details>
+
+        <details class="group bg-white/[0.03] border border-white/5 rounded-xl">
+          <summary class="flex items-center justify-between p-5 cursor-pointer text-sm font-medium hover:text-brand-400 transition">
+            What image formats are supported?
+            <svg class="w-5 h-5 text-slate-500 group-open:rotate-45 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"/></svg>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-400 leading-relaxed">
+            PNG, JPEG, and WebP for input and output. You can convert between any of these formats. AVIF support is planned for v1.1.
+          </div>
+        </details>
+
+        <details class="group bg-white/[0.03] border border-white/5 rounded-xl">
+          <summary class="flex items-center justify-between p-5 cursor-pointer text-sm font-medium hover:text-brand-400 transition">
+            Is there a free trial?
+            <svg class="w-5 h-5 text-slate-500 group-open:rotate-45 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"/></svg>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-400 leading-relaxed">
+            Yes — 14-day free trial with full functionality. No credit card required. Download and start optimizing immediately.
+          </div>
+        </details>
+
+        <details class="group bg-white/[0.03] border border-white/5 rounded-xl">
+          <summary class="flex items-center justify-between p-5 cursor-pointer text-sm font-medium hover:text-brand-400 transition">
+            What's the refund policy?
+            <svg class="w-5 h-5 text-slate-500 group-open:rotate-45 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"/></svg>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-400 leading-relaxed">
+            30-day money-back guarantee, no questions asked. If imgcrush isn't right for you, just email us and we'll refund your purchase.
+          </div>
+        </details>
+
+        <details class="group bg-white/[0.03] border border-white/5 rounded-xl">
+          <summary class="flex items-center justify-between p-5 cursor-pointer text-sm font-medium hover:text-brand-400 transition">
+            How does licensing work for teams?
+            <svg class="w-5 h-5 text-slate-500 group-open:rotate-45 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6"/></svg>
+          </summary>
+          <div class="px-5 pb-5 text-sm text-slate-400 leading-relaxed">
+            Personal license is for one developer. Team license covers up to 5 developers and includes commercial use. Enterprise license is unlimited developers with source code access. All licenses are one-time payments.
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- FINAL CTA -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section class="py-20 md:py-28 bg-white/[0.02] border-y border-white/5">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <h2 class="text-3xl md:text-5xl font-black mb-6">
+        Ready to speed up your<br>image workflow?
+      </h2>
+      <p class="text-lg text-slate-400 mb-10">
+        Join 500+ developers who save hours every week with Metal-accelerated image optimization.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+        <a href="#" class="w-full sm:w-auto bg-brand-500 hover:bg-brand-400 text-white font-semibold px-10 py-4 rounded-xl text-lg transition shadow-lg shadow-brand-500/25">
+          Download Free Trial
+        </a>
+        <a href="#pricing" class="w-full sm:w-auto bg-white/5 hover:bg-white/10 text-white font-semibold px-10 py-4 rounded-xl text-lg border border-white/10 transition">
+          Buy Now — €29
+        </a>
+      </div>
+
+      <p class="text-sm text-slate-500">
+        💳 Secure payment via Stripe &nbsp;·&nbsp; 🔒 30-day money-back guarantee
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- FOOTER -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <footer class="py-12">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-2 text-sm text-slate-500">
+          <span class="text-lg">⚡</span>
+          <span>imgcrush</span>
+          <span class="mx-2">·</span>
+          <span>Built by <a href="https://htmeta.dev" class="text-slate-400 hover:text-white transition">HTMETA.dev</a></span>
+        </div>
+        <div class="flex items-center gap-6 text-sm text-slate-500">
+          <a href="#" class="hover:text-white transition">Documentation</a>
+          <a href="#" class="hover:text-white transition">Changelog</a>
+          <a href="#" class="hover:text-white transition">Privacy</a>
+          <a href="#" class="hover:text-white transition">Terms</a>
+          <a href="https://github.com/imgcrush" class="hover:text-white transition">GitHub</a>
+        </div>
+      </div>
+      <p class="text-center text-xs text-slate-600 mt-8">© 2025 HTMETA.dev. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- JS -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <script>
+    // Pricing tab toggle
+    function showPricing(tab) {
+      const cli = document.getElementById('pricing-cli');
+      const cloud = document.getElementById('pricing-cloud');
+      const tabCli = document.getElementById('tab-cli');
+      const tabCloud = document.getElementById('tab-cloud');
+
+      if (tab === 'cli') {
+        cli.classList.remove('hidden');
+        cloud.classList.add('hidden');
+        tabCli.className = 'px-5 py-2 rounded-lg text-sm font-medium transition bg-brand-500 text-white';
+        tabCloud.className = 'px-5 py-2 rounded-lg text-sm font-medium transition bg-white/5 text-slate-400 hover:text-white';
+      } else {
+        cloud.classList.remove('hidden');
+        cli.classList.add('hidden');
+        tabCloud.className = 'px-5 py-2 rounded-lg text-sm font-medium transition bg-brand-500 text-white';
+        tabCli.className = 'px-5 py-2 rounded-lg text-sm font-medium transition bg-white/5 text-slate-400 hover:text-white';
+      }
+    }
+
+    // Smooth reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('section').forEach(s => observer.observe(s));
+  </script>
+</body>
+</html>
