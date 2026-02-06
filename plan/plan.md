@@ -237,12 +237,12 @@
 ## Fáze 14: Launch
 
 - [ ] Final testing na clean macOS instalaci
-- [ ] HackerNews "Show HN" post draft
-- [ ] Twitter/X thread draft (s demo GIF)
-- [ ] Reddit posty (r/swift, r/macOS, r/webdev)
-- [ ] Dev.to článek: "How I Built a 25× Faster Image Optimizer with Metal"
+- [x] HackerNews "Show HN" post draft
+- [x] Twitter/X thread draft (s demo GIF)
+- [x] Reddit posty (r/swift, r/macOS, r/webdev)
+- [x] Dev.to článek: "How I Built a 25× Faster Image Optimizer with Metal"
 - [ ] ProductHunt listing příprava
-- [ ] Launch day checklist:
+- [x] Launch day checklist:
   - [ ] Homebrew formula publikovaná
   - [ ] GitHub release vytvořen
   - [ ] Landing page live
