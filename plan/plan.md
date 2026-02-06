@@ -13,7 +13,7 @@
 - [x] Přidat `swift-argument-parser` dependency
 - [x] `.gitignore` pro Swift / Xcode / .build
 - [x] Základní `README.md`
-- [ ] CI: GitHub Actions workflow (`swift build` + `swift test` na macOS runner)
+- [x] CI: GitHub Actions workflow (`swift build` + `swift test` na macOS runner)
 
 ---
 
@@ -182,16 +182,16 @@
 
 ## Fáze 10: Build a distribuce
 
-- [ ] Universal binary (arm64 + x86_64) via `swift build --arch arm64 --arch x86_64`
-- [ ] Release build s optimalizacemi (`-c release`)
-- [ ] Binary size check (cíl < 10 MB)
-- [ ] Code signing (`codesign`)
+- [x] Universal binary (arm64 + x86_64) via `swift build --arch arm64 --arch x86_64`
+- [x] Release build s optimalizacemi (`-c release`)
+- [x] Binary size check (cíl < 10 MB)
+- [x] Code signing (`codesign`)
 - [ ] Notarization (`notarytool`)
-- [ ] DMG nebo ZIP balíček pro přímý download
-- [ ] Homebrew formula (`brew install imgcrush`)
+- [x] DMG nebo ZIP balíček pro přímý download
+- [x] Homebrew formula (`brew install imgcrush`)
 - [ ] Homebrew tap (`htmeta/tap/imgcrush`)
 - [ ] Mint support (`mint install imgcrush`)
-- [ ] Automatický release via GitHub Actions (tag → build → upload → Homebrew update)
+- [x] Automatický release via GitHub Actions (tag → build → upload → Homebrew update)
 
 ---
 

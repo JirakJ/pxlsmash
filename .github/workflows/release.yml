@@ -1,0 +1,54 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_15.4.app/Contents/Developer
+
+      - name: Get version
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Build universal binary
+        run: |
+          swift build -c release --arch arm64 --arch x86_64
+          mkdir -p dist
+          cp .build/apple/Products/Release/imgcrush dist/
+
+      - name: Verify binary
+        run: |
+          file dist/imgcrush
+          dist/imgcrush --version
+          lipo -info dist/imgcrush
+
+      - name: Code sign
+        if: env.SIGNING_IDENTITY != ''
+        env:
+          SIGNING_IDENTITY: ${{ secrets.SIGNING_IDENTITY }}
+        run: codesign --sign "$SIGNING_IDENTITY" --options runtime dist/imgcrush
+
+      - name: Create archive
+        run: |
+          cd dist
+          tar -czf imgcrush-${{ steps.version.outputs.VERSION }}-macos-universal.tar.gz imgcrush
+          shasum -a 256 imgcrush-${{ steps.version.outputs.VERSION }}-macos-universal.tar.gz > imgcrush-${{ steps.version.outputs.VERSION }}-macos-universal.tar.gz.sha256
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            dist/imgcrush-${{ steps.version.outputs.VERSION }}-macos-universal.tar.gz
+            dist/imgcrush-${{ steps.version.outputs.VERSION }}-macos-universal.tar.gz.sha256
