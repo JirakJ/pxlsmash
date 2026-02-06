@@ -67,9 +67,6 @@ struct ImgCrush: ParsableCommand {
     }
 
     private func printErrorJSON(_ error: ImgCrushError) {
-        let json = """
-        {"error":"\(error.message)","exit_code":\(error.exitCode)}
-        """
-        print(json)
+        OutputFormatter.printJSONError(message: error.message, exitCode: error.exitCode)
     }
 }
