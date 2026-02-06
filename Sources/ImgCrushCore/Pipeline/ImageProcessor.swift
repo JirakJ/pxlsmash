@@ -137,7 +137,7 @@ public enum ImageProcessor {
             try fm.createDirectory(atPath: outputDir, withIntermediateDirectories: true)
         }
 
-        try ImageSaver.save(image, to: outputPath, format: outputFormat, quality: options.quality)
+        try ImageEncoder.save(image, to: outputPath, format: outputFormat, quality: options.quality)
 
         let optimizedSize = try fileSize(at: outputPath)
         let timeMs = (CFAbsoluteTimeGetCurrent() - fileStart) * 1000
