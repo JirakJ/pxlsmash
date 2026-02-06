@@ -265,32 +265,32 @@
 ## Fáze 16: imgcrush Cloud (SaaS upsell)
 
 ### Backend
-- [ ] Cloudflare Workers API (`POST /optimize`)
-- [ ] R2 storage pro upload/download obrázků
+- [x] Cloudflare Workers API (`POST /optimize`)
+- [x] R2 storage pro upload/download obrázků
 - [ ] Processing queue (Cloudflare Queues nebo Durable Objects)
 - [ ] Image processing backend (libvips fallback, nebo macOS server s Metal)
-- [ ] API key management (generování, validace, rate limiting)
-- [ ] Usage tracking per API key (images/month)
+- [x] API key management (generování, validace, rate limiting)
+- [x] Usage tracking per API key (images/month)
 - [ ] Webhook notifikace po dokončení
 
 ### Web Dashboard
-- [ ] Next.js + Tailwind frontend
+- [x] Next.js + Tailwind frontend
 - [ ] Auth (Clerk nebo NextAuth)
-- [ ] Drag & drop upload
-- [ ] Optimalizace nastavení (formát, kvalita, resize)
+- [x] Drag & drop upload
+- [x] Optimalizace nastavení (formát, kvalita, resize)
 - [ ] Historie zpracovaných obrázků
-- [ ] Usage dashboard (images used / limit)
+- [x] Usage dashboard (images used / limit)
 - [ ] Download optimalizovaných obrázků (single + ZIP)
 - [ ] Team management (Pro tier)
 
 ### API
 - [ ] REST API dokumentace (OpenAPI spec)
-- [ ] API key dashboard (vytvoření, revokace, rate limit)
-- [ ] Endpointy:
-  - [ ] `POST /optimize` — upload + optimize
-  - [ ] `GET /status/:id` — stav zpracování
-  - [ ] `GET /download/:id` — stažení výsledku
-  - [ ] `GET /usage` — usage statistics
+- [x] API key dashboard (vytvoření, revokace, rate limit)
+- [x] Endpointy:
+  - [x] `POST /optimize` — upload + optimize
+  - [x] `GET /status/:id` — stav zpracování
+  - [x] `GET /download/:id` — stažení výsledku
+  - [x] `GET /usage` — usage statistics
 - [ ] SDK / code examples (curl, Node.js, Python)
 - [ ] Rate limiting per tier (Starter: 100 req/min, Pro: 500, Business: 2000)
 

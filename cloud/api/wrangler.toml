@@ -1,0 +1,19 @@
+name = "imgcrush-api"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+[vars]
+ENVIRONMENT = "production"
+
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "imgcrush-images"
+
+[[kv_namespaces]]
+binding = "API_KEYS"
+id = "REPLACE_WITH_KV_ID"
+
+# [queues]
+# [[queues.producers]]
+# queue = "imgcrush-processing"
+# binding = "PROCESSING_QUEUE"

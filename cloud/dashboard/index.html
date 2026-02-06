@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>imgcrush Cloud — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { brand: '#6366f1' } } }
+    }
+  </script>
+</head>
+<body class="bg-slate-950 text-white min-h-screen">
+  <!-- Header -->
+  <header class="border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <span class="text-xl font-bold">imgcrush</span>
+      <span class="text-xs bg-brand/20 text-brand px-2 py-0.5 rounded-full">Cloud</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <span id="userEmail" class="text-sm text-slate-400">—</span>
+      <button onclick="logout()" class="text-sm text-slate-500 hover:text-white">Sign out</button>
+    </div>
+  </header>
+
+  <div class="max-w-6xl mx-auto px-6 py-8">
+    <!-- Usage Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-slate-900 rounded-xl p-5 border border-slate-800">
+        <div class="text-sm text-slate-400 mb-1">Images This Month</div>
+        <div class="text-2xl font-bold" id="usageCount">—</div>
+      </div>
+      <div class="bg-slate-900 rounded-xl p-5 border border-slate-800">
+        <div class="text-sm text-slate-400 mb-1">Monthly Limit</div>
+        <div class="text-2xl font-bold" id="usageLimit">—</div>
+      </div>
+      <div class="bg-slate-900 rounded-xl p-5 border border-slate-800">
+        <div class="text-sm text-slate-400 mb-1">Total Savings</div>
+        <div class="text-2xl font-bold text-green-400" id="totalSavings">—</div>
+      </div>
+      <div class="bg-slate-900 rounded-xl p-5 border border-slate-800">
+        <div class="text-sm text-slate-400 mb-1">Plan</div>
+        <div class="text-2xl font-bold text-brand" id="planTier">—</div>
+      </div>
+    </div>
+
+    <!-- Upload Area -->
+    <div class="bg-slate-900 rounded-xl border border-slate-800 p-8 mb-8">
+      <h2 class="text-lg font-semibold mb-4">Optimize Images</h2>
+
+      <div id="dropZone"
+           class="border-2 border-dashed border-slate-700 rounded-xl p-12 text-center cursor-pointer hover:border-brand transition-colors">
+        <div class="text-4xl mb-3">📁</div>
+        <div class="text-slate-300 mb-1">Drop images here or click to upload</div>
+        <div class="text-sm text-slate-500">PNG, JPEG, WebP — max 50MB each</div>
+        <input type="file" id="fileInput" multiple accept="image/png,image/jpeg,image/webp" class="hidden">
+      </div>
+
+      <!-- Options -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+        <div>
+          <label class="block text-sm text-slate-400 mb-1">Format</label>
+          <select id="optFormat" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white">
+            <option value="">Keep original</option>
+            <option value="png">PNG</option>
+            <option value="jpeg">JPEG</option>
+            <option value="webp">WebP</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm text-slate-400 mb-1">Quality</label>
+          <input id="optQuality" type="number" min="1" max="100" value="85" placeholder="85"
+                 class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white">
+        </div>
+        <div>
+          <label class="block text-sm text-slate-400 mb-1">Resize (WxH)</label>
+          <input id="optResize" type="text" placeholder="e.g. 800x600"
+                 class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white">
+        </div>
+      </div>
+
+      <button onclick="uploadFiles()" id="uploadBtn"
+              class="mt-6 bg-brand hover:bg-indigo-600 px-6 py-2.5 rounded-lg font-medium transition-colors disabled:opacity-50">
+        Optimize
+      </button>
+    </div>
+
+    <!-- Results -->
+    <div id="results" class="space-y-3 hidden">
+      <h2 class="text-lg font-semibold mb-4">Results</h2>
+      <div id="resultsList"></div>
+    </div>
+
+    <!-- API Key Section -->
+    <div class="bg-slate-900 rounded-xl border border-slate-800 p-8 mt-8">
+      <h2 class="text-lg font-semibold mb-4">API Key</h2>
+      <div class="flex items-center gap-3">
+        <code id="apiKeyDisplay" class="bg-slate-800 px-4 py-2 rounded-lg font-mono text-sm flex-1">••••••••••••••••</code>
+        <button onclick="toggleApiKey()" class="text-sm text-brand hover:text-indigo-400">Show</button>
+        <button onclick="copyApiKey()" class="text-sm text-slate-400 hover:text-white">Copy</button>
+      </div>
+      <div class="mt-4 text-sm text-slate-500">
+        <p>Use this key in the <code class="text-slate-300">Authorization</code> header:</p>
+        <pre class="bg-slate-800 rounded-lg p-3 mt-2 overflow-x-auto text-slate-300">curl -X POST https://api.imgcrush.dev/optimize \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F "image=@photo.png" \
+  -F "quality=85"</pre>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'https://api.imgcrush.dev';
+    let apiKey = localStorage.getItem('imgcrush_api_key') || '';
+    let apiKeyVisible = false;
+
+    // Init
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!apiKey) {
+        apiKey = prompt('Enter your API key:') || '';
+        if (apiKey) localStorage.setItem('imgcrush_api_key', apiKey);
+      }
+      loadUsage();
+      setupDropZone();
+    });
+
+    function setupDropZone() {
+      const dropZone = document.getElementById('dropZone');
+      const fileInput = document.getElementById('fileInput');
+
+      dropZone.addEventListener('click', () => fileInput.click());
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('border-brand');
+      });
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('border-brand');
+      });
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('border-brand');
+        fileInput.files = e.dataTransfer.files;
+      });
+    }
+
+    async function loadUsage() {
+      try {
+        const res = await fetch(`${API_BASE}/usage`, {
+          headers: { 'Authorization': `Bearer ${apiKey}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById('usageCount').textContent = data.usedThisMonth;
+          document.getElementById('usageLimit').textContent = data.monthlyLimit;
+          document.getElementById('planTier').textContent = data.tier;
+        }
+      } catch (e) {
+        console.error('Failed to load usage:', e);
+      }
+    }
+
+    async function uploadFiles() {
+      const fileInput = document.getElementById('fileInput');
+      const files = fileInput.files;
+      if (!files || files.length === 0) return alert('Select files first');
+
+      const btn = document.getElementById('uploadBtn');
+      btn.disabled = true;
+      btn.textContent = 'Processing...';
+
+      const results = document.getElementById('results');
+      const list = document.getElementById('resultsList');
+      results.classList.remove('hidden');
+      list.innerHTML = '';
+
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const quality = document.getElementById('optQuality').value;
+        const format = document.getElementById('optFormat').value;
+        const resize = document.getElementById('optResize').value;
+
+        if (quality) formData.append('quality', quality);
+        if (format) formData.append('format', format);
+        if (resize) {
+          const [w, h] = resize.split('x');
+          if (w) formData.append('width', w);
+          if (h) formData.append('height', h);
+        }
+
+        try {
+          const res = await fetch(`${API_BASE}/optimize`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${apiKey}` },
+            body: formData
+          });
+          const data = await res.json();
+          addResult(file.name, data);
+        } catch (e) {
+          addResult(file.name, { status: 'error', error: e.message });
+        }
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Optimize';
+      loadUsage();
+    }
+
+    function addResult(name, data) {
+      const list = document.getElementById('resultsList');
+      const status = data.status === 'error'
+        ? '<span class="text-red-400">Error</span>'
+        : '<span class="text-yellow-400">Processing</span>';
+
+      list.innerHTML += `
+        <div class="bg-slate-900 border border-slate-800 rounded-lg p-4 flex items-center justify-between">
+          <div>
+            <div class="font-medium">${name}</div>
+            <div class="text-sm text-slate-400">${data.error || `ID: ${data.id}`}</div>
+          </div>
+          <div>${status}</div>
+        </div>
+      `;
+    }
+
+    function toggleApiKey() {
+      apiKeyVisible = !apiKeyVisible;
+      document.getElementById('apiKeyDisplay').textContent = apiKeyVisible ? apiKey : '••••••••••••••••';
+    }
+
+    function copyApiKey() {
+      navigator.clipboard.writeText(apiKey);
+    }
+
+    function logout() {
+      localStorage.removeItem('imgcrush_api_key');
+      location.reload();
+    }
+  </script>
+</body>
+</html>
