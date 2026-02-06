@@ -63,16 +63,31 @@ public final class OptimizationPipeline {
         // 5. Ensure output directory
         let outputDir = (outputPath as NSString).deletingLastPathComponent
         if !fm.fileExists(atPath: outputDir) {
-            try fm.createDirectory(atPath: outputDir, withIntermediateDirectories: true)
+            do {
+                try fm.createDirectory(atPath: outputDir, withIntermediateDirectories: true)
+            } catch {
+                throw ImgCrushError.permissionDenied("Cannot create output directory: \(outputDir)")
+            }
         }
 
-        // 6. Encode with format-specific optimization
-        try ImageEncoder.save(
-            image,
-            to: outputPath,
-            format: outputFormat,
-            quality: options.quality
-        )
+        // 6. Check writable
+        guard fm.isWritableFile(atPath: outputDir) else {
+            throw ImgCrushError.permissionDenied("Output directory is not writable: \(outputDir)")
+        }
+
+        // 7. Encode with format-specific optimization
+        do {
+            try ImageEncoder.save(
+                image,
+                to: outputPath,
+                format: outputFormat,
+                quality: options.quality
+            )
+        } catch let e as ImgCrushError {
+            throw e
+        } catch {
+            throw ImgCrushError.diskFull("Failed to write file (disk full?): \(outputPath)")
+        }
 
         // 7. Check if optimization actually helped (skip if larger)
         let optimizedSize = try Self.fileSize(at: outputPath)

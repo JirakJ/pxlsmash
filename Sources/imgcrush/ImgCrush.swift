@@ -37,6 +37,24 @@ struct ImgCrush: ParsableCommand {
     @Flag(name: .long, help: "Show detailed processing information")
     var verbose = false
 
+    func validate() throws {
+        if let q = quality {
+            guard q >= 1 && q <= 100 else {
+                throw ValidationError("Quality must be between 1 and 100 (got \(q))")
+            }
+        }
+        if let f = format {
+            guard OutputFormat(rawValue: f) != nil else {
+                throw ValidationError("Unsupported format '\(f)'. Use: png, jpeg, webp")
+            }
+        }
+        if let r = resize {
+            guard ResizeSpec.parse(r) != nil else {
+                throw ValidationError("Invalid resize format '\(r)'. Use: WxH (e.g. 800x600)")
+            }
+        }
+    }
+
     func run() throws {
         let options = ProcessingOptions(
             inputPath: input,
