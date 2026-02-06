@@ -141,6 +141,10 @@ If imgcrush has been useful, grab a license to keep it running:
 
 🔗 **https://imgcrush.dev/pricing**
 
+Also available on:
+- 🛒 **Gumroad:** https://htmeta.gumroad.com
+- 🧡 **Etsy:** https://www.etsy.com/shop/htmeta
+
 | Plan | Price | For |
 |------|-------|-----|
 | Personal | $29 | 1 user, lifetime |

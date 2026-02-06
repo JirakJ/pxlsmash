@@ -155,7 +155,7 @@ imgcrush --activate IMGC-XXXX-XXXX-XXXX-XXXX --email you@example.com
 | **Team** | $99 one-time | 5 users, priority support |
 | **Enterprise** | $249 one-time | Unlimited users, SLA |
 
-Purchase at [imgcrush.dev/pricing](https://imgcrush.dev/#pricing).
+Purchase at [imgcrush.dev](https://imgcrush.dev/#pricing), [Gumroad](https://htmeta.gumroad.com), or [Etsy](https://www.etsy.com/shop/htmeta).
 
 ## Troubleshooting
 

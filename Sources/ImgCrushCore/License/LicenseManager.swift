@@ -196,7 +196,11 @@ public final class LicenseManager {
         """
         ⚠️  Your imgcrush trial has expired.
         
-        Purchase a license at https://imgcrush.dev/pricing
+        Purchase a license:
+          🌐 https://imgcrush.dev/pricing
+          🛒 https://htmeta.gumroad.com
+          🧡 https://www.etsy.com/shop/htmeta
+        
         Activate with: imgcrush --activate <LICENSE-KEY> --email <EMAIL>
         """
     }

@@ -202,6 +202,7 @@
 - [x] Trial mode — 14 dní plná funkčnost bez klíče
 - [x] Trial expiration — jasná hláška + link na nákup
 - [ ] Gumroad integrace (webhook → license key delivery)
+- [ ] Etsy listing setup (Personal €29, Team €99, Enterprise €299)
 - [x] License tiers: Personal (1 user), Team (5 users), Enterprise (unlimited)
 - [x] `imgcrush --activate <KEY>` command
 - [x] `imgcrush --status` — zobrazení stavu licence
@@ -227,7 +228,8 @@
 - [x] OG image (`og.png`) pro social sharing
 - [x] Favicon
 - [x] Plausible analytics integrace
-- [ ] Gumroad product setup (Personal €29, Team €99, Enterprise €299)
+- [x] Gumroad product setup (Personal €29, Team €99, Enterprise €299)
+- [ ] Etsy product listings (Personal €29, Team €99, Enterprise €299)
 - [ ] Stripe payment flow testování
 - [ ] Email capture (ConvertKit) pro Cloud waitlist
 - [x] SEO: meta tagy, structured data, sitemap

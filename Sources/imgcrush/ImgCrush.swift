@@ -103,7 +103,7 @@ struct ImgCrush: ParsableCommand {
             case .none:
                 print("❌ No license or trial found")
                 print("   Start trial: run any imgcrush command")
-                print("   Buy: https://imgcrush.dev/pricing")
+                print("   Buy: https://imgcrush.dev/pricing | htmeta.gumroad.com | etsy.com/shop/htmeta")
             }
             return
         }

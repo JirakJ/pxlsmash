@@ -11,7 +11,9 @@
 - [ ] Test on Intel Mac (CPU fallback)
 - [ ] Landing page live at imgcrush.dev
 - [ ] Gumroad product pages live (Personal, Team, Enterprise)
-- [ ] Payment flow test (test purchase + license delivery)
+- [ ] Etsy product listings live (Personal, Team, Enterprise)
+- [ ] Payment flow test — Gumroad (test purchase + license delivery)
+- [ ] Payment flow test — Etsy (test purchase + license delivery)
 - [ ] OG image shows correctly (Twitter card validator, FB debugger)
 - [ ] Analytics tracking verified (Plausible)
 - [ ] GitHub repo public + README polished
