@@ -3,11 +3,20 @@ import XCTest
 
 final class ImgCrushTests: XCTestCase {
 
+    // MARK: - ResizeSpec
+
     func testResizeSpecParse() {
         let spec = ResizeSpec.parse("800x600")
         XCTAssertNotNil(spec)
         XCTAssertEqual(spec?.width, 800)
         XCTAssertEqual(spec?.height, 600)
+    }
+
+    func testResizeSpecParseCaseInsensitive() {
+        let spec = ResizeSpec.parse("1920X1080")
+        XCTAssertNotNil(spec)
+        XCTAssertEqual(spec?.width, 1920)
+        XCTAssertEqual(spec?.height, 1080)
     }
 
     func testResizeSpecParseInvalid() {
@@ -16,14 +25,21 @@ final class ImgCrushTests: XCTestCase {
         XCTAssertNil(ResizeSpec.parse("100x0"))
         XCTAssertNil(ResizeSpec.parse("100"))
         XCTAssertNil(ResizeSpec.parse(""))
+        XCTAssertNil(ResizeSpec.parse("axb"))
+        XCTAssertNil(ResizeSpec.parse("-100x200"))
     }
+
+    // MARK: - OutputFormat
 
     func testOutputFormat() {
         XCTAssertEqual(OutputFormat(rawValue: "png"), .png)
         XCTAssertEqual(OutputFormat(rawValue: "jpeg"), .jpeg)
         XCTAssertEqual(OutputFormat(rawValue: "webp"), .webp)
         XCTAssertNil(OutputFormat(rawValue: "bmp"))
+        XCTAssertNil(OutputFormat(rawValue: ""))
     }
+
+    // MARK: - ProcessingOptions
 
     func testProcessingOptionsDefaults() {
         let opts = ProcessingOptions(inputPath: "/tmp/test.png")
@@ -38,6 +54,27 @@ final class ImgCrushTests: XCTestCase {
         XCTAssertFalse(opts.verbose)
     }
 
+    func testProcessingOptionsCustom() {
+        let opts = ProcessingOptions(
+            inputPath: "/tmp/dir",
+            outputFormat: .webp,
+            quality: 85,
+            resize: ResizeSpec(width: 800, height: 600),
+            outputPath: "/tmp/out",
+            recursive: true,
+            jsonOutput: true,
+            dryRun: false,
+            verbose: true
+        )
+        XCTAssertEqual(opts.outputFormat, .webp)
+        XCTAssertEqual(opts.quality, 85)
+        XCTAssertEqual(opts.resize?.width, 800)
+        XCTAssertTrue(opts.recursive)
+        XCTAssertTrue(opts.jsonOutput)
+    }
+
+    // MARK: - ImgCrushError
+
     func testImgCrushErrorExitCodes() {
         let general = ImgCrushError.generalError("test")
         XCTAssertEqual(general.exitCode, 1)
@@ -48,5 +85,176 @@ final class ImgCrushTests: XCTestCase {
 
         let perm = ImgCrushError.permissionDenied("denied")
         XCTAssertEqual(perm.exitCode, 3)
+
+        let disk = ImgCrushError.diskFull("full")
+        XCTAssertEqual(disk.exitCode, 1)
+        XCTAssertEqual(disk.message, "full")
+    }
+
+    func testImgCrushErrorDescription() {
+        let err = ImgCrushError.invalidInput("test message")
+        XCTAssertEqual(String(describing: err), "test message")
+    }
+
+    // MARK: - Format detection
+
+    func testFormatDetectionPNG() throws {
+        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: dir) }
+
+        let path = dir + "test.png"
+        try TestImageFactory.createPNG(at: path)
+
+        let format = try ImageFormatDetector.detect(at: path)
+        XCTAssertEqual(format, .png)
+    }
+
+    func testFormatDetectionJPEG() throws {
+        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: dir) }
+
+        let path = dir + "test.jpg"
+        try TestImageFactory.createJPEG(at: path)
+
+        let format = try ImageFormatDetector.detect(at: path)
+        XCTAssertEqual(format, .jpeg)
+    }
+
+    func testFormatDetectionMissing() {
+        XCTAssertThrowsError(try ImageFormatDetector.detect(at: "/nonexistent/file.png")) { error in
+            XCTAssertTrue(error is ImgCrushError)
+        }
+    }
+
+    // MARK: - Image loading
+
+    func testImageLoading() throws {
+        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: dir) }
+
+        let path = dir + "test.png"
+        try TestImageFactory.createPNG(at: path, width: 200, height: 150)
+
+        let image = try ImageLoader.load(at: path)
+        XCTAssertEqual(image.width, 200)
+        XCTAssertEqual(image.height, 150)
+    }
+
+    func testImageLoadingInvalid() {
+        XCTAssertThrowsError(try ImageLoader.load(at: "/nonexistent.png"))
+    }
+
+    // MARK: - File collection
+
+    func testCollectFilesFlat() throws {
+        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: dir) }
+
+        try TestImageFactory.createPNG(at: dir + "a.png")
+        try TestImageFactory.createJPEG(at: dir + "b.jpg")
+        try "not an image".write(toFile: dir + "c.txt", atomically: true, encoding: .utf8)
+
+        let files = try ImageProcessor.collectFiles(in: dir, recursive: false)
+        XCTAssertEqual(files.count, 2)
+        XCTAssertTrue(files[0].hasSuffix("a.png"))
+        XCTAssertTrue(files[1].hasSuffix("b.jpg"))
+    }
+
+    func testCollectFilesRecursive() throws {
+        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        let subdir = dir + "sub/"
+        try FileManager.default.createDirectory(atPath: subdir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: dir) }
+
+        try TestImageFactory.createPNG(at: dir + "a.png")
+        try TestImageFactory.createPNG(at: subdir + "b.png")
+
+        let flat = try ImageProcessor.collectFiles(in: dir, recursive: false)
+        XCTAssertEqual(flat.count, 1)
+
+        let recursive = try ImageProcessor.collectFiles(in: dir, recursive: true)
+        XCTAssertEqual(recursive.count, 2)
+    }
+
+    // MARK: - Pipeline
+
+    func testPipelineSingleFile() throws {
+        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: dir) }
+
+        let inputPath = dir + "input.png"
+        try TestImageFactory.createPNG(at: inputPath, width: 200, height: 200)
+
+        let outDir = dir + "out/"
+        let opts = ProcessingOptions(inputPath: inputPath, outputPath: outDir)
+        let pipeline = OptimizationPipeline(options: opts)
+        let result = try pipeline.process(filePath: inputPath)
+
+        XCTAssertFalse(result.dryRun)
+        XCTAssertTrue(result.originalSize > 0)
+        XCTAssertTrue(result.optimizedSize > 0)
+        XCTAssertEqual(result.format, "png")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: result.outputFile))
+    }
+
+    func testPipelineDryRun() throws {
+        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: dir) }
+
+        let inputPath = dir + "input.png"
+        try TestImageFactory.createPNG(at: inputPath)
+
+        let opts = ProcessingOptions(inputPath: inputPath, dryRun: true)
+        let pipeline = OptimizationPipeline(options: opts)
+        let result = try pipeline.process(filePath: inputPath)
+
+        XCTAssertTrue(result.dryRun)
+        XCTAssertEqual(result.originalSize, result.optimizedSize)
+    }
+
+    func testPipelineFormatConversion() throws {
+        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: dir) }
+
+        let inputPath = dir + "input.png"
+        try TestImageFactory.createPNG(at: inputPath, width: 100, height: 100)
+
+        let outDir = dir + "out/"
+        let opts = ProcessingOptions(inputPath: inputPath, outputFormat: .jpeg, quality: 80, outputPath: outDir)
+        let pipeline = OptimizationPipeline(options: opts)
+        let result = try pipeline.process(filePath: inputPath)
+
+        XCTAssertEqual(result.format, "jpeg")
+        XCTAssertTrue(result.outputFile.hasSuffix(".jpg"))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: result.outputFile))
+    }
+
+    // MARK: - Output formatter
+
+    func testFormatBytes() {
+        XCTAssertEqual(OutputFormatter.formatBytes(0), "0B")
+        XCTAssertEqual(OutputFormatter.formatBytes(512), "512B")
+        XCTAssertEqual(OutputFormatter.formatBytes(1024), "1.0KB")
+        XCTAssertEqual(OutputFormatter.formatBytes(1536), "1.5KB")
+        XCTAssertEqual(OutputFormatter.formatBytes(1048576), "1.0MB")
+        XCTAssertEqual(OutputFormatter.formatBytes(1572864), "1.5MB")
+    }
+
+    // MARK: - Metal engine
+
+    func testMetalAvailability() {
+        // On Apple Silicon this should be true; on CI it may not be
+        if MetalEngine.isAvailable {
+            let engine = MetalEngine.shared!
+            XCTAssertFalse(engine.deviceName.isEmpty)
+            XCTAssertTrue(engine.maxMemory > 0)
+        }
     }
 }
