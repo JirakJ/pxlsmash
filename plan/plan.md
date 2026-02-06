@@ -223,14 +223,14 @@
 ## Fáze 13: Landing page a marketing
 
 - [x] Landing page `web/index.html` — hero, benchmarks, features, pricing, FAQ, CTA
-- [ ] Demo GIF/video — terminálová session s real-time optimalizací
-- [ ] OG image (`og.png`) pro social sharing
-- [ ] Favicon
-- [ ] Plausible analytics integrace
+- [x] Demo GIF/video — terminálová session s real-time optimalizací
+- [x] OG image (`og.png`) pro social sharing
+- [x] Favicon
+- [x] Plausible analytics integrace
 - [ ] Gumroad product setup (Personal €29, Team €99, Enterprise €299)
 - [ ] Stripe payment flow testování
 - [ ] Email capture (ConvertKit) pro Cloud waitlist
-- [ ] SEO: meta tagy, structured data, sitemap
+- [x] SEO: meta tagy, structured data, sitemap
 
 ---
 
