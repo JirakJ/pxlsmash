@@ -10,6 +10,8 @@ public enum ImgCrushError: Error, CustomStringConvertible {
     case permissionDenied(String)
     /// Disk full or write failure.
     case diskFull(String)
+    /// License invalid or expired.
+    case licenseInvalid(message: String)
 
     /// Human-readable error message.
     public var message: String {
@@ -18,6 +20,7 @@ public enum ImgCrushError: Error, CustomStringConvertible {
         case .invalidInput(let msg): return msg
         case .permissionDenied(let msg): return msg
         case .diskFull(let msg): return msg
+        case .licenseInvalid(let msg): return msg
         }
     }
 
@@ -28,6 +31,7 @@ public enum ImgCrushError: Error, CustomStringConvertible {
         case .invalidInput: return 2
         case .permissionDenied: return 3
         case .diskFull: return 1
+        case .licenseInvalid: return 4
         }
     }
 

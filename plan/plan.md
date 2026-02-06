@@ -197,12 +197,12 @@
 
 ## Fáze 11: Licence a trial
 
-- [ ] License key formát a generování (server-side)
-- [ ] License key validace v CLI (offline-capable)
-- [ ] Trial mode — 14 dní plná funkčnost bez klíče
-- [ ] Trial expiration — jasná hláška + link na nákup
+- [x] License key formát a generování (server-side)
+- [x] License key validace v CLI (offline-capable)
+- [x] Trial mode — 14 dní plná funkčnost bez klíče
+- [x] Trial expiration — jasná hláška + link na nákup
 - [ ] Gumroad integrace (webhook → license key delivery)
-- [ ] License tiers: Personal (1 user), Team (5 users), Enterprise (unlimited)
+- [x] License tiers: Personal (1 user), Team (5 users), Enterprise (unlimited)
 - [ ] `imgcrush --activate <KEY>` command
 - [ ] `imgcrush --status` — zobrazení stavu licence
 

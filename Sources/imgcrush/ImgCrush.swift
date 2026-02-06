@@ -11,7 +11,7 @@ struct ImgCrush: ParsableCommand {
     )
 
     @Argument(help: "Input file or directory to optimize")
-    var input: String
+    var input: String?
 
     @Option(name: .long, help: "Output format (png, jpeg, webp)")
     var format: String?
@@ -37,7 +37,28 @@ struct ImgCrush: ParsableCommand {
     @Flag(name: .long, help: "Show detailed processing information")
     var verbose = false
 
+    @Option(name: .long, help: "Activate license key")
+    var activate: String?
+
+    @Option(name: .long, help: "Email for license activation")
+    var email: String?
+
+    @Flag(name: .long, help: "Show license status")
+    var licenseStatus = false
+
     func validate() throws {
+        // License commands don't need input
+        if activate != nil || licenseStatus {
+            if activate != nil && email == nil {
+                throw ValidationError("--email is required with --activate")
+            }
+            return
+        }
+
+        guard input != nil else {
+            throw ValidationError("Missing expected argument '<input>'")
+        }
+
         if let q = quality {
             guard q >= 1 && q <= 100 else {
                 throw ValidationError("Quality must be between 1 and 100 (got \(q))")
@@ -56,8 +77,61 @@ struct ImgCrush: ParsableCommand {
     }
 
     func run() throws {
+        // Handle license activation
+        if let key = activate, let mail = email {
+            let info = try LicenseManager.shared.activate(key: key, email: mail)
+            print("✅ License activated successfully!")
+            print("   Tier: \(info.tier.rawValue)")
+            print("   Email: \(info.email)")
+            return
+        }
+
+        // Handle license status
+        if licenseStatus {
+            switch LicenseManager.shared.checkAccess() {
+            case .licensed(let info):
+                print("✅ Licensed (\(info.tier.rawValue))")
+                print("   Email: \(info.email)")
+                print("   Key: \(info.key)")
+            case .trial(let trial):
+                print("⏳ Trial active — \(trial.daysRemaining) days remaining")
+            case .expired:
+                print(LicenseManager.shared.trialExpirationMessage())
+            case .none:
+                print("❌ No license or trial found")
+                print("   Start trial: run any imgcrush command")
+                print("   Buy: https://imgcrush.dev/pricing")
+            }
+            return
+        }
+
+        guard let inputPath = input else {
+            throw ValidationError("Missing expected argument '<input>'")
+        }
+
+        // Check license/trial before processing
+        let access = LicenseManager.shared.checkAccess()
+        switch access {
+        case .licensed:
+            break
+        case .trial(let trial):
+            if !json {
+                FileHandle.standardError.write(
+                    Data("⏳ Trial: \(trial.daysRemaining) days remaining\n".utf8))
+            }
+        case .expired:
+            throw ImgCrushError.licenseInvalid(
+                message: LicenseManager.shared.trialExpirationMessage())
+        case .none:
+            let trial = LicenseManager.shared.startTrial()
+            if !json {
+                FileHandle.standardError.write(
+                    Data("🎉 14-day trial started! \(trial.daysRemaining) days remaining\n".utf8))
+            }
+        }
+
         let options = ProcessingOptions(
-            inputPath: input,
+            inputPath: inputPath,
             outputFormat: format.flatMap { OutputFormat(rawValue: $0) },
             quality: quality,
             resize: resize.flatMap { ResizeSpec.parse($0) },
