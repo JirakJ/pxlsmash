@@ -1,0 +1,130 @@
+.TH IMGCRUSH 1 "2025" "imgcrush 1.0.0" "User Commands"
+.SH NAME
+imgcrush \- Metal-accelerated image optimizer for macOS
+.SH SYNOPSIS
+.B imgcrush
+.RI [ input ]
+.RI [ options ]
+.SH DESCRIPTION
+.B imgcrush
+optimizes images using Apple Metal GPU compute shaders for maximum performance.
+Supports PNG, JPEG, and WebP formats with batch processing, format conversion,
+and resize capabilities.
+.PP
+On Intel Macs or when Metal is unavailable, processing falls back to
+Accelerate/vImage automatically.
+.SH ARGUMENTS
+.TP
+.I input
+File or directory to optimize. When a directory is given, all supported
+images inside are processed.
+.SH OPTIONS
+.TP
+.BR \-\-format " " \fIformat\fR
+Output format: \fBpng\fR, \fBjpeg\fR, \fBwebp\fR.
+.TP
+.BR \-\-quality " " \fI1\-100\fR
+Compression quality for lossy formats. Default: auto.
+.TP
+.BR \-\-resize " " \fIWxH\fR
+Resize image to specified dimensions (e.g. 800x600).
+.TP
+.BR \-\-output " " \fIdirectory\fR
+Write output to specified directory instead of in-place.
+.TP
+.BR \-\-recursive
+Process subdirectories when input is a directory.
+.TP
+.BR \-\-json
+Output results as JSON for CI/CD integration.
+.TP
+.BR \-\-dry\-run
+Preview changes without modifying files.
+.TP
+.BR \-\-verbose
+Show detailed processing information including Metal device.
+.TP
+.BR \-\-activate " " \fIkey\fR
+Activate a license key. Requires \fB\-\-email\fR.
+.TP
+.BR \-\-email " " \fIemail\fR
+Email address for license activation.
+.TP
+.BR \-\-license\-status
+Display current license or trial status.
+.TP
+.BR \-\-version
+Display version information.
+.TP
+.BR \-\-help
+Display help information.
+.SH EXAMPLES
+.PP
+Optimize a single image:
+.RS
+.nf
+imgcrush photo.png
+.fi
+.RE
+.PP
+Convert to WebP:
+.RS
+.nf
+imgcrush photo.png \-\-format webp
+.fi
+.RE
+.PP
+Batch optimize with quality:
+.RS
+.nf
+imgcrush ./images/ \-\-quality 85 \-\-recursive
+.fi
+.RE
+.PP
+CI/CD with JSON output:
+.RS
+.nf
+imgcrush ./assets/ \-\-json \-\-recursive
+.fi
+.RE
+.PP
+Dry run with verbose:
+.RS
+.nf
+imgcrush ./images/ \-\-dry\-run \-\-verbose
+.fi
+.RE
+.SH EXIT CODES
+.TP
+.B 0
+Success.
+.TP
+.B 1
+General processing error.
+.TP
+.B 2
+Invalid input (file not found, unsupported format).
+.TP
+.B 3
+Permission denied.
+.TP
+.B 4
+License invalid or expired.
+.SH FILES
+.TP
+.I ~/.imgcrush-license
+License activation data (JSON).
+.TP
+.I ~/.imgcrush-trial
+Trial start timestamp (JSON).
+.SH ENVIRONMENT
+.B imgcrush
+uses Apple Metal when available and falls back to CPU automatically.
+No environment variables are required.
+.SH AUTHOR
+Jakub Jirák <jakub@htmeta.dev>
+.SH SEE ALSO
+.BR convert (1),
+.BR sips (1)
+.PP
+Website: https://imgcrush.dev

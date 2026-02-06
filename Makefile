@@ -17,6 +17,8 @@ universal:
 install: release
 	install -d $(PREFIX)/bin
 	install .build/release/imgcrush $(PREFIX)/bin/imgcrush
+	install -d $(PREFIX)/share/man/man1
+	install -m 644 docs/imgcrush.1 $(PREFIX)/share/man/man1/imgcrush.1
 	@echo "Installed imgcrush to $(PREFIX)/bin/imgcrush"
 
 uninstall:

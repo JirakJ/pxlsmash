@@ -1,48 +1,184 @@
 # imgcrush
 
-Metal-accelerated image optimizer for macOS. 20× faster than ImageMagick.
+**Metal-accelerated image optimizer for macOS.** 20× faster than ImageMagick.
+
+[![CI](https://github.com/htmeta/imgcrush/actions/workflows/ci.yml/badge.svg)](https://github.com/htmeta/imgcrush/actions/workflows/ci.yml)
 
 ## Features
 
-- ⚡ Apple Metal GPU acceleration (10–50× speedup)
-- 📁 Batch processing with progress bar
-- 🎯 Smart quality optimization
-- 🔧 CI/CD ready (JSON output, proper exit codes)
-- 🔄 Format conversion (PNG, JPEG, WebP)
-- 📐 GPU-accelerated resize
+- ⚡ **Apple Metal GPU acceleration** — 10–50× speedup over CPU-only tools
+- 📁 **Batch processing** with progress bar and recursive directory scan
+- 🎯 **Smart quality optimization** — best compression at target quality
+- 🔧 **CI/CD ready** — JSON output, proper exit codes, silent mode
+- 🔄 **Format conversion** — PNG, JPEG, WebP with full control
+- 📐 **GPU-accelerated resize** — bilinear interpolation via Metal compute shaders
+- 🖥️ **CPU fallback** — vImage/Accelerate on Intel Macs or headless servers
+- 🔑 **14-day free trial** — no credit card required
 
 ## Requirements
 
-- macOS 13+ (Ventura)
+- macOS 13+ (Ventura or later)
 - Apple Silicon recommended (Intel supported with CPU fallback)
 
 ## Installation
 
-```bash
-brew install imgcrush
-```
-
-Or download from [imgcrush.dev](https://imgcrush.dev).
-
-## Usage
+### Homebrew (recommended)
 
 ```bash
-imgcrush ./images/                        # Batch optimize
-imgcrush input.png --format webp          # Convert format
-imgcrush ./images/ --quality 85           # Set quality
-imgcrush ./images/ --json                 # CI/CD output
-imgcrush hero.png --resize 800x600       # Resize
-imgcrush ./images/ --dry-run              # Preview changes
+brew install htmeta/tap/imgcrush
 ```
 
-## Building from source
+### Direct download
+
+Download the latest universal binary from [GitHub Releases](https://github.com/htmeta/imgcrush/releases) or [imgcrush.dev](https://imgcrush.dev).
 
 ```bash
-swift build -c release
+curl -L https://github.com/htmeta/imgcrush/releases/latest/download/imgcrush-macos-universal.tar.gz | tar xz
+sudo mv imgcrush /usr/local/bin/
 ```
+
+### Build from source
+
+```bash
+git clone https://github.com/htmeta/imgcrush.git
+cd imgcrush
+make install
+```
+
+## Quick Start
+
+```bash
+# Optimize a single image (in-place)
+imgcrush photo.png
+
+# Convert PNG to WebP
+imgcrush photo.png --format webp
+
+# Batch optimize entire directory
+imgcrush ./images/ --quality 85
+
+# Recursive with resize
+imgcrush ./assets/ --recursive --resize 1200x800
+
+# Preview changes without modifying files
+imgcrush ./images/ --dry-run
+
+# CI/CD mode (JSON output, proper exit codes)
+imgcrush ./images/ --json
+```
+
+## CLI Reference
+
+```
+USAGE: imgcrush <input> [options]
+
+ARGUMENTS:
+  <input>                 File or directory to optimize
+
+OPTIONS:
+  --format <format>       Output format: png, jpeg, webp
+  --quality <1-100>       Compression quality (default: auto)
+  --resize <WxH>          Resize to dimensions (e.g. 800x600)
+  --output <dir>          Output directory (default: in-place)
+  --recursive             Process subdirectories
+  --json                  Output results as JSON
+  --dry-run               Preview changes without writing
+  --verbose               Show detailed processing info
+  --activate <key>        Activate license key
+  --email <email>         Email for license activation
+  --license-status        Show current license status
+  --version               Show version
+  --help                  Show help
+```
+
+## Examples
+
+### Batch optimize for web
+
+```bash
+imgcrush ./public/images/ --quality 80 --format webp --recursive
+```
+
+### CI/CD integration (GitHub Actions)
+
+```yaml
+- name: Optimize images
+  run: |
+    brew install htmeta/tap/imgcrush
+    imgcrush ./src/assets/ --quality 85 --json --recursive
+```
+
+### Process and resize thumbnails
+
+```bash
+imgcrush ./uploads/ --resize 400x300 --format jpeg --quality 75 --output ./thumbs/
+```
+
+### Dry run with verbose output
+
+```bash
+imgcrush ./images/ --dry-run --verbose
+# Shows: Metal device, file sizes, estimated savings
+```
+
+## Performance
+
+imgcrush uses Apple Metal compute shaders for image processing, achieving
+significant speedups over CPU-only tools:
+
+| Tool | 100 PNGs (avg) | Speedup |
+|------|---------------|---------|
+| **imgcrush (Metal)** | ~2.1s | **1×** |
+| ImageMagick | ~38s | 18× slower |
+| sharp (Node.js) | ~12s | 6× slower |
+| PIL/Pillow | ~45s | 21× slower |
+
+*Benchmarked on M2 MacBook Air, 100 × 2048×1536 PNG images.*
+
+## Licensing
+
+imgcrush includes a **14-day free trial** with full functionality.
+
+```bash
+# Check license status
+imgcrush --license-status
+
+# Activate a purchased license
+imgcrush --activate IMGC-XXXX-XXXX-XXXX-XXXX --email you@example.com
+```
+
+### Pricing
+
+| Plan | Price | Includes |
+|------|-------|----------|
+| **Personal** | $29 one-time | 1 user, lifetime updates |
+| **Team** | $99 one-time | 5 users, priority support |
+| **Enterprise** | $249 one-time | Unlimited users, SLA |
+
+Purchase at [imgcrush.dev/pricing](https://imgcrush.dev/#pricing).
+
+## Troubleshooting
+
+### Metal not available (Intel Mac)
+
+imgcrush automatically falls back to CPU processing via Accelerate/vImage.
+Use `--verbose` to see which backend is active.
+
+### Permission denied
+
+Ensure you have write access to the output directory:
+
+```bash
+imgcrush ./images/ --output ~/Desktop/optimized/
+```
+
+### Large files / memory
+
+For very large images (>100MP), processing is done tile-by-tile to avoid
+memory pressure. Use `--verbose` to monitor memory usage.
 
 ## License
 
-Commercial software. See [imgcrush.dev](https://imgcrush.dev) for pricing.
+Commercial software. © 2025 [HTMETA.dev](https://htmeta.dev)
 
-© 2025 HTMETA.dev
+See [imgcrush.dev](https://imgcrush.dev) for pricing and terms.

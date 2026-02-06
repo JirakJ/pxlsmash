@@ -210,13 +210,13 @@
 
 ## Fáze 12: Dokumentace
 
-- [ ] `README.md` — instalace, quick start, příklady, benchmarks
-- [ ] `CHANGELOG.md` — seznam změn per verze
-- [ ] Man page (`imgcrush.1`)
-- [ ] `--help` výstup — přehledný, s příklady
+- [x] `README.md` — instalace, quick start, příklady, benchmarks
+- [x] `CHANGELOG.md` — seznam změn per verze
+- [x] Man page (`imgcrush.1`)
+- [x] `--help` výstup — přehledný, s příklady
 - [ ] Web dokumentace na imgcrush.dev/docs (nebo v README)
-- [ ] GitHub Actions usage příklad v README
-- [ ] Troubleshooting sekce (Intel fallback, permissions, large files)
+- [x] GitHub Actions usage příklad v README
+- [x] Troubleshooting sekce (Intel fallback, permissions, large files)
 
 ---
 
