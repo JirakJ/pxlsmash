@@ -36,5 +36,7 @@ dist: universal
 	mkdir -p dist
 	cp .build/apple/Products/Release/imgcrush dist/
 	cd dist && tar -czf imgcrush-$(VERSION)-macos-universal.tar.gz imgcrush
+	cd dist && zip -j imgcrush-$(VERSION)-macos-universal.zip imgcrush
 	cd dist && shasum -a 256 imgcrush-$(VERSION)-macos-universal.tar.gz > imgcrush-$(VERSION)-macos-universal.tar.gz.sha256
-	@echo "Distribution archive: dist/imgcrush-$(VERSION)-macos-universal.tar.gz"
+	cd dist && shasum -a 256 imgcrush-$(VERSION)-macos-universal.zip > imgcrush-$(VERSION)-macos-universal.zip.sha256
+	@echo "Distribution archives: dist/imgcrush-$(VERSION)-macos-universal.{tar.gz,zip}"

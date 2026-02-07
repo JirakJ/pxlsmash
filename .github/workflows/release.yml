@@ -43,7 +43,9 @@ jobs:
         run: |
           cd dist
           tar -czf imgcrush-${{ steps.version.outputs.VERSION }}-macos-universal.tar.gz imgcrush
+          zip -j imgcrush-${{ steps.version.outputs.VERSION }}-macos-universal.zip imgcrush
           shasum -a 256 imgcrush-${{ steps.version.outputs.VERSION }}-macos-universal.tar.gz > imgcrush-${{ steps.version.outputs.VERSION }}-macos-universal.tar.gz.sha256
+          shasum -a 256 imgcrush-${{ steps.version.outputs.VERSION }}-macos-universal.zip > imgcrush-${{ steps.version.outputs.VERSION }}-macos-universal.zip.sha256
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -52,3 +54,5 @@ jobs:
           files: |
             dist/imgcrush-${{ steps.version.outputs.VERSION }}-macos-universal.tar.gz
             dist/imgcrush-${{ steps.version.outputs.VERSION }}-macos-universal.tar.gz.sha256
+            dist/imgcrush-${{ steps.version.outputs.VERSION }}-macos-universal.zip
+            dist/imgcrush-${{ steps.version.outputs.VERSION }}-macos-universal.zip.sha256

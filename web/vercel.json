@@ -1,0 +1,46 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": null,
+  "outputDirectory": ".",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
+    {
+      "source": "/favicon.svg",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/install.sh",
+      "headers": [
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    }
+  ],
+  "rewrites": [
+    { "source": "/install.sh", "destination": "/install.sh" }
+  ],
+  "redirects": [
+    { "source": "/pricing", "destination": "/#pricing", "statusCode": 301 },
+    { "source": "/features", "destination": "/#features", "statusCode": 301 },
+    { "source": "/faq", "destination": "/#faq", "statusCode": 301 },
+    { "source": "/api", "destination": "/docs#cloud-api", "statusCode": 301 },
+    { "source": "/download", "destination": "/#pricing", "statusCode": 301 },
+    { "source": "/buy", "destination": "https://htmeta.gumroad.com/l/imgcrush", "statusCode": 302 },
+    { "source": "/gumroad", "destination": "https://htmeta.gumroad.com/l/imgcrush", "statusCode": 302 },
+    { "source": "/etsy", "destination": "https://etsy.com/shop/htmeta", "statusCode": 302 },
+    { "source": "/github", "destination": "https://github.com/imgcrush/imgcrush", "statusCode": 302 }
+  ]
+}

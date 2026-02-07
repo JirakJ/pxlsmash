@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /install.sh
+
+Sitemap: https://imgcrush.dev/sitemap.xml
