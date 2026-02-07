@@ -215,7 +215,7 @@
 - [x] `CHANGELOG.md` — seznam změn per verze
 - [x] Man page (`imgcrush.1`)
 - [x] `--help` výstup — přehledný, s příklady
-- [ ] Web dokumentace na imgcrush.dev/docs (nebo v README)
+- [x] Web dokumentace na imgcrush.dev/docs (nebo v README)
 - [x] GitHub Actions usage příklad v README
 - [x] Troubleshooting sekce (Intel fallback, permissions, large files)
 

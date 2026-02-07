@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>imgcrush Documentation — Getting Started Guide</title>
+  <meta name="description" content="Complete guide to imgcrush: installation, configuration, batch processing, CI/CD integration, smart quality, and Cloud API.">
+  <meta property="og:title" content="imgcrush Documentation">
+  <meta property="og:description" content="Complete guide to Metal-accelerated image optimization for macOS.">
+  <meta property="og:url" content="https://imgcrush.dev/docs">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { 50: '#f0f9ff', 400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7' },
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'SF Mono', 'Menlo', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    .gradient-text {
+      background: linear-gradient(135deg, #0ea5e9 0%, #f97316 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .terminal { background: #0f172a; box-shadow: 0 0 0 1px rgba(255,255,255,0.05), 0 20px 40px -12px rgba(0,0,0,0.4); }
+    .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .sidebar-link { transition: all 0.15s; }
+    .sidebar-link:hover { color: white; padding-left: 4px; }
+    .sidebar-link.active { color: #0ea5e9; border-left: 2px solid #0ea5e9; padding-left: 12px; }
+    .prose h2 { scroll-margin-top: 5rem; }
+    .screenshot { border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-white antialiased">
+
+  <!-- NAV -->
+  <nav class="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-lg border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 font-bold text-lg">
+        <span class="text-2xl">⚡</span>
+        <span>imgcrush</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-sm text-slate-400">
+        <a href="index.html#features" class="hover:text-white transition">Features</a>
+        <a href="docs.html" class="text-white font-medium">Docs</a>
+        <a href="demo.html" class="hover:text-white transition">Demo</a>
+        <a href="index.html#pricing" class="hover:text-white transition">Pricing</a>
+      </div>
+      <a href="index.html#pricing" class="bg-brand-500 hover:bg-brand-400 text-white text-sm font-medium px-4 py-2 rounded-lg transition">
+        Download
+      </a>
+    </div>
+  </nav>
+
+  <div class="pt-16 flex">
+
+    <!-- SIDEBAR -->
+    <aside class="hidden lg:block fixed top-16 left-0 w-64 h-[calc(100vh-4rem)] border-r border-white/5 bg-slate-950 overflow-y-auto p-6">
+      <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Getting Started</p>
+      <div class="space-y-2 mb-6">
+        <a href="#installation" class="sidebar-link block text-sm text-slate-400 pl-3">Installation</a>
+        <a href="#quick-start" class="sidebar-link block text-sm text-slate-400 pl-3">Quick Start</a>
+        <a href="#basic-usage" class="sidebar-link block text-sm text-slate-400 pl-3">Basic Usage</a>
+      </div>
+
+      <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Features</p>
+      <div class="space-y-2 mb-6">
+        <a href="#batch-processing" class="sidebar-link block text-sm text-slate-400 pl-3">Batch Processing</a>
+        <a href="#format-conversion" class="sidebar-link block text-sm text-slate-400 pl-3">Format Conversion</a>
+        <a href="#smart-quality" class="sidebar-link block text-sm text-slate-400 pl-3">Smart Quality</a>
+        <a href="#resize" class="sidebar-link block text-sm text-slate-400 pl-3">Resize</a>
+        <a href="#metadata" class="sidebar-link block text-sm text-slate-400 pl-3">Metadata</a>
+        <a href="#watch-mode" class="sidebar-link block text-sm text-slate-400 pl-3">Watch Mode</a>
+      </div>
+
+      <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Integration</p>
+      <div class="space-y-2 mb-6">
+        <a href="#json-output" class="sidebar-link block text-sm text-slate-400 pl-3">JSON Output</a>
+        <a href="#ci-cd" class="sidebar-link block text-sm text-slate-400 pl-3">CI/CD Integration</a>
+        <a href="#config-file" class="sidebar-link block text-sm text-slate-400 pl-3">Config File</a>
+      </div>
+
+      <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Cloud API</p>
+      <div class="space-y-2 mb-6">
+        <a href="#cloud-api" class="sidebar-link block text-sm text-slate-400 pl-3">REST API</a>
+        <a href="#api-examples" class="sidebar-link block text-sm text-slate-400 pl-3">Code Examples</a>
+      </div>
+
+      <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Reference</p>
+      <div class="space-y-2">
+        <a href="#licensing" class="sidebar-link block text-sm text-slate-400 pl-3">Licensing</a>
+        <a href="#cli-reference" class="sidebar-link block text-sm text-slate-400 pl-3">CLI Reference</a>
+        <a href="#troubleshooting" class="sidebar-link block text-sm text-slate-400 pl-3">Troubleshooting</a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 lg:ml-64 min-h-screen">
+      <div class="max-w-4xl mx-auto px-6 py-12">
+
+        <!-- Page header -->
+        <div class="mb-12">
+          <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-4">
+            <span class="gradient-text">Documentation</span>
+          </h1>
+          <p class="text-lg text-slate-400 max-w-2xl">
+            Everything you need to optimize images with Metal GPU acceleration.
+            From installation to CI/CD integration.
+          </p>
+        </div>
+
+        <!-- ═══════════════ INSTALLATION ═══════════════ -->
+        <h2 id="installation" class="text-2xl font-bold mb-6 pt-4 flex items-center gap-3">
+          <span class="text-brand-400 text-lg">01</span> Installation
+        </h2>
+
+        <div class="mb-6">
+          <p class="text-slate-400 mb-4">Install imgcrush via Homebrew (recommended) or download the binary directly.</p>
+
+          <h3 class="text-lg font-semibold mb-3">Homebrew</h3>
+          <div class="terminal rounded-xl overflow-hidden mb-6 screenshot">
+            <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+              <span class="terminal-dot bg-red-500/80"></span>
+              <span class="terminal-dot bg-yellow-500/80"></span>
+              <span class="terminal-dot bg-green-500/80"></span>
+              <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Homebrew install</span>
+            </div>
+            <div class="p-5 font-mono text-sm leading-relaxed">
+              <p class="text-green-400">$ brew install imgcrush</p>
+              <p class="text-slate-500 mt-2">==> Downloading imgcrush-1.0.0.arm64.tar.gz</p>
+              <p class="text-slate-500">######################################## 100%</p>
+              <p class="text-slate-500">==> Installing imgcrush</p>
+              <p class="text-slate-300 mt-2">🍺 /opt/homebrew/bin/imgcrush</p>
+              <p class="text-slate-300 mt-3 text-green-400">$ imgcrush --version</p>
+              <p class="text-slate-300">imgcrush 1.0.0</p>
+            </div>
+          </div>
+
+          <h3 class="text-lg font-semibold mb-3">Direct download</h3>
+          <div class="terminal rounded-xl overflow-hidden mb-6 screenshot">
+            <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+              <span class="terminal-dot bg-red-500/80"></span>
+              <span class="terminal-dot bg-yellow-500/80"></span>
+              <span class="terminal-dot bg-green-500/80"></span>
+              <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Direct install</span>
+            </div>
+            <div class="p-5 font-mono text-sm leading-relaxed">
+              <p class="text-green-400">$ curl -L https://github.com/imgcrush/imgcrush/releases/latest/download/imgcrush.tar.gz | tar xz</p>
+              <p class="text-green-400">$ sudo mv imgcrush /usr/local/bin/</p>
+              <p class="text-green-400">$ imgcrush --version</p>
+              <p class="text-slate-300">imgcrush 1.0.0</p>
+            </div>
+          </div>
+
+          <h3 class="text-lg font-semibold mb-3">Build from source</h3>
+          <div class="terminal rounded-xl overflow-hidden mb-8 screenshot">
+            <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+              <span class="terminal-dot bg-red-500/80"></span>
+              <span class="terminal-dot bg-yellow-500/80"></span>
+              <span class="terminal-dot bg-green-500/80"></span>
+              <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Build from source</span>
+            </div>
+            <div class="p-5 font-mono text-sm leading-relaxed">
+              <p class="text-green-400">$ git clone https://github.com/imgcrush/imgcrush.git</p>
+              <p class="text-green-400">$ cd imgcrush</p>
+              <p class="text-green-400">$ make install</p>
+              <p class="text-slate-500 mt-2">Building for release...</p>
+              <p class="text-slate-500">Build complete! (2.3s)</p>
+              <p class="text-slate-300 mt-1">✓ Installed to /usr/local/bin/imgcrush</p>
+            </div>
+          </div>
+
+          <div class="bg-brand-500/5 border border-brand-500/20 rounded-xl p-5 mb-8">
+            <p class="text-sm text-slate-300">
+              <strong class="text-brand-400">System requirements:</strong>
+              macOS 13 (Ventura) or later · Apple Silicon or Intel Mac · Xcode Command Line Tools
+            </p>
+          </div>
+        </div>
+
+        <hr class="border-white/5 my-12">
+
+        <!-- ═══════════════ QUICK START ═══════════════ -->
+        <h2 id="quick-start" class="text-2xl font-bold mb-6 pt-4 flex items-center gap-3">
+          <span class="text-brand-400 text-lg">02</span> Quick Start
+        </h2>
+
+        <p class="text-slate-400 mb-4">Get started in under 30 seconds. Here's your first optimization:</p>
+
+        <div class="terminal rounded-xl overflow-hidden mb-6 screenshot">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+            <span class="terminal-dot bg-red-500/80"></span>
+            <span class="terminal-dot bg-yellow-500/80"></span>
+            <span class="terminal-dot bg-green-500/80"></span>
+            <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Quick start</span>
+          </div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <p class="text-slate-500"># Optimize a single image</p>
+            <p class="text-green-400">$ imgcrush photo.png</p>
+            <p class="text-slate-300 mt-2"><span class="text-brand-400">⚡</span> Processing 1 file with <span class="text-white font-bold">Metal GPU</span>...</p>
+            <p class="text-green-400 mt-1">✓ photo.png  2.1MB → 680KB  <span class="text-brand-400 font-bold">(68% saved)</span>  0.03s</p>
+            <p class="text-slate-300 mt-3 text-slate-500"># Optimize an entire directory</p>
+            <p class="text-green-400">$ imgcrush ./images/ --recursive</p>
+            <p class="text-slate-300 mt-2"><span class="text-brand-400">⚡</span> Processing 47 files with <span class="text-white font-bold">Metal GPU</span>...</p>
+            <p class="text-slate-500">████████████████████████████████████████ 100%</p>
+            <p class="text-green-400 mt-1">✓ 47 files optimized, <span class="text-brand-400 font-bold">84MB saved</span> (62%), 0.9s</p>
+          </div>
+        </div>
+
+        <p class="text-slate-400 mb-8">
+          imgcrush automatically detects your image format, applies optimal compression, and overwrites in-place.
+          Use <code class="text-brand-400 bg-brand-500/10 px-1.5 py-0.5 rounded text-sm">--output</code> to save to a different directory.
+        </p>
+
+        <hr class="border-white/5 my-12">
+
+        <!-- ═══════════════ BASIC USAGE ═══════════════ -->
+        <h2 id="basic-usage" class="text-2xl font-bold mb-6 pt-4 flex items-center gap-3">
+          <span class="text-brand-400 text-lg">03</span> Basic Usage
+        </h2>
+
+        <div class="terminal rounded-xl overflow-hidden mb-6 screenshot">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+            <span class="terminal-dot bg-red-500/80"></span>
+            <span class="terminal-dot bg-yellow-500/80"></span>
+            <span class="terminal-dot bg-green-500/80"></span>
+            <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Basic usage examples</span>
+          </div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <p class="text-slate-500"># Set output quality (1-100)</p>
+            <p class="text-green-400">$ imgcrush photo.jpg --quality 85</p>
+            <p class="text-slate-300 mt-3 text-slate-500"># Convert format</p>
+            <p class="text-green-400">$ imgcrush photo.png --format webp</p>
+            <p class="text-slate-300 mt-3 text-slate-500"># Resize to specific dimensions</p>
+            <p class="text-green-400">$ imgcrush hero.jpg --resize 1920x1080</p>
+            <p class="text-slate-300 mt-3 text-slate-500"># Output to a different directory</p>
+            <p class="text-green-400">$ imgcrush ./images/ --output ./optimized/</p>
+            <p class="text-slate-300 mt-3 text-slate-500"># Preview changes without writing files</p>
+            <p class="text-green-400">$ imgcrush ./images/ --dry-run</p>
+            <p class="text-slate-300 mt-3 text-slate-500"># Show detailed info (GPU, timing, memory)</p>
+            <p class="text-green-400">$ imgcrush photo.png --verbose</p>
+            <p class="text-slate-300 mt-1">  <span class="text-slate-500">[Metal] Apple M2 Pro, 16.0GB max memory</span></p>
+            <p class="text-green-400 mt-1">✓ photo.png  2.1MB → 680KB  (68% saved)  0.03s</p>
+          </div>
+        </div>
+
+        <hr class="border-white/5 my-12">
+
+        <!-- ═══════════════ BATCH PROCESSING ═══════════════ -->
+        <h2 id="batch-processing" class="text-2xl font-bold mb-6 pt-4 flex items-center gap-3">
+          <span class="text-brand-400 text-lg">04</span> Batch Processing
+        </h2>
+
+        <p class="text-slate-400 mb-4">
+          Point imgcrush at a directory and it processes all images in parallel using your CPU cores.
+          Add <code class="text-brand-400 bg-brand-500/10 px-1.5 py-0.5 rounded text-sm">--recursive</code> to include subdirectories.
+        </p>
+
+        <div class="terminal rounded-xl overflow-hidden mb-6 screenshot">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+            <span class="terminal-dot bg-red-500/80"></span>
+            <span class="terminal-dot bg-yellow-500/80"></span>
+            <span class="terminal-dot bg-green-500/80"></span>
+            <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Batch optimization</span>
+          </div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <p class="text-green-400">$ imgcrush ~/Photos/vacation/ --recursive --format webp --quality 80 --output ~/optimized/</p>
+            <p class="text-slate-300 mt-3"><span class="text-brand-400">⚡</span> Processing 238 files with <span class="text-white font-bold">Metal GPU</span>...</p>
+            <p class="text-slate-500 mt-1">████████████████████████████████████████ 100%</p>
+            <p class="text-slate-300 mt-3">
+              <span class="text-green-400">✓</span> sunset_01.png     4.2MB → 1.1MB  (74% saved)  0.04s<br>
+              <span class="text-green-400">✓</span> beach_02.jpg      3.8MB → 890KB  (77% saved)  0.02s<br>
+              <span class="text-green-400">✓</span> mountain_03.png   5.1MB → 1.3MB  (75% saved)  0.05s<br>
+              <span class="text-slate-500">  ...</span><br>
+              <span class="text-red-400">✗</span> <span class="text-slate-500">corrupted.png — invalid image data</span><br>
+              <span class="text-green-400">✓</span> family_238.jpg    2.9MB → 720KB  (75% saved)  0.02s
+            </p>
+            <p class="text-slate-300 mt-3">
+              <span class="text-green-400">✓</span> <span class="text-white font-bold">237 files optimized</span>, 1 error
+            </p>
+            <p class="text-green-400">✓ Saved <span class="text-brand-400 font-bold">612MB</span> (72% reduction) in 3.2s</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/50 border border-white/5 rounded-xl p-5 mb-8">
+          <p class="text-sm text-slate-300">
+            <strong class="text-white">💡 Tip:</strong> imgcrush automatically skips symlinks, non-image files, and
+            uses parallel processing for batches of 5+ files. Press <kbd class="bg-slate-800 text-xs px-1.5 py-0.5 rounded">Ctrl+C</kbd>
+            to gracefully stop — partially written files are cleaned up.
+          </p>
+        </div>
+
+        <hr class="border-white/5 my-12">
+
+        <!-- ═══════════════ FORMAT CONVERSION ═══════════════ -->
+        <h2 id="format-conversion" class="text-2xl font-bold mb-6 pt-4 flex items-center gap-3">
+          <span class="text-brand-400 text-lg">05</span> Format Conversion
+        </h2>
+
+        <p class="text-slate-400 mb-4">Convert between all supported formats with a single flag:</p>
+
+        <div class="grid md:grid-cols-2 gap-4 mb-6">
+          <div class="bg-slate-900/50 border border-white/5 rounded-xl p-5">
+            <p class="text-sm font-semibold text-white mb-3">Supported formats</p>
+            <table class="w-full text-sm">
+              <tr class="text-slate-400"><td class="py-1"><code class="text-brand-400">png</code></td><td>Lossless, best for graphics</td></tr>
+              <tr class="text-slate-400"><td class="py-1"><code class="text-brand-400">jpeg</code></td><td>Lossy, best for photos</td></tr>
+              <tr class="text-slate-400"><td class="py-1"><code class="text-brand-400">webp</code></td><td>Modern, smallest file size</td></tr>
+              <tr class="text-slate-400"><td class="py-1"><code class="text-brand-400">avif</code></td><td>Next-gen, best compression</td></tr>
+              <tr class="text-slate-400"><td class="py-1"><code class="text-brand-400">heic</code></td><td>Apple native, great quality</td></tr>
+            </table>
+          </div>
+          <div class="bg-slate-900/50 border border-white/5 rounded-xl p-5">
+            <p class="text-sm font-semibold text-white mb-3">All conversions work</p>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              PNG → JPEG, PNG → WebP, PNG → AVIF,<br>
+              JPEG → WebP, JPEG → PNG, JPEG → AVIF,<br>
+              WebP → PNG, WebP → JPEG,<br>
+              HEIC → PNG, HEIC → JPEG, HEIC → WebP,<br>
+              and every other combination.
+            </p>
+          </div>
+        </div>
+
+        <div class="terminal rounded-xl overflow-hidden mb-8 screenshot">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+            <span class="terminal-dot bg-red-500/80"></span>
+            <span class="terminal-dot bg-yellow-500/80"></span>
+            <span class="terminal-dot bg-green-500/80"></span>
+            <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Format conversion</span>
+          </div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <p class="text-slate-500"># Convert all PNGs to WebP for web deployment</p>
+            <p class="text-green-400">$ imgcrush ./assets/ --format webp --quality 80 --output ./dist/</p>
+            <p class="text-slate-300 mt-3 text-slate-500"># Convert iPhone HEIC photos to JPEG for sharing</p>
+            <p class="text-green-400">$ imgcrush ~/Photos/ --format jpeg --quality 90 --recursive</p>
+            <p class="text-slate-300 mt-3 text-slate-500"># Use next-gen AVIF format (macOS 14+)</p>
+            <p class="text-green-400">$ imgcrush hero.png --format avif --quality 75</p>
+          </div>
+        </div>
+
+        <hr class="border-white/5 my-12">
+
+        <!-- ═══════════════ SMART QUALITY ═══════════════ -->
+        <h2 id="smart-quality" class="text-2xl font-bold mb-6 pt-4 flex items-center gap-3">
+          <span class="text-brand-400 text-lg">06</span> Smart Quality (SSIM)
+        </h2>
+
+        <p class="text-slate-400 mb-4">
+          Don't guess quality values. <code class="text-brand-400 bg-brand-500/10 px-1.5 py-0.5 rounded text-sm">--smart-quality</code>
+          uses the SSIM (Structural Similarity Index) algorithm to find the lowest quality that's visually
+          indistinguishable from the original.
+        </p>
+
+        <div class="terminal rounded-xl overflow-hidden mb-6 screenshot">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+            <span class="terminal-dot bg-red-500/80"></span>
+            <span class="terminal-dot bg-yellow-500/80"></span>
+            <span class="terminal-dot bg-green-500/80"></span>
+            <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Smart quality</span>
+          </div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <p class="text-slate-500"># Let imgcrush find the optimal quality automatically</p>
+            <p class="text-green-400">$ imgcrush photo.jpg --smart-quality</p>
+            <p class="text-slate-300 mt-2"><span class="text-brand-400">⚡</span> Processing 1 file with <span class="text-white font-bold">Metal GPU</span>...</p>
+            <p class="text-green-400 mt-1">✓ photo.jpg  3.8MB → 620KB  <span class="text-brand-400 font-bold">(84% saved)</span>  0.12s</p>
+            <p class="text-slate-300 mt-3 text-slate-500"># Works with batch processing too</p>
+            <p class="text-green-400">$ imgcrush ./gallery/ --smart-quality --format webp</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/50 border border-white/5 rounded-xl p-5 mb-8">
+          <p class="text-sm text-slate-300 mb-3"><strong class="text-white">How it works:</strong></p>
+          <div class="grid grid-cols-3 gap-4 text-center">
+            <div class="bg-slate-800/50 rounded-lg p-4">
+              <p class="text-2xl mb-2">🔍</p>
+              <p class="text-xs text-slate-400">Binary search over quality 30–95</p>
+            </div>
+            <div class="bg-slate-800/50 rounded-lg p-4">
+              <p class="text-2xl mb-2">📊</p>
+              <p class="text-xs text-slate-400">Encode → decode → compute SSIM score</p>
+            </div>
+            <div class="bg-slate-800/50 rounded-lg p-4">
+              <p class="text-2xl mb-2">✅</p>
+              <p class="text-xs text-slate-400">Pick lowest quality with SSIM ≥ 0.95</p>
+            </div>
+          </div>
+        </div>
+
+        <hr class="border-white/5 my-12">
+
+        <!-- ═══════════════ RESIZE ═══════════════ -->
+        <h2 id="resize" class="text-2xl font-bold mb-6 pt-4 flex items-center gap-3">
+          <span class="text-brand-400 text-lg">07</span> Resize
+        </h2>
+
+        <p class="text-slate-400 mb-4">
+          Resize images using GPU-accelerated bilinear interpolation via Metal compute shaders.
+          Specify exact dimensions with <code class="text-brand-400 bg-brand-500/10 px-1.5 py-0.5 rounded text-sm">--resize WxH</code>.
+        </p>
+
+        <div class="terminal rounded-xl overflow-hidden mb-8 screenshot">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+            <span class="terminal-dot bg-red-500/80"></span>
+            <span class="terminal-dot bg-yellow-500/80"></span>
+            <span class="terminal-dot bg-green-500/80"></span>
+            <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Resize</span>
+          </div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <p class="text-slate-500"># Resize to exact dimensions</p>
+            <p class="text-green-400">$ imgcrush hero.jpg --resize 1200x630</p>
+            <p class="text-slate-300 mt-3 text-slate-500"># Generate thumbnails for a gallery</p>
+            <p class="text-green-400">$ imgcrush ./photos/ --resize 400x400 --format webp --quality 80 --output ./thumbs/</p>
+            <p class="text-slate-300 mt-3 text-slate-500"># Combine resize + smart quality for maximum compression</p>
+            <p class="text-green-400">$ imgcrush banner.png --resize 1920x1080 --smart-quality --format webp</p>
+          </div>
+        </div>
+
+        <hr class="border-white/5 my-12">
+
+        <!-- ═══════════════ METADATA ═══════════════ -->
+        <h2 id="metadata" class="text-2xl font-bold mb-6 pt-4 flex items-center gap-3">
+          <span class="text-brand-400 text-lg">08</span> Metadata Preservation
+        </h2>
+
+        <p class="text-slate-400 mb-4">
+          By default, imgcrush strips EXIF metadata for smaller files. Use
+          <code class="text-brand-400 bg-brand-500/10 px-1.5 py-0.5 rounded text-sm">--keep-metadata</code>
+          to preserve GPS, camera info, orientation, and other EXIF data.
+        </p>
+
+        <div class="terminal rounded-xl overflow-hidden mb-8 screenshot">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+            <span class="terminal-dot bg-red-500/80"></span>
+            <span class="terminal-dot bg-yellow-500/80"></span>
+            <span class="terminal-dot bg-green-500/80"></span>
+            <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Keep metadata</span>
+          </div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <p class="text-slate-500"># Optimize photos while keeping EXIF data</p>
+            <p class="text-green-400">$ imgcrush ~/Photos/ --keep-metadata --quality 85</p>
+            <p class="text-slate-300 mt-3 text-slate-500"># Perfect for photographers — preserve camera info + GPS</p>
+            <p class="text-green-400">$ imgcrush shoot/ --keep-metadata --smart-quality --output optimized/</p>
+          </div>
+        </div>
+
+        <hr class="border-white/5 my-12">
+
+        <!-- ═══════════════ WATCH MODE ═══════════════ -->
+        <h2 id="watch-mode" class="text-2xl font-bold mb-6 pt-4 flex items-center gap-3">
+          <span class="text-brand-400 text-lg">09</span> Watch Mode
+        </h2>
+
+        <p class="text-slate-400 mb-4">
+          Automatically optimize new images as they appear. Perfect for design workflows.
+        </p>
+
+        <div class="terminal rounded-xl overflow-hidden mb-8 screenshot">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+            <span class="terminal-dot bg-red-500/80"></span>
+            <span class="terminal-dot bg-yellow-500/80"></span>
+            <span class="terminal-dot bg-green-500/80"></span>
+            <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Watch mode</span>
+          </div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <p class="text-green-400">$ imgcrush ./assets/ --watch --format webp --quality 80</p>
+            <p class="text-slate-300 mt-2"><span class="text-brand-400">👁</span> Watching ./assets/ for changes...</p>
+            <p class="text-slate-300 mt-2"><span class="text-green-400">✓</span> new-logo.png  → new-logo.webp  (71% saved)</p>
+            <p class="text-slate-300"><span class="text-green-400">✓</span> hero-v2.png   → hero-v2.webp   (68% saved)</p>
+            <p class="text-slate-500 mt-1">  Waiting for changes... (Ctrl+C to stop)</p>
+          </div>
+        </div>
+
+        <hr class="border-white/5 my-12">
+
+        <!-- ═══════════════ JSON OUTPUT ═══════════════ -->
+        <h2 id="json-output" class="text-2xl font-bold mb-6 pt-4 flex items-center gap-3">
+          <span class="text-brand-400 text-lg">10</span> JSON Output
+        </h2>
+
+        <p class="text-slate-400 mb-4">
+          Use <code class="text-brand-400 bg-brand-500/10 px-1.5 py-0.5 rounded text-sm">--json</code>
+          for machine-readable output — perfect for CI/CD pipelines and automation scripts.
+        </p>
+
+        <div class="terminal rounded-xl overflow-hidden mb-8 screenshot">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+            <span class="terminal-dot bg-red-500/80"></span>
+            <span class="terminal-dot bg-yellow-500/80"></span>
+            <span class="terminal-dot bg-green-500/80"></span>
+            <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — JSON output</span>
+          </div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <p class="text-green-400">$ imgcrush ./images/ --json | jq .</p>
+            <p class="text-slate-300 mt-2">{</p>
+            <p class="text-slate-300 pl-4"><span class="text-brand-400">"results"</span>: [</p>
+            <p class="text-slate-300 pl-8">{</p>
+            <p class="text-slate-300 pl-12"><span class="text-brand-400">"file"</span>: <span class="text-orange-300">"images/hero.png"</span>,</p>
+            <p class="text-slate-300 pl-12"><span class="text-brand-400">"original_size"</span>: <span class="text-green-300">2202416</span>,</p>
+            <p class="text-slate-300 pl-12"><span class="text-brand-400">"optimized_size"</span>: <span class="text-green-300">714752</span>,</p>
+            <p class="text-slate-300 pl-12"><span class="text-brand-400">"reduction_pct"</span>: <span class="text-green-300">67.6</span>,</p>
+            <p class="text-slate-300 pl-12"><span class="text-brand-400">"format"</span>: <span class="text-orange-300">"png"</span>,</p>
+            <p class="text-slate-300 pl-12"><span class="text-brand-400">"time_ms"</span>: <span class="text-green-300">28.4</span></p>
+            <p class="text-slate-300 pl-8">}</p>
+            <p class="text-slate-300 pl-4">],</p>
+            <p class="text-slate-300 pl-4"><span class="text-brand-400">"summary"</span>: {</p>
+            <p class="text-slate-300 pl-8"><span class="text-brand-400">"total_files"</span>: <span class="text-green-300">12</span>,</p>
+            <p class="text-slate-300 pl-8"><span class="text-brand-400">"total_saved_bytes"</span>: <span class="text-green-300">15728640</span>,</p>
+            <p class="text-slate-300 pl-8"><span class="text-brand-400">"total_reduction_pct"</span>: <span class="text-green-300">64.2</span>,</p>
+            <p class="text-slate-300 pl-8"><span class="text-brand-400">"total_time_ms"</span>: <span class="text-green-300">312.5</span></p>
+            <p class="text-slate-300 pl-4">}</p>
+            <p class="text-slate-300">}</p>
+          </div>
+        </div>
+
+        <hr class="border-white/5 my-12">
+
+        <!-- ═══════════════ CI/CD ═══════════════ -->
+        <h2 id="ci-cd" class="text-2xl font-bold mb-6 pt-4 flex items-center gap-3">
+          <span class="text-brand-400 text-lg">11</span> CI/CD Integration
+        </h2>
+
+        <p class="text-slate-400 mb-4">
+          Add image optimization to your build pipeline with GitHub Actions:
+        </p>
+
+        <div class="terminal rounded-xl overflow-hidden mb-6 screenshot">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+            <span class="terminal-dot bg-red-500/80"></span>
+            <span class="terminal-dot bg-yellow-500/80"></span>
+            <span class="terminal-dot bg-green-500/80"></span>
+            <span class="text-xs text-slate-500 ml-2 font-mono">.github/workflows/optimize-images.yml</span>
+          </div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <p class="text-slate-500">name: Optimize Images</p>
+            <p class="text-slate-500">on:</p>
+            <p class="text-slate-500 pl-4">push:</p>
+            <p class="text-slate-500 pl-8">paths: ['**/*.png', '**/*.jpg', '**/*.webp']</p>
+            <p class="text-slate-500 mt-2">jobs:</p>
+            <p class="text-slate-500 pl-4">optimize:</p>
+            <p class="text-slate-500 pl-8">runs-on: <span class="text-brand-400">macos-latest</span></p>
+            <p class="text-slate-500 pl-8">steps:</p>
+            <p class="text-slate-500 pl-12">- uses: actions/checkout@v4</p>
+            <p class="text-slate-500 pl-12">- run: brew install imgcrush</p>
+            <p class="text-slate-300 pl-12">- run: <span class="text-green-400">imgcrush ./assets/ --recursive --json > results.json</span></p>
+            <p class="text-slate-500 pl-12">- run: cat results.json | jq '.summary'</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/50 border border-white/5 rounded-xl p-5 mb-8">
+          <p class="text-sm text-slate-300">
+            <strong class="text-white">💡 Tip:</strong> Use <code class="text-brand-400 text-xs">--json</code> output
+            to parse results programmatically and fail the build if image sizes exceed a threshold.
+          </p>
+        </div>
+
+        <hr class="border-white/5 my-12">
+
+        <!-- ═══════════════ CONFIG FILE ═══════════════ -->
+        <h2 id="config-file" class="text-2xl font-bold mb-6 pt-4 flex items-center gap-3">
+          <span class="text-brand-400 text-lg">12</span> Config File
+        </h2>
+
+        <p class="text-slate-400 mb-4">
+          Create a <code class="text-brand-400 bg-brand-500/10 px-1.5 py-0.5 rounded text-sm">.imgcrushrc</code>
+          file in your project root to set default options. CLI flags override config values.
+        </p>
+
+        <div class="terminal rounded-xl overflow-hidden mb-6 screenshot">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+            <span class="terminal-dot bg-red-500/80"></span>
+            <span class="terminal-dot bg-yellow-500/80"></span>
+            <span class="terminal-dot bg-green-500/80"></span>
+            <span class="text-xs text-slate-500 ml-2 font-mono">.imgcrushrc</span>
+          </div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <p class="text-slate-300">{</p>
+            <p class="text-slate-300 pl-4"><span class="text-brand-400">"format"</span>: <span class="text-orange-300">"webp"</span>,</p>
+            <p class="text-slate-300 pl-4"><span class="text-brand-400">"quality"</span>: <span class="text-green-300">85</span>,</p>
+            <p class="text-slate-300 pl-4"><span class="text-brand-400">"output"</span>: <span class="text-orange-300">"./dist/images/"</span>,</p>
+            <p class="text-slate-300 pl-4"><span class="text-brand-400">"recursive"</span>: <span class="text-green-300">true</span>,</p>
+            <p class="text-slate-300 pl-4"><span class="text-brand-400">"verbose"</span>: <span class="text-green-300">false</span></p>
+            <p class="text-slate-300">}</p>
+          </div>
+        </div>
+
+        <div class="terminal rounded-xl overflow-hidden mb-8 screenshot">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+            <span class="terminal-dot bg-red-500/80"></span>
+            <span class="terminal-dot bg-yellow-500/80"></span>
+            <span class="terminal-dot bg-green-500/80"></span>
+            <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Using config file</span>
+          </div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <p class="text-slate-500"># With .imgcrushrc present, just run:</p>
+            <p class="text-green-400">$ imgcrush ./images/</p>
+            <p class="text-slate-500 mt-1"># ↑ Uses format=webp, quality=85, output=./dist/images/, recursive=true from config</p>
+            <p class="text-slate-300 mt-3 text-slate-500"># CLI flags override config values:</p>
+            <p class="text-green-400">$ imgcrush ./images/ --quality 60 --format jpeg</p>
+          </div>
+        </div>
+
+        <hr class="border-white/5 my-12">
+
+        <!-- ═══════════════ CLOUD API ═══════════════ -->
+        <h2 id="cloud-api" class="text-2xl font-bold mb-6 pt-4 flex items-center gap-3">
+          <span class="text-brand-400 text-lg">13</span> Cloud API
+        </h2>
+
+        <p class="text-slate-400 mb-4">
+          Optimize images via HTTP with the imgcrush Cloud API. Perfect for web apps,
+          serverless functions, and mobile backends.
+        </p>
+
+        <div class="grid md:grid-cols-3 gap-4 mb-6">
+          <div class="bg-slate-900/50 border border-white/5 rounded-xl p-5 text-center">
+            <p class="text-3xl mb-2">🚀</p>
+            <p class="text-sm font-semibold text-white mb-1">Simple REST API</p>
+            <p class="text-xs text-slate-500">POST your image, get the result</p>
+          </div>
+          <div class="bg-slate-900/50 border border-white/5 rounded-xl p-5 text-center">
+            <p class="text-3xl mb-2">📦</p>
+            <p class="text-sm font-semibold text-white mb-1">Batch processing</p>
+            <p class="text-xs text-slate-500">Upload multiple images, download ZIP</p>
+          </div>
+          <div class="bg-slate-900/50 border border-white/5 rounded-xl p-5 text-center">
+            <p class="text-3xl mb-2">📊</p>
+            <p class="text-sm font-semibold text-white mb-1">Usage dashboard</p>
+            <p class="text-xs text-slate-500">Track images processed & bytes saved</p>
+          </div>
+        </div>
+
+        <h3 id="api-examples" class="text-lg font-semibold mb-3">Code Examples</h3>
+
+        <!-- API tabs -->
+        <div class="flex gap-2 mb-4">
+          <button onclick="showApiTab('curl')" id="api-tab-curl" class="api-tab px-4 py-2 rounded-lg text-sm font-medium bg-brand-500 text-white transition">cURL</button>
+          <button onclick="showApiTab('node')" id="api-tab-node" class="api-tab px-4 py-2 rounded-lg text-sm font-medium bg-white/5 text-slate-400 hover:text-white transition">Node.js</button>
+          <button onclick="showApiTab('python')" id="api-tab-python" class="api-tab px-4 py-2 rounded-lg text-sm font-medium bg-white/5 text-slate-400 hover:text-white transition">Python</button>
+        </div>
+
+        <div id="api-curl" class="api-content terminal rounded-xl overflow-hidden mb-8 screenshot">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+            <span class="terminal-dot bg-red-500/80"></span>
+            <span class="terminal-dot bg-yellow-500/80"></span>
+            <span class="terminal-dot bg-green-500/80"></span>
+            <span class="text-xs text-slate-500 ml-2 font-mono">cURL</span>
+          </div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <p class="text-slate-500"># Optimize a single image</p>
+            <p class="text-green-400">$ curl -X POST https://api.imgcrush.dev/v1/optimize \</p>
+            <p class="text-green-400 pl-4">-H "X-API-Key: your-api-key" \</p>
+            <p class="text-green-400 pl-4">-F "file=@photo.jpg" \</p>
+            <p class="text-green-400 pl-4">-F "format=webp" \</p>
+            <p class="text-green-400 pl-4">-F "quality=85" \</p>
+            <p class="text-green-400 pl-4">-o optimized.webp</p>
+            <p class="text-slate-300 mt-3 text-slate-500"># Response headers include stats:</p>
+            <p class="text-slate-300 text-slate-500">< X-Original-Size: 3801024</p>
+            <p class="text-slate-300 text-slate-500">< X-Optimized-Size: 620544</p>
+            <p class="text-slate-300 text-slate-500">< X-Savings-Percent: 83.7</p>
+            <p class="text-slate-300 text-slate-500">< X-Processing-Time-Ms: 142</p>
+          </div>
+        </div>
+
+        <div id="api-node" class="api-content terminal rounded-xl overflow-hidden mb-8 screenshot hidden">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+            <span class="terminal-dot bg-red-500/80"></span>
+            <span class="terminal-dot bg-yellow-500/80"></span>
+            <span class="terminal-dot bg-green-500/80"></span>
+            <span class="text-xs text-slate-500 ml-2 font-mono">Node.js</span>
+          </div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <p class="text-slate-500">// npm install form-data</p>
+            <p class="text-blue-400">const</p><p class="text-slate-300"> FormData = <span class="text-blue-400">require</span>(<span class="text-orange-300">"form-data"</span>);</p>
+            <p class="text-blue-400">const</p><p class="text-slate-300"> fs = <span class="text-blue-400">require</span>(<span class="text-orange-300">"fs"</span>);</p>
+            <p class="text-slate-300 mt-2"><span class="text-blue-400">const</span> form = <span class="text-blue-400">new</span> FormData();</p>
+            <p class="text-slate-300">form.append(<span class="text-orange-300">"file"</span>, fs.createReadStream(<span class="text-orange-300">"photo.jpg"</span>));</p>
+            <p class="text-slate-300">form.append(<span class="text-orange-300">"format"</span>, <span class="text-orange-300">"webp"</span>);</p>
+            <p class="text-slate-300">form.append(<span class="text-orange-300">"quality"</span>, <span class="text-orange-300">"85"</span>);</p>
+            <p class="text-slate-300 mt-2"><span class="text-blue-400">const</span> res = <span class="text-blue-400">await</span> fetch(<span class="text-orange-300">"https://api.imgcrush.dev/v1/optimize"</span>, {</p>
+            <p class="text-slate-300 pl-4">method: <span class="text-orange-300">"POST"</span>,</p>
+            <p class="text-slate-300 pl-4">headers: { <span class="text-orange-300">"X-API-Key"</span>: apiKey },</p>
+            <p class="text-slate-300 pl-4">body: form,</p>
+            <p class="text-slate-300">});</p>
+            <p class="text-slate-300 mt-2">fs.writeFileSync(<span class="text-orange-300">"optimized.webp"</span>, Buffer.from(<span class="text-blue-400">await</span> res.arrayBuffer()));</p>
+            <p class="text-slate-300">console.log(<span class="text-orange-300">`Saved ${</span>res.headers.get(<span class="text-orange-300">"X-Savings-Percent"</span>)<span class="text-orange-300">}%`</span>);</p>
+          </div>
+        </div>
+
+        <div id="api-python" class="api-content terminal rounded-xl overflow-hidden mb-8 screenshot hidden">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+            <span class="terminal-dot bg-red-500/80"></span>
+            <span class="terminal-dot bg-yellow-500/80"></span>
+            <span class="terminal-dot bg-green-500/80"></span>
+            <span class="text-xs text-slate-500 ml-2 font-mono">Python</span>
+          </div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <p class="text-blue-400">import</p><p class="text-slate-300"> requests</p>
+            <p class="text-slate-300 mt-2">resp = requests.post(</p>
+            <p class="text-slate-300 pl-4"><span class="text-orange-300">"https://api.imgcrush.dev/v1/optimize"</span>,</p>
+            <p class="text-slate-300 pl-4">headers={<span class="text-orange-300">"X-API-Key"</span>: api_key},</p>
+            <p class="text-slate-300 pl-4">files={<span class="text-orange-300">"file"</span>: <span class="text-blue-400">open</span>(<span class="text-orange-300">"photo.jpg"</span>, <span class="text-orange-300">"rb"</span>)},</p>
+            <p class="text-slate-300 pl-4">data={<span class="text-orange-300">"format"</span>: <span class="text-orange-300">"webp"</span>, <span class="text-orange-300">"quality"</span>: <span class="text-orange-300">"85"</span>},</p>
+            <p class="text-slate-300">)</p>
+            <p class="text-slate-300 mt-2"><span class="text-blue-400">with</span> <span class="text-blue-400">open</span>(<span class="text-orange-300">"optimized.webp"</span>, <span class="text-orange-300">"wb"</span>) <span class="text-blue-400">as</span> f:</p>
+            <p class="text-slate-300 pl-4">f.write(resp.content)</p>
+            <p class="text-slate-300 mt-2"><span class="text-blue-400">print</span>(<span class="text-orange-300">f"Saved {</span>resp.headers[<span class="text-orange-300">'X-Savings-Percent'</span>]<span class="text-orange-300">}%"</span>)</p>
+          </div>
+        </div>
+
+        <hr class="border-white/5 my-12">
+
+        <!-- ═══════════════ LICENSING ═══════════════ -->
+        <h2 id="licensing" class="text-2xl font-bold mb-6 pt-4 flex items-center gap-3">
+          <span class="text-brand-400 text-lg">14</span> Licensing
+        </h2>
+
+        <p class="text-slate-400 mb-4">
+          imgcrush includes a 14-day free trial with full functionality. Activate with your license key:
+        </p>
+
+        <div class="terminal rounded-xl overflow-hidden mb-6 screenshot">
+          <div class="flex items-center gap-2 px-4 py-3 border-b border-white/5">
+            <span class="terminal-dot bg-red-500/80"></span>
+            <span class="terminal-dot bg-yellow-500/80"></span>
+            <span class="terminal-dot bg-green-500/80"></span>
+            <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — License activation</span>
+          </div>
+          <div class="p-5 font-mono text-sm leading-relaxed">
+            <p class="text-green-400">$ imgcrush --activate IMGC-A1B2-C3D4-E5F6-G7H8 --email you@example.com</p>
+            <p class="text-slate-300 mt-2">✅ License activated successfully!</p>
+            <p class="text-slate-300">   Tier: personal</p>
+            <p class="text-slate-300">   Email: you@example.com</p>
+            <p class="text-slate-300 mt-4 text-green-400">$ imgcrush --license-status</p>
+            <p class="text-slate-300 mt-1">✅ Licensed (personal)</p>
+            <p class="text-slate-300">   Email: you@example.com</p>
+            <p class="text-slate-300">   Key: IMGC-A1B2-C3D4-E5F6-G7H8</p>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-4 mb-8">
+          <div class="bg-slate-900/50 border border-white/5 rounded-xl p-5">
+            <p class="text-brand-400 font-bold mb-1">Personal — €29</p>
+            <p class="text-xs text-slate-500">1 developer, lifetime updates</p>
+          </div>
+          <div class="bg-slate-900/50 border border-brand-500/30 rounded-xl p-5">
+            <p class="text-brand-400 font-bold mb-1">Team — €99</p>
+            <p class="text-xs text-slate-500">Up to 5 developers, priority support</p>
+          </div>
+          <div class="bg-slate-900/50 border border-white/5 rounded-xl p-5">
+            <p class="text-brand-400 font-bold mb-1">Enterprise — €299</p>
+            <p class="text-xs text-slate-500">Unlimited developers, SLA, support</p>
+          </div>
+        </div>
+
+        <hr class="border-white/5 my-12">
+
+        <!-- ═══════════════ CLI REFERENCE ═══════════════ -->
+        <h2 id="cli-reference" class="text-2xl font-bold mb-6 pt-4 flex items-center gap-3">
+          <span class="text-brand-400 text-lg">15</span> CLI Reference
+        </h2>
+
+        <div class="bg-slate-900/50 border border-white/5 rounded-xl overflow-hidden mb-8">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-white/5">
+                <th class="text-left px-5 py-3 text-slate-400 font-medium">Flag</th>
+                <th class="text-left px-5 py-3 text-slate-400 font-medium">Description</th>
+                <th class="text-left px-5 py-3 text-slate-400 font-medium">Default</th>
+              </tr>
+            </thead>
+            <tbody class="text-slate-300">
+              <tr class="border-b border-white/5"><td class="px-5 py-2.5"><code class="text-brand-400">&lt;input&gt;</code></td><td>File or directory to optimize</td><td class="text-slate-500">required</td></tr>
+              <tr class="border-b border-white/5"><td class="px-5 py-2.5"><code class="text-brand-400">--format</code></td><td>Output format (png, jpeg, webp, avif, heic)</td><td class="text-slate-500">same as input</td></tr>
+              <tr class="border-b border-white/5"><td class="px-5 py-2.5"><code class="text-brand-400">--quality</code></td><td>Output quality (1–100)</td><td class="text-slate-500">auto</td></tr>
+              <tr class="border-b border-white/5"><td class="px-5 py-2.5"><code class="text-brand-400">--resize</code></td><td>Resize to WxH</td><td class="text-slate-500">none</td></tr>
+              <tr class="border-b border-white/5"><td class="px-5 py-2.5"><code class="text-brand-400">--output</code></td><td>Output directory</td><td class="text-slate-500">in-place</td></tr>
+              <tr class="border-b border-white/5"><td class="px-5 py-2.5"><code class="text-brand-400">--recursive</code></td><td>Process subdirectories</td><td class="text-slate-500">false</td></tr>
+              <tr class="border-b border-white/5"><td class="px-5 py-2.5"><code class="text-brand-400">--smart-quality</code></td><td>SSIM-based auto quality</td><td class="text-slate-500">false</td></tr>
+              <tr class="border-b border-white/5"><td class="px-5 py-2.5"><code class="text-brand-400">--keep-metadata</code></td><td>Preserve EXIF data</td><td class="text-slate-500">false</td></tr>
+              <tr class="border-b border-white/5"><td class="px-5 py-2.5"><code class="text-brand-400">--watch</code></td><td>Watch directory for changes</td><td class="text-slate-500">false</td></tr>
+              <tr class="border-b border-white/5"><td class="px-5 py-2.5"><code class="text-brand-400">--json</code></td><td>Machine-readable JSON output</td><td class="text-slate-500">false</td></tr>
+              <tr class="border-b border-white/5"><td class="px-5 py-2.5"><code class="text-brand-400">--dry-run</code></td><td>Preview without writing</td><td class="text-slate-500">false</td></tr>
+              <tr class="border-b border-white/5"><td class="px-5 py-2.5"><code class="text-brand-400">--verbose</code></td><td>Detailed info (GPU, timing)</td><td class="text-slate-500">false</td></tr>
+              <tr class="border-b border-white/5"><td class="px-5 py-2.5"><code class="text-brand-400">--activate</code></td><td>Activate license key</td><td class="text-slate-500">—</td></tr>
+              <tr><td class="px-5 py-2.5"><code class="text-brand-400">--license-status</code></td><td>Show license info</td><td class="text-slate-500">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr class="border-white/5 my-12">
+
+        <!-- ═══════════════ TROUBLESHOOTING ═══════════════ -->
+        <h2 id="troubleshooting" class="text-2xl font-bold mb-6 pt-4 flex items-center gap-3">
+          <span class="text-brand-400 text-lg">16</span> Troubleshooting
+        </h2>
+
+        <div class="space-y-4 mb-8">
+          <details class="bg-slate-900/50 border border-white/5 rounded-xl group">
+            <summary class="px-5 py-4 cursor-pointer text-white font-medium flex items-center justify-between">
+              <span>"Metal unavailable" — falls back to CPU</span>
+              <span class="text-slate-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-5 pb-4 text-sm text-slate-400">
+              <p>This is normal on Intel Macs or in CI/CD environments without a GPU. imgcrush automatically
+              falls back to <code class="text-brand-400">vImage</code> (Accelerate framework). Performance is still
+              excellent — just not GPU-accelerated.</p>
+            </div>
+          </details>
+
+          <details class="bg-slate-900/50 border border-white/5 rounded-xl group">
+            <summary class="px-5 py-4 cursor-pointer text-white font-medium flex items-center justify-between">
+              <span>WebP encoding fails on macOS 13</span>
+              <span class="text-slate-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-5 pb-4 text-sm text-slate-400">
+              <p>Native WebP encoding requires <strong>macOS 14 (Sonoma)</strong> or later. On macOS 13, use
+              <code class="text-brand-400">--format jpeg</code> or <code class="text-brand-400">--format png</code> instead.</p>
+            </div>
+          </details>
+
+          <details class="bg-slate-900/50 border border-white/5 rounded-xl group">
+            <summary class="px-5 py-4 cursor-pointer text-white font-medium flex items-center justify-between">
+              <span>AVIF/HEIC support not available</span>
+              <span class="text-slate-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-5 pb-4 text-sm text-slate-400">
+              <p>AVIF encoding requires <strong>macOS 14+</strong>. HEIC is supported on all macOS versions. Make sure
+              you have Xcode Command Line Tools installed: <code class="text-brand-400">xcode-select --install</code></p>
+            </div>
+          </details>
+
+          <details class="bg-slate-900/50 border border-white/5 rounded-xl group">
+            <summary class="px-5 py-4 cursor-pointer text-white font-medium flex items-center justify-between">
+              <span>"Permission denied" errors</span>
+              <span class="text-slate-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-5 pb-4 text-sm text-slate-400">
+              <p>Make sure the output directory is writable. imgcrush checks permissions before processing.
+              On macOS, you may need to grant Full Disk Access in System Settings → Privacy & Security.</p>
+            </div>
+          </details>
+
+          <details class="bg-slate-900/50 border border-white/5 rounded-xl group">
+            <summary class="px-5 py-4 cursor-pointer text-white font-medium flex items-center justify-between">
+              <span>Large files (100MB+) processing</span>
+              <span class="text-slate-500 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-5 pb-4 text-sm text-slate-400">
+              <p>imgcrush handles large files with per-file error handling. If a single file fails due to
+              memory constraints, the rest of the batch continues. Use <code class="text-brand-400">--verbose</code> to see
+              memory usage information.</p>
+            </div>
+          </details>
+        </div>
+
+        <!-- Bottom CTA -->
+        <div class="bg-gradient-to-r from-brand-500/10 to-orange-500/10 border border-brand-500/20 rounded-2xl p-8 text-center mt-12 mb-8">
+          <h2 class="text-2xl font-bold mb-3">Ready to crush your images?</h2>
+          <p class="text-slate-400 mb-6">Start your free 14-day trial. No credit card required.</p>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="index.html#pricing" class="bg-brand-500 hover:bg-brand-400 text-white font-semibold px-8 py-3 rounded-xl transition">
+              Download imgcrush
+            </a>
+            <a href="demo.html" class="text-slate-400 hover:text-white text-sm transition">
+              Try the browser demo →
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="py-12 border-t border-white/5 lg:ml-64">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-2 text-sm text-slate-500">
+          <span class="text-lg">⚡</span> imgcrush
+          <span class="mx-2">·</span>
+          Built by <a href="https://htmeta.dev" class="text-slate-400 hover:text-white transition">HTMETA.dev</a>
+        </div>
+        <div class="flex items-center gap-6 text-sm text-slate-500">
+          <a href="docs.html" class="hover:text-white transition">Documentation</a>
+          <a href="demo.html" class="hover:text-white transition">Demo</a>
+          <a href="index.html#pricing" class="hover:text-white transition">Pricing</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // API tab switching
+    function showApiTab(tab) {
+      document.querySelectorAll('.api-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.api-tab').forEach(el => {
+        el.className = 'api-tab px-4 py-2 rounded-lg text-sm font-medium bg-white/5 text-slate-400 hover:text-white transition';
+      });
+      document.getElementById('api-' + tab).classList.remove('hidden');
+      document.getElementById('api-tab-' + tab).className = 'api-tab px-4 py-2 rounded-lg text-sm font-medium bg-brand-500 text-white transition';
+    }
+
+    // Sidebar active state
+    const sections = document.querySelectorAll('h2[id]');
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+    const observerOptions = { rootMargin: '-80px 0px -80% 0px' };
+    const sectionObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          sidebarLinks.forEach(link => link.classList.remove('active'));
+          const active = document.querySelector(`.sidebar-link[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(section => sectionObserver.observe(section));
+  </script>
+</body>
+</html>
