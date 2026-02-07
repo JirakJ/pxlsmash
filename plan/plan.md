@@ -44,7 +44,7 @@
 - [x] `MetalEngine` — inicializace `MTLDevice`, `MTLCommandQueue`
 - [x] Detekce Metal dostupnosti (Apple Silicon vs Intel fallback)
 - [x] Metal compute kernel: `resize_bilinear` (MSL, `.metal` soubor)
-- [ ] Metal compute kernel: `color_space_convert`
+- [x] Metal compute kernel: `color_space_convert`
 - [x] `MTLTexture` ↔ `CGImage` konverze utility
 - [x] Pipeline state cache (nepřekompilovávat kernely opakovaně)
 - [x] CPU fallback cesta přes `vImage` pro Intel Macy
@@ -83,10 +83,10 @@
 ## Fáze 4: Optimalizační pipeline
 
 - [x] `ImagePipeline` orchestrátor (load → process → encode → save)
-- [ ] Smart quality — automatická detekce optimální kvality (SSIM-based)
+- [x] Smart quality — automatická detekce optimální kvality (SSIM-based)
 - [x] Resize s zachováním aspect ratio (fit, fill, exact)
 - [x] Skip already-optimized souborů (size comparison)
-- [ ] Metadata preservace (volitelné zachování EXIF)
+- [x] Metadata preservace (volitelné zachování EXIF)
 - [x] Dry-run mode — report bez zápisu
 - [x] Statistics: original size, optimized size, % reduction, processing time
 
@@ -121,9 +121,9 @@
 - [x] Validní JSON i při chybách (partial results + errors array)
 
 ### Verbose mode
-- [ ] Metal device info (GPU name, memory)
-- [ ] Per-kernel timing
-- [ ] Memory usage reporting
+- [x] Metal device info (GPU name, memory)
+- [x] Per-kernel timing
+- [x] Memory usage reporting
 
 ---
 
@@ -143,13 +143,13 @@
 
 ## Fáze 8: Performance optimization
 
-- [ ] Benchmark suite (100 PNG, 100 JPEG, 100 WebP, mix sizes)
+- [x] Benchmark suite (100 PNG, 100 JPEG, 100 WebP, mix sizes)
 - [ ] Metal command buffer batching (více obrázků na command buffer)
 - [ ] Memory-mapped I/O pro velké soubory
 - [ ] Texture atlas pro malé obrázky (batch GPU operace)
 - [ ] Profilování Instruments (Metal System Trace)
 - [ ] Porovnání s ImageMagick, squoosh-cli, sharp
-- [ ] Optimalizace startup time (lazy Metal init)
+- [x] Optimalizace startup time (lazy Metal init)
 
 ---
 
@@ -171,7 +171,7 @@
 - [x] Připravit testovací sadu: malý PNG, velký PNG, JPEG, WebP, corrupted, zero-byte
 
 ### Performance testy
-- [ ] `measure {}` testy pro Metal operace
+- [x] `measure {}` testy pro Metal operace
 - [ ] Regression benchmark (nesmí zpomalit mezi verzemi)
 
 ### Integration testy
@@ -286,14 +286,14 @@
 - [ ] Team management (Pro tier)
 
 ### API
-- [ ] REST API dokumentace (OpenAPI spec)
+- [x] REST API dokumentace (OpenAPI spec)
 - [x] API key dashboard (vytvoření, revokace, rate limit)
 - [x] Endpointy:
   - [x] `POST /optimize` — upload + optimize
   - [x] `GET /status/:id` — stav zpracování
   - [x] `GET /download/:id` — stažení výsledku
   - [x] `GET /usage` — usage statistics
-- [ ] SDK / code examples (curl, Node.js, Python)
+- [x] SDK / code examples (curl, Node.js, Python)
 - [ ] Rate limiting per tier (Starter: 100 req/min, Pro: 500, Business: 2000)
 
 ### Pricing tiers

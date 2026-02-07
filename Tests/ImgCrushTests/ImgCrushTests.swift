@@ -398,4 +398,48 @@ final class ImgCrushTests: XCTestCase {
         // formatBytes uses MB as the largest unit
         XCTAssertEqual(OutputFormatter.formatBytes(1073741824), "1024.0MB")
     }
+
+    // MARK: - Performance tests
+
+    func testPerformancePipelinePNG() throws {
+        let dir = NSTemporaryDirectory() + "imgcrush_perf_\(UUID().uuidString)/"
+        try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: dir) }
+
+        let inputPath = dir + "perf.png"
+        try TestImageFactory.createPNG(at: inputPath, width: 512, height: 512)
+
+        let outDir = dir + "out/"
+        let opts = ProcessingOptions(inputPath: inputPath, outputPath: outDir)
+        let pipeline = OptimizationPipeline(options: opts)
+
+        measure {
+            _ = try? pipeline.process(filePath: inputPath)
+        }
+    }
+
+    func testPerformancePipelineJPEG() throws {
+        let dir = NSTemporaryDirectory() + "imgcrush_perf_\(UUID().uuidString)/"
+        try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: dir) }
+
+        let inputPath = dir + "perf.jpg"
+        try TestImageFactory.createJPEG(at: inputPath, width: 512, height: 512)
+
+        let outDir = dir + "out/"
+        let opts = ProcessingOptions(inputPath: inputPath, outputFormat: .jpeg, quality: 85, outputPath: outDir)
+        let pipeline = OptimizationPipeline(options: opts)
+
+        measure {
+            _ = try? pipeline.process(filePath: inputPath)
+        }
+    }
+
+    func testPerformanceSSIM() throws {
+        let image = try TestImageFactory.createCGImage(width: 256, height: 256, r: 128, g: 64, b: 200)
+
+        measure {
+            _ = SmartQuality.computeSSIM(original: image, compressed: image)
+        }
+    }
 }
