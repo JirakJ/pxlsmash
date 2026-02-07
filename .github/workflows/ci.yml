@@ -26,7 +26,7 @@ jobs:
 
       - name: Check binary size
         run: |
-          SIZE=$(stat -f%z .build/release/optipix)
+          SIZE=$(stat -f%z .build/release/pxlsmash)
           SIZE_MB=$((SIZE / 1024 / 1024))
           echo "Binary size: ${SIZE_MB}MB (${SIZE} bytes)"
           if [ $SIZE_MB -gt 10 ]; then

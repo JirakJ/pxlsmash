@@ -1,14 +1,14 @@
 #!/bin/bash
-# optipix benchmark suite
+# pxlsmash benchmark suite
 # Generates test images and measures optimization performance.
 # Usage: ./scripts/benchmark.sh [iterations]
 
 set -euo pipefail
 
 ITERATIONS=${1:-3}
-BENCH_DIR="/tmp/optipix_bench_$$"
+BENCH_DIR="/tmp/pxlsmash_bench_$$"
 RESULTS_FILE="$BENCH_DIR/results.txt"
-OPTXRUSH="$(cd "$(dirname "$0")/.." && pwd)/.build/release/optipix"
+PXLSRUSH="$(cd "$(dirname "$0")/.." && pwd)/.build/release/pxlsmash"
 
 # Colors
 GREEN='\033[0;32m'
@@ -20,7 +20,7 @@ cleanup() { rm -rf "$BENCH_DIR"; }
 trap cleanup EXIT
 
 echo -e "${CYAN}═══════════════════════════════════════${RESET}"
-echo -e "${CYAN}  optipix Benchmark Suite${RESET}"
+echo -e "${CYAN}  pxlsmash Benchmark Suite${RESET}"
 echo -e "${CYAN}═══════════════════════════════════════${RESET}"
 echo ""
 
@@ -31,8 +31,8 @@ swift build -c release --quiet 2>/dev/null || swift build -c release
 echo ""
 
 # Check binary exists
-if [ ! -f "$OPTXRUSH" ]; then
-    echo "Error: Release binary not found at $OPTXRUSH"
+if [ ! -f "$PXLSRUSH" ]; then
+    echo "Error: Release binary not found at $PXLSRUSH"
     exit 1
 fi
 
@@ -104,7 +104,7 @@ bench() {
     for i in $(seq 1 "$ITERATIONS"); do
         rm -rf "$BENCH_DIR/output/"*
         local start=$(python3 -c "import time; print(int(time.time()*1000))")
-        eval "$OPTXRUSH $args" > /dev/null 2>&1 || true
+        eval "$PXLSRUSH $args" > /dev/null 2>&1 || true
         local end=$(python3 -c "import time; print(int(time.time()*1000))")
         local ms=$((end - start))
         total_ms=$((total_ms + ms))

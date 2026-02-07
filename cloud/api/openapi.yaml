@@ -1,20 +1,20 @@
 openapi: 3.1.0
 info:
-  title: optipix Cloud API
+  title: pxlsmash Cloud API
   description: |
     Metal GPU-accelerated image optimization API.
     Optimize, resize, and convert images via HTTP.
   version: 1.0.0
   contact:
-    name: optipix Support
-    url: https://optipix.dev
-    email: support@optipix.dev
+    name: pxlsmash Support
+    url: https://pxlsmash.dev
+    email: support@pxlsmash.dev
   license:
     name: Proprietary
-    url: https://optipix.dev/terms
+    url: https://pxlsmash.dev/terms
 
 servers:
-  - url: https://api.optipix.dev/v1
+  - url: https://api.pxlsmash.dev/v1
     description: Production
 
 security:
@@ -228,7 +228,7 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
-      description: API key from your optipix Cloud dashboard
+      description: API key from your pxlsmash Cloud dashboard
 
   schemas:
     BatchJob:

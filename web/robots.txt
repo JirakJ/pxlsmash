@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /install.sh
 
-Sitemap: https://optipix.dev/sitemap.xml
+Sitemap: https://pxlsmash.dev/sitemap.xml

@@ -1,5 +1,5 @@
 name: Feature Request
-description: Suggest a feature for optipix
+description: Suggest a feature for pxlsmash
 labels: ["enhancement"]
 body:
   - type: textarea

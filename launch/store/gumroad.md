@@ -1,19 +1,19 @@
-# optipix — Gumroad Product Setup
+# pxlsmash — Gumroad Product Setup
 
-## Product: optipix Personal License
+## Product: pxlsmash Personal License
 
-**URL slug:** `optipix`
+**URL slug:** `pxlsmash`
 **Price:** €29 (one-time)
 
 ### Title
-optipix — Metal GPU Image Optimizer for macOS
+pxlsmash — Metal GPU Image Optimizer for macOS
 
 ### Short description
 Optimize images 25× faster with Apple Metal GPU acceleration. One command, batch processing, CI/CD ready.
 
 ### Full description
 ```
-⚡ optipix — Metal-accelerated image optimizer for macOS
+⚡ pxlsmash — Metal-accelerated image optimizer for macOS
 
 Optimize PNG, JPEG, WebP, AVIF, and HEIC images up to 25× faster than ImageMagick using Apple Metal GPU acceleration.
 
@@ -32,7 +32,7 @@ KEY FEATURES:
 🧠 Smart quality — SSIM-based auto-optimization
 📊 JSON output — CI/CD pipeline ready
 👁 Watch mode — auto-optimize on file changes
-📁 Config files — .optipixrc per-project settings
+📁 Config files — .pxlsmashrc per-project settings
 🔐 Metadata preservation — keep EXIF data intact
 
 SYSTEM REQUIREMENTS:
@@ -44,26 +44,26 @@ SYSTEM REQUIREMENTS:
 HOW IT WORKS:
 ━━━━━━━━━━━━━
 1. Download the zip file
-2. Extract and copy optipix to /usr/local/bin/
-3. Activate: optipix --activate YOUR-KEY --email you@example.com
-4. Done! Start optimizing: optipix ./images/ --recursive
+2. Extract and copy pxlsmash to /usr/local/bin/
+3. Activate: pxlsmash --activate YOUR-KEY --email you@example.com
+4. Done! Start optimizing: pxlsmash ./images/ --recursive
 
 QUICK START:
 ━━━━━━━━━━━━
-  $ optipix photo.png                        # optimize single file
-  $ optipix ./images/ --recursive            # batch optimize
-  $ optipix ./assets/ --format webp -q 85    # convert to WebP
-  $ optipix photo.jpg --smart-quality        # auto-detect best quality
-  $ optipix ./dir/ --json                    # CI/CD output
+  $ pxlsmash photo.png                        # optimize single file
+  $ pxlsmash ./images/ --recursive            # batch optimize
+  $ pxlsmash ./assets/ --format webp -q 85    # convert to WebP
+  $ pxlsmash photo.jpg --smart-quality        # auto-detect best quality
+  $ pxlsmash ./dir/ --json                    # CI/CD output
 
 DOCUMENTATION:
 ━━━━━━━━━━━━━━
-  https://optipix.dev/docs
+  https://pxlsmash.dev/docs
 
 SUPPORT:
 ━━━━━━━━
-  Email: support@optipix.dev
-  GitHub: github.com/optipix/optipix
+  Email: support@pxlsmash.dev
+  GitHub: github.com/pxlsmash/pxlsmash
 
 Built by HTMETA.dev
 ```
@@ -73,63 +73,63 @@ Built by HTMETA.dev
 
 ### Content delivery
 Digital download — ZIP file containing:
-- `optipix` universal binary
+- `pxlsmash` universal binary
 - `README.md`
 - `CHANGELOG.md`
 - `INSTALL.txt`
-- `optipix.1` man page
+- `pxlsmash.1` man page
 
 ### Custom fields
-- **License Key** — auto-generated, format: `OPTX-AXXX-XXXX-XXXX-XXXX`
+- **License Key** — auto-generated, format: `PXLS-AXXX-XXXX-XXXX-XXXX`
 - **Delivery email** — include install instructions + license key
 
 ### Post-purchase message
 ```
-Thank you for purchasing optipix! 🎉
+Thank you for purchasing pxlsmash! 🎉
 
 Your license key: {license_key}
 
 Quick install:
-  curl -fsSL https://optipix.dev/install.sh | sh
+  curl -fsSL https://pxlsmash.dev/install.sh | sh
 
 Activate:
-  optipix --activate {license_key} --email {email}
+  pxlsmash --activate {license_key} --email {email}
 
-Documentation: https://optipix.dev/docs
-Support: support@optipix.dev
+Documentation: https://pxlsmash.dev/docs
+Support: support@pxlsmash.dev
 ```
 
 ---
 
-## Product: optipix Team License
+## Product: pxlsmash Team License
 
-**URL slug:** `optipix-team`
+**URL slug:** `pxlsmash-team`
 **Price:** €99 (one-time)
 
 ### Title
-optipix Team License — 5 Developers
+pxlsmash Team License — 5 Developers
 
 ### Description
 Same as Personal, but with:
 - Up to 5 developer seats
 - Priority email support
-- License keys: 5× `OPTX-GXXX-XXXX-XXXX-XXXX` format
+- License keys: 5× `PXLS-GXXX-XXXX-XXXX-XXXX` format
 
 ---
 
-## Product: optipix Enterprise License
+## Product: pxlsmash Enterprise License
 
-**URL slug:** `optipix-enterprise`
+**URL slug:** `pxlsmash-enterprise`
 **Price:** €299 (one-time)
 
 ### Title
-optipix Enterprise License — Unlimited Developers
+pxlsmash Enterprise License — Unlimited Developers
 
 ### Description
 Same as Personal, but with:
 - Unlimited developer seats
 - Priority support + SLA
-- License keys: `OPTX-NXXX-XXXX-XXXX-XXXX` format
+- License keys: `PXLS-NXXX-XXXX-XXXX-XXXX` format
 - Custom integration support
 
 ---
@@ -140,7 +140,7 @@ Same as Personal, but with:
 - **Name:** HTMETA.dev
 - **URL:** htmeta.gumroad.com
 - **Bio:** Developer tools built with ❤️ on Apple platforms
-- **Profile image:** optipix logo
+- **Profile image:** pxlsmash logo
 
 ### Payment
 - Currency: EUR

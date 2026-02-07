@@ -1,14 +1,14 @@
 #!/bin/bash
-# demo.sh — Record a terminal demo of optipix for marketing
+# demo.sh — Record a terminal demo of pxlsmash for marketing
 # Usage: ./scripts/demo.sh
-# Requires: optipix built and in PATH, sample images
+# Requires: pxlsmash built and in PATH, sample images
 
 set -e
 
-DEMO_DIR="/tmp/optipix-demo"
-OUT_DIR="/tmp/optipix-demo-out"
+DEMO_DIR="/tmp/pxlsmash-demo"
+OUT_DIR="/tmp/pxlsmash-demo-out"
 
-echo "🎬 optipix demo — setting up..."
+echo "🎬 pxlsmash demo — setting up..."
 
 mkdir -p "$DEMO_DIR" "$OUT_DIR"
 
@@ -23,28 +23,28 @@ done
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  optipix — Metal GPU Image Optimizer"
+echo "  pxlsmash — Metal GPU Image Optimizer"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
 echo "▶ Demo 1: Batch optimize directory"
-echo "$ optipix $DEMO_DIR/ --verbose"
-optipix "$DEMO_DIR/" --verbose
+echo "$ pxlsmash $DEMO_DIR/ --verbose"
+pxlsmash "$DEMO_DIR/" --verbose
 echo ""
 
 echo "▶ Demo 2: Convert PNG → WebP"
-echo "$ optipix $DEMO_DIR/photo_1.png --format webp --output $OUT_DIR/"
-optipix "$DEMO_DIR/photo_1.png" --format webp --output "$OUT_DIR/"
+echo "$ pxlsmash $DEMO_DIR/photo_1.png --format webp --output $OUT_DIR/"
+pxlsmash "$DEMO_DIR/photo_1.png" --format webp --output "$OUT_DIR/"
 echo ""
 
 echo "▶ Demo 3: JSON output for CI/CD"
-echo "$ optipix $DEMO_DIR/ --json"
-optipix "$DEMO_DIR/" --json
+echo "$ pxlsmash $DEMO_DIR/ --json"
+pxlsmash "$DEMO_DIR/" --json
 echo ""
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "  ✅ Demo complete!"
-echo "  📦 https://optipix.dev"
+echo "  📦 https://pxlsmash.dev"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 rm -rf "$DEMO_DIR" "$OUT_DIR"

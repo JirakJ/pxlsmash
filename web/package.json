@@ -1,8 +1,8 @@
 {
-  "name": "optipix-web",
+  "name": "pxlsmash-web",
   "version": "1.0.0",
   "private": true,
-  "description": "optipix landing page, docs, and demo",
+  "description": "pxlsmash landing page, docs, and demo",
   "scripts": {
     "dev": "npx serve . -p 3000",
     "build": "echo 'Static site — no build step needed'"

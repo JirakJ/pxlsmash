@@ -38,9 +38,9 @@
     { "source": "/faq", "destination": "/#faq", "statusCode": 301 },
     { "source": "/api", "destination": "/docs#cloud-api", "statusCode": 301 },
     { "source": "/download", "destination": "/#pricing", "statusCode": 301 },
-    { "source": "/buy", "destination": "https://htmeta.gumroad.com/l/optipix", "statusCode": 302 },
-    { "source": "/gumroad", "destination": "https://htmeta.gumroad.com/l/optipix", "statusCode": 302 },
+    { "source": "/buy", "destination": "https://htmeta.gumroad.com/l/pxlsmash", "statusCode": 302 },
+    { "source": "/gumroad", "destination": "https://htmeta.gumroad.com/l/pxlsmash", "statusCode": 302 },
     { "source": "/etsy", "destination": "https://etsy.com/shop/htmeta", "statusCode": 302 },
-    { "source": "/github", "destination": "https://github.com/optipix/optipix", "statusCode": 302 }
+    { "source": "/github", "destination": "https://github.com/pxlsmash/pxlsmash", "statusCode": 302 }
   ]
 }

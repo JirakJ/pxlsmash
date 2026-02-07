@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>optipix Cloud — Dashboard</title>
+  <title>pxlsmash Cloud — Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <script>
@@ -16,7 +16,7 @@
   <!-- Header -->
   <header class="border-b border-slate-800 px-6 py-4 flex items-center justify-between">
     <div class="flex items-center gap-3">
-      <span class="text-xl font-bold">optipix</span>
+      <span class="text-xl font-bold">pxlsmash</span>
       <span class="text-xs bg-brand/20 text-brand px-2 py-0.5 rounded-full">Cloud</span>
     </div>
     <div class="flex items-center gap-4">
@@ -103,7 +103,7 @@
       </div>
       <div class="mt-4 text-sm text-slate-500">
         <p>Use this key in the <code class="text-slate-300">Authorization</code> header:</p>
-        <pre class="bg-slate-800 rounded-lg p-3 mt-2 overflow-x-auto text-slate-300">curl -X POST https://api.optipix.dev/optimize \
+        <pre class="bg-slate-800 rounded-lg p-3 mt-2 overflow-x-auto text-slate-300">curl -X POST https://api.pxlsmash.dev/optimize \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -F "image=@photo.png" \
   -F "quality=85"</pre>
@@ -112,15 +112,15 @@
   </div>
 
   <script>
-    const API_BASE = 'https://api.optipix.dev';
-    let apiKey = localStorage.getItem('optipix_api_key') || '';
+    const API_BASE = 'https://api.pxlsmash.dev';
+    let apiKey = localStorage.getItem('pxlsmash_api_key') || '';
     let apiKeyVisible = false;
 
     // Init
     document.addEventListener('DOMContentLoaded', () => {
       if (!apiKey) {
         apiKey = prompt('Enter your API key:') || '';
-        if (apiKey) localStorage.setItem('optipix_api_key', apiKey);
+        if (apiKey) localStorage.setItem('pxlsmash_api_key', apiKey);
       }
       loadUsage();
       setupDropZone();
@@ -236,7 +236,7 @@
     }
 
     function logout() {
-      localStorage.removeItem('optipix_api_key');
+      localStorage.removeItem('pxlsmash_api_key');
       location.reload();
     }
   </script>

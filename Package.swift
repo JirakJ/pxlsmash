@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "optipix",
+    name: "pxlsmash",
     platforms: [
         .macOS(.v13)
     ],
@@ -12,22 +12,22 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "optipix",
+            name: "pxlsmash",
             dependencies: [
-                "OptiPixCore",
+                "PxlSmashCore",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ]
         ),
         .target(
-            name: "OptiPixCore",
+            name: "PxlSmashCore",
             dependencies: [],
             resources: [
                 .process("Metal/Shaders"),
             ]
         ),
         .testTarget(
-            name: "OptiPixTests",
-            dependencies: ["OptiPixCore"],
+            name: "PxlSmashTests",
+            dependencies: ["PxlSmashCore"],
             resources: [
                 .copy("Fixtures"),
             ]

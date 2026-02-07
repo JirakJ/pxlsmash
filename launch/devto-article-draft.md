@@ -12,7 +12,7 @@ What if I could use it?
 
 ## The Architecture
 
-optipix is a Swift CLI that pushes image processing to the GPU via Apple Metal compute shaders:
+pxlsmash is a Swift CLI that pushes image processing to the GPU via Apple Metal compute shaders:
 
 ```
 Input Image → ImageIO → MTLTexture → Metal Compute → Encode → Output
@@ -20,7 +20,7 @@ Input Image → ImageIO → MTLTexture → Metal Compute → Encode → Output
 
 ### 1. Loading: ImageIO (Apple's Native Framework)
 
-Instead of depending on libpng or libjpeg, optipix uses ImageIO — Apple's built-in image framework that supports every format macOS can read. This means zero external dependencies and automatic HEIC, TIFF, and RAW support for free.
+Instead of depending on libpng or libjpeg, pxlsmash uses ImageIO — Apple's built-in image framework that supports every format macOS can read. This means zero external dependencies and automatic HEIC, TIFF, and RAW support for free.
 
 ### 2. GPU Transfer: CGImage → MTLTexture
 
@@ -58,7 +58,7 @@ kernel void bilinearResize(
 
 ### 4. CPU Fallback
 
-Not everyone has a Metal-capable GPU (Intel Macs in headless mode, CI servers). optipix detects this and falls back to Accelerate/vImage — Apple's SIMD-optimized CPU framework. Still faster than ImageMagick, just not as fast as Metal.
+Not everyone has a Metal-capable GPU (Intel Macs in headless mode, CI servers). pxlsmash detects this and falls back to Accelerate/vImage — Apple's SIMD-optimized CPU framework. Still faster than ImageMagick, just not as fast as Metal.
 
 ## Results
 
@@ -66,7 +66,7 @@ Benchmarked on M2 MacBook Air with 100 × 2048×1536 PNG images:
 
 | Tool | Time | Relative |
 |------|------|----------|
-| **optipix (Metal)** | 2.1s | 1× |
+| **pxlsmash (Metal)** | 2.1s | 1× |
 | sharp (Node.js) | 12s | 5.7× |
 | ImageMagick | 38s | 18× |
 | PIL/Pillow | 45s | 21× |
@@ -82,14 +82,14 @@ Benchmarked on M2 MacBook Air with 100 × 2048×1536 PNG images:
 ## Try It
 
 ```bash
-brew install htmeta/tap/optipix
-optipix ./images/ --quality 85 --format webp
+brew install htmeta/tap/pxlsmash
+pxlsmash ./images/ --quality 85 --format webp
 ```
 
 14-day free trial, then $29 one-time.
 
-- **Website:** [optipix.dev](https://optipix.dev)
-- **GitHub:** [github.com/htmeta/optipix](https://github.com/htmeta/optipix)
+- **Website:** [pxlsmash.dev](https://pxlsmash.dev)
+- **GitHub:** [github.com/htmeta/pxlsmash](https://github.com/htmeta/pxlsmash)
 
 ---
 

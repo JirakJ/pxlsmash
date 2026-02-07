@@ -1,10 +1,10 @@
-# Show HN: optipix — Metal GPU-accelerated image optimizer for macOS (20× faster)
+# Show HN: pxlsmash — Metal GPU-accelerated image optimizer for macOS (20× faster)
 
-I built optipix because I got tired of waiting for ImageMagick to process
+I built pxlsmash because I got tired of waiting for ImageMagick to process
 hundreds of product images. On my M2 MacBook Air, it was taking 30+ seconds
 for a batch of 100 PNGs. I thought: "my GPU is sitting idle, why not use it?"
 
-optipix uses Apple Metal compute shaders for image processing — resize,
+pxlsmash uses Apple Metal compute shaders for image processing — resize,
 format conversion, and quality optimization all happen on the GPU. The
 result: ~2 seconds for the same 100 images. That's roughly 20× faster.
 
@@ -18,8 +18,8 @@ result: ~2 seconds for the same 100 images. That's roughly 20× faster.
 
 **Quick start:**
 ```
-brew install htmeta/tap/optipix
-optipix ./images/ --quality 85 --format webp --recursive
+brew install htmeta/tap/pxlsmash
+pxlsmash ./images/ --quality 85 --format webp --recursive
 ```
 
 **How it works:**
@@ -34,8 +34,8 @@ The whole pipeline stays on the GPU until the final write.
 **Pricing:** 14-day free trial, then $29 one-time for personal use.
 The CLI is the core product; I'm working on a Cloud API for teams.
 
-Source + binary: https://github.com/htmeta/optipix
-Website: https://optipix.dev
+Source + binary: https://github.com/htmeta/pxlsmash
+Website: https://pxlsmash.dev
 
 Happy to answer questions about Metal compute shaders, Swift performance,
 or the architecture decisions.

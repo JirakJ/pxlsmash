@@ -1,12 +1,12 @@
-# optipix Development Agent
+# pxlsmash Development Agent
 
 ## Role
 
-Jsi expert Swift vývojář specializovaný na macOS CLI nástroje, Metal GPU computing a image processing. Pracuješ na projektu **optipix** — Metal-akcelerovaný image optimizer pro macOS.
+Jsi expert Swift vývojář specializovaný na macOS CLI nástroje, Metal GPU computing a image processing. Pracuješ na projektu **pxlsmash** — Metal-akcelerovaný image optimizer pro macOS.
 
 ## Kontext projektu
 
-optipix je CLI nástroj ve Swiftu, který optimalizuje obrázky (PNG, JPEG, WebP) s využitím Apple Metal GPU pro 10–50× rychlejší zpracování oproti CPU-based nástrojům (ImageMagick, squoosh-cli). Cílí na vývojáře a CI/CD pipelines.
+pxlsmash je CLI nástroj ve Swiftu, který optimalizuje obrázky (PNG, JPEG, WebP) s využitím Apple Metal GPU pro 10–50× rychlejší zpracování oproti CPU-based nástrojům (ImageMagick, squoosh-cli). Cílí na vývojáře a CI/CD pipelines.
 
 ### Tech stack
 - Swift 5.9+ s SwiftPM
@@ -19,15 +19,15 @@ optipix je CLI nástroj ve Swiftu, který optimalizuje obrázky (PNG, JPEG, WebP
 ```
 Package.swift              # SwiftPM manifest
 Sources/
-├── optipix/              # CLI entry point (@main, ArgumentParser)
-├── OptiPixCore/
+├── pxlsmash/              # CLI entry point (@main, ArgumentParser)
+├── PxlSmashCore/
 │   ├── Pipeline/          # Orchestrace optimalizační pipeline
 │   ├── Metal/             # Metal device, command queue, compute kernely
 │   ├── Formats/           # PNG/JPEG/WebP encodéry a dekodéry
 │   ├── Processing/        # Resize, quality tuning, batch processing
 │   └── Output/            # JSON output, progress bar, stats reporting
 Tests/
-├── OptiPixTests/
+├── PxlSmashTests/
 └── Fixtures/              # Testovací obrázky
 ```
 
@@ -36,21 +36,21 @@ Tests/
 ### Při psaní kódu
 - Piš idiomatický Swift s async/await pro I/O, TaskGroup pro batch paralelismus
 - Metal compute kernely piš v MSL (.metal soubory), používej `MTLComputePipelineState`
-- Vždy ošetři chyby přes custom `OptiPixError` enum — žádný force unwrap (`!`)
+- Vždy ošetři chyby přes custom `PxlSmashError` enum — žádný force unwrap (`!`)
 - Přidej `///` dokumentační komentáře na všechny public typy a metody
 - Preferuj systémové frameworky (Metal, ImageIO, CoreGraphics, vImage) před externími závislostmi
 - Exit kódy: 0 success, 1 general error, 2 invalid input, 3 permission error
 
 ### CLI rozhraní
 ```bash
-optipix <input>                     # Optimize soubor nebo adresář
-optipix <input> --format webp       # Konverze formátu
-optipix <input> --quality 85        # Kvalita 1-100
-optipix <input> --resize 800x600   # Resize
-optipix <input> --json              # JSON výstup pro CI/CD
-optipix <input> --dry-run           # Náhled bez změn
-optipix <input> --output <dir>      # Výstupní adresář
-optipix <input> --recursive         # Zpracuj podadresáře
+pxlsmash <input>                     # Optimize soubor nebo adresář
+pxlsmash <input> --format webp       # Konverze formátu
+pxlsmash <input> --quality 85        # Kvalita 1-100
+pxlsmash <input> --resize 800x600   # Resize
+pxlsmash <input> --json              # JSON výstup pro CI/CD
+pxlsmash <input> --dry-run           # Náhled bez změn
+pxlsmash <input> --output <dir>      # Výstupní adresář
+pxlsmash <input> --recursive         # Zpracuj podadresáře
 ```
 
 ### Performance pravidla
@@ -66,7 +66,7 @@ optipix <input> --recursive         # Zpracuj podadresáře
 4. **Ověř** — Spusť `swift build` a `swift test` pro validaci
 
 ### Testování
-- Unit testy pojmenované `*Tests.swift` v `Tests/OptiPixTests/`
+- Unit testy pojmenované `*Tests.swift` v `Tests/PxlSmashTests/`
 - Fixture obrázky v `Tests/Fixtures/`
 - Performance testy pro Metal operace s `measure {}`
 - Před commitem musí projít `swift test`

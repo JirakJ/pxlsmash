@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>optipix Demo — Try it in your browser</title>
-  <meta name="description" content="Try optipix image optimization right in your browser. Drag & drop images to see GPU-accelerated compression in action.">
-  <meta property="og:title" content="optipix Demo — Try it in your browser">
+  <title>pxlsmash Demo — Try it in your browser</title>
+  <meta name="description" content="Try pxlsmash image optimization right in your browser. Drag & drop images to see GPU-accelerated compression in action.">
+  <meta property="og:title" content="pxlsmash Demo — Try it in your browser">
   <meta property="og:description" content="Drag & drop images to see Metal-accelerated compression in action.">
-  <meta property="og:url" content="https://optipix.dev/demo">
+  <meta property="og:url" content="https://pxlsmash.dev/demo">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -58,7 +58,7 @@
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-2 font-bold text-lg">
         <span class="text-2xl">⚡</span>
-        <span>optipix</span>
+        <span>pxlsmash</span>
       </a>
       <div class="hidden md:flex items-center gap-8 text-sm text-slate-400">
         <a href="index.html#features" class="hover:text-white transition">Features</a>
@@ -76,7 +76,7 @@
   <section class="pt-28 pb-8">
     <div class="max-w-4xl mx-auto px-6 text-center">
       <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-4">
-        Try <span class="gradient-text">optipix</span> in your browser
+        Try <span class="gradient-text">pxlsmash</span> in your browser
       </h1>
       <p class="text-lg text-slate-400 max-w-xl mx-auto mb-2">
         Drag & drop an image to see real-time compression. Adjust quality, format, and resize — all client-side.
@@ -205,7 +205,7 @@
           </div>
           <div class="p-5 font-mono text-sm">
             <p class="text-slate-500">$ # Same result with the CLI:</p>
-            <p id="cliCommand" class="text-green-400 mt-1">$ optipix photo.jpg --format webp --quality 85</p>
+            <p id="cliCommand" class="text-green-400 mt-1">$ pxlsmash photo.jpg --format webp --quality 85</p>
           </div>
         </div>
       </div>
@@ -215,7 +215,7 @@
         <div class="bg-gradient-to-r from-brand-500/10 to-orange-500/10 border border-brand-500/20 rounded-2xl p-8">
           <h2 class="text-2xl font-bold mb-3">Want 25× faster results?</h2>
           <p class="text-slate-400 mb-6 max-w-lg mx-auto">
-            This browser demo uses Canvas API. The real <strong class="text-white">optipix CLI</strong> uses Apple Metal GPU
+            This browser demo uses Canvas API. The real <strong class="text-white">pxlsmash CLI</strong> uses Apple Metal GPU
             for hardware-accelerated processing — batch hundreds of images in seconds.
           </p>
           <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -237,7 +237,7 @@
     <div class="max-w-6xl mx-auto px-6">
       <div class="flex flex-col md:flex-row items-center justify-between gap-6">
         <div class="flex items-center gap-2 text-sm text-slate-500">
-          <span class="text-lg">⚡</span> optipix
+          <span class="text-lg">⚡</span> pxlsmash
           <span class="mx-2">·</span>
           Built by <a href="https://htmeta.dev" class="text-slate-400 hover:text-white transition">HTMETA.dev</a>
         </div>
@@ -421,7 +421,7 @@
         savedEl.className = saved > 0 ? 'text-xl font-bold text-green-400' : 'text-xl font-bold text-yellow-400';
 
         // CLI equivalent
-        let cmd = `$ optipix ${originalFile.name}`;
+        let cmd = `$ pxlsmash ${originalFile.name}`;
         if (currentFormat !== getOriginalFormat()) cmd += ` --format ${currentFormat}`;
         if (currentFormat !== 'png') cmd += ` --quality ${currentQuality}`;
         if (maxDim > 0) cmd += ` --resize ${outW}x${outH}`;

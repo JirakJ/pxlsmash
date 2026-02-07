@@ -1,4 +1,4 @@
-"""optipix Cloud API — Python SDK example.
+"""pxlsmash Cloud API — Python SDK example.
 
 pip install requests
 """
@@ -7,8 +7,8 @@ import os
 import time
 import requests
 
-API_KEY = os.environ.get("OPTXRUSH_API_KEY", "your-api-key")
-BASE_URL = "https://api.optipix.dev/v1"
+API_KEY = os.environ.get("PXLSRUSH_API_KEY", "your-api-key")
+BASE_URL = "https://api.pxlsmash.dev/v1"
 
 HEADERS = {"X-API-Key": API_KEY}
 

@@ -1,12 +1,12 @@
 #!/bin/bash
-# package.sh — Build distributable optipix package for sale
+# package.sh — Build distributable pxlsmash package for sale
 # Usage: ./scripts/package.sh [--sign] [--notarize]
 #
 # Produces:
-#   dist/optipix-<VERSION>-macos-universal.tar.gz
-#   dist/optipix-<VERSION>-macos-universal.zip
-#   dist/optipix-<VERSION>-macos-universal.tar.gz.sha256
-#   dist/optipix-<VERSION>-macos-universal.zip.sha256
+#   dist/pxlsmash-<VERSION>-macos-universal.tar.gz
+#   dist/pxlsmash-<VERSION>-macos-universal.zip
+#   dist/pxlsmash-<VERSION>-macos-universal.tar.gz.sha256
+#   dist/pxlsmash-<VERSION>-macos-universal.zip.sha256
 
 set -euo pipefail
 
@@ -16,8 +16,8 @@ cd "$ROOT"
 VERSION=$(git describe --tags --always 2>/dev/null | sed 's/^v//' || echo "1.0.0")
 DIST="$ROOT/dist"
 STAGING="$DIST/staging"
-BINARY_NAME="optipix"
-ARCHIVE_BASE="optipix-${VERSION}-macos-universal"
+BINARY_NAME="pxlsmash"
+ARCHIVE_BASE="pxlsmash-${VERSION}-macos-universal"
 SIGN=false
 NOTARIZE=false
 
@@ -30,7 +30,7 @@ for arg in "$@"; do
 done
 
 echo "═══════════════════════════════════════"
-echo "  optipix packaging — v${VERSION}"
+echo "  pxlsmash packaging — v${VERSION}"
 echo "═══════════════════════════════════════"
 echo ""
 
@@ -77,51 +77,51 @@ echo "▶ Preparing package contents..."
 cp "$BINARY" "$STAGING/"
 cp "$ROOT/README.md" "$STAGING/"
 cp "$ROOT/CHANGELOG.md" "$STAGING/"
-cp "$ROOT/docs/optipix.1" "$STAGING/"
+cp "$ROOT/docs/pxlsmash.1" "$STAGING/"
 
 # Create install instructions
 cat > "$STAGING/INSTALL.txt" << 'INSTALLEOF'
-optipix — Metal-accelerated image optimizer for macOS
+pxlsmash — Metal-accelerated image optimizer for macOS
 ══════════════════════════════════════════════════════
 
 QUICK INSTALL
 ─────────────
-  sudo cp optipix /usr/local/bin/
-  sudo cp optipix.1 /usr/local/share/man/man1/
+  sudo cp pxlsmash /usr/local/bin/
+  sudo cp pxlsmash.1 /usr/local/share/man/man1/
 
 Or use the install script:
-  curl -fsSL https://optipix.dev/install.sh | sh
+  curl -fsSL https://pxlsmash.dev/install.sh | sh
 
 VERIFY
 ──────
-  optipix --version
+  pxlsmash --version
 
 ACTIVATE LICENSE
 ────────────────
-  optipix --activate YOUR-LICENSE-KEY --email you@example.com
+  pxlsmash --activate YOUR-LICENSE-KEY --email you@example.com
 
 LICENSE STATUS
 ──────────────
-  optipix --license-status
+  pxlsmash --license-status
 
 FREE TRIAL
 ──────────
-  optipix ships with a 14-day free trial. No credit card needed.
+  pxlsmash ships with a 14-day free trial. No credit card needed.
   Just run any command and the trial starts automatically.
 
 PURCHASE
 ────────
-  Personal (1 dev):      €29  — htmeta.gumroad.com/l/optipix
-  Team (5 devs):         €99  — htmeta.gumroad.com/l/optipix-team
-  Enterprise (unlimited): €299 — htmeta.gumroad.com/l/optipix-enterprise
+  Personal (1 dev):      €29  — htmeta.gumroad.com/l/pxlsmash
+  Team (5 devs):         €99  — htmeta.gumroad.com/l/pxlsmash-team
+  Enterprise (unlimited): €299 — htmeta.gumroad.com/l/pxlsmash-enterprise
 
   Also available on Etsy: etsy.com/shop/htmeta
 
 SUPPORT
 ───────
-  Email: support@optipix.dev
-  GitHub: github.com/optipix/optipix/issues
-  Docs:  optipix.dev/docs
+  Email: support@pxlsmash.dev
+  GitHub: github.com/pxlsmash/pxlsmash/issues
+  Docs:  pxlsmash.dev/docs
 
 SYSTEM REQUIREMENTS
 ───────────────────

@@ -1,7 +1,7 @@
 import Foundation
 import CommonCrypto
 
-/// License key format: OPTX-XXXX-XXXX-XXXX-XXXX
+/// License key format: PXLS-XXXX-XXXX-XXXX-XXXX
 /// Tiers: personal, team, enterprise
 public enum LicenseTier: String, Codable {
     case trial
@@ -47,9 +47,9 @@ public final class LicenseManager {
     public static let shared = LicenseManager()
 
     private let fileManager = FileManager.default
-    private let licenseFileName = ".optipix-license"
-    private let trialFileName = ".optipix-trial"
-    private let keyPrefix = "OPTX"
+    private let licenseFileName = ".pxlsmash-license"
+    private let trialFileName = ".pxlsmash-trial"
+    private let keyPrefix = "PXLS"
 
     private var licensePath: String {
         let home = fileManager.homeDirectoryForCurrentUser.path
@@ -65,7 +65,7 @@ public final class LicenseManager {
 
     // MARK: - License Key Validation
 
-    /// Validate license key format: OPTX-XXXX-XXXX-XXXX-XXXX
+    /// Validate license key format: PXLS-XXXX-XXXX-XXXX-XXXX
     public func isValidKeyFormat(_ key: String) -> Bool {
         let parts = key.split(separator: "-")
         guard parts.count == 5, parts[0] == keyPrefix else { return false }
@@ -96,20 +96,20 @@ public final class LicenseManager {
         let p1 = segment(0)
         let p2 = segment(4)
         let p3 = segment(8)
-        let payload = "OPTX\(p1)\(p2)\(p3)"
+        let payload = "PXLS\(p1)\(p2)\(p3)"
         let checkHash = checksumHashStatic(payload)
         let checkChars = String(checkHash.prefix(2)).uppercased()
         let p4First2 = String(chars[12..<14])
         let p4 = p4First2 + checkChars
 
-        return "OPTX-\(p1)-\(p2)-\(p3)-\(p4)"
+        return "PXLS-\(p1)-\(p2)-\(p3)-\(p4)"
     }
 
     // MARK: - Activation
 
     public func activate(key: String, email: String) throws -> LicenseInfo {
         guard isValidKeyFormat(key) else {
-            throw OptiPixError.licenseInvalid(message: "Invalid license key format")
+            throw PxlSmashError.licenseInvalid(message: "Invalid license key format")
         }
 
         let tier = tierFromKey(key)
@@ -194,14 +194,14 @@ public final class LicenseManager {
 
     public func trialExpirationMessage() -> String {
         """
-        ⚠️  Your optipix trial has expired.
+        ⚠️  Your pxlsmash trial has expired.
         
         Purchase a license:
-          🌐 https://optipix.dev/pricing
+          🌐 https://pxlsmash.dev/pricing
           🛒 https://htmeta.gumroad.com
           🧡 https://www.etsy.com/shop/htmeta
         
-        Activate with: optipix --activate <LICENSE-KEY> --email <EMAIL>
+        Activate with: pxlsmash --activate <LICENSE-KEY> --email <EMAIL>
         """
     }
 

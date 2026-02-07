@@ -1,11 +1,11 @@
-// optipix Cloud API — Node.js SDK example
+// pxlsmash Cloud API — Node.js SDK example
 // npm install node-fetch form-data
 
 const fs = require("fs");
 const FormData = require("form-data");
 
-const API_KEY = process.env.OPTXRUSH_API_KEY || "your-api-key";
-const BASE_URL = "https://api.optipix.dev/v1";
+const API_KEY = process.env.PXLSRUSH_API_KEY || "your-api-key";
+const BASE_URL = "https://api.pxlsmash.dev/v1";
 
 async function optimizeImage(filePath, options = {}) {
   const form = new FormData();
@@ -25,7 +25,7 @@ async function optimizeImage(filePath, options = {}) {
 
   if (!res.ok) {
     const err = await res.json();
-    throw new Error(`optipix API error: ${err.message}`);
+    throw new Error(`pxlsmash API error: ${err.message}`);
   }
 
   const stats = {

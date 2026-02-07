@@ -1,36 +1,36 @@
-# optipix — Post-Launch Email Sequence
+# pxlsmash — Post-Launch Email Sequence
 
 Templates for ConvertKit / email marketing automation.
-Trigger: User downloads optipix or starts trial.
+Trigger: User downloads pxlsmash or starts trial.
 
 ---
 
 ## Email 1: Welcome (Day 0 — immediate)
 
-**Subject:** 🚀 optipix is ready — here's your quick start
+**Subject:** 🚀 pxlsmash is ready — here's your quick start
 
 **Body:**
 
 Hey {first_name},
 
-Welcome to optipix! Here's everything you need to get started.
+Welcome to pxlsmash! Here's everything you need to get started.
 
 ### Install
 
 ```bash
-brew install htmeta/tap/optipix
+brew install htmeta/tap/pxlsmash
 ```
 
-Or download the binary: https://optipix.dev/download
+Or download the binary: https://pxlsmash.dev/download
 
 ### Quick Start (30 seconds)
 
 ```bash
 # Optimize all images in a directory
-optipix ./images/ --quality 85
+pxlsmash ./images/ --quality 85
 
 # Convert PNG → WebP (smaller files, same quality)
-optipix ./images/ --format webp --recursive
+pxlsmash ./images/ --format webp --recursive
 ```
 
 ### Your Trial
@@ -47,13 +47,13 @@ Jakub
 
 ## Email 2: Power Tips (Day 3)
 
-**Subject:** 3 optipix tricks you probably missed
+**Subject:** 3 pxlsmash tricks you probably missed
 
 **Body:**
 
 Hey {first_name},
 
-Now that you've had a few days with optipix, here are 3 power-user tips:
+Now that you've had a few days with pxlsmash, here are 3 power-user tips:
 
 ### 1. CI/CD Integration
 
@@ -62,7 +62,7 @@ Add image optimization to your build pipeline:
 ```yaml
 # GitHub Actions
 - name: Optimize images
-  run: optipix ./public/ --json --recursive --quality 80
+  run: pxlsmash ./public/ --json --recursive --quality 80
 ```
 
 The `--json` flag outputs machine-readable results with exit codes.
@@ -73,7 +73,7 @@ For web images, `--quality 85` is usually the sweet spot — visually
 identical to 100 but 40-60% smaller files.
 
 ```bash
-optipix ./assets/ --quality 85 --format webp
+pxlsmash ./assets/ --quality 85 --format webp
 ```
 
 ### 3. Dry Run First
@@ -81,12 +81,12 @@ optipix ./assets/ --quality 85 --format webp
 Preview exactly what will change before committing:
 
 ```bash
-optipix ./images/ --dry-run --verbose
+pxlsmash ./images/ --dry-run --verbose
 ```
 
 Shows file sizes, estimated savings, and which Metal device will be used.
 
-How's optipix working for you? Hit reply — I'd love to hear your use case.
+How's pxlsmash working for you? Hit reply — I'd love to hear your use case.
 
 Jakub
 
@@ -94,7 +94,7 @@ Jakub
 
 ## Email 3: Cloud Upsell (Day 7)
 
-**Subject:** Process images from anywhere — optipix Cloud (early access)
+**Subject:** Process images from anywhere — pxlsmash Cloud (early access)
 
 **Body:**
 
@@ -103,11 +103,11 @@ Hey {first_name},
 Quick question: do you ever need to optimize images on a server,
 in a web app, or from a team that doesn't all use macOS?
 
-I'm building **optipix Cloud** — the same optimization engine,
+I'm building **pxlsmash Cloud** — the same optimization engine,
 accessible via API from anywhere:
 
 ```bash
-curl -X POST https://api.optipix.dev/optimize \
+curl -X POST https://api.pxlsmash.dev/optimize \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -F "image=@photo.png" \
   -F "quality=85" \
@@ -129,17 +129,17 @@ Jakub
 
 ## Email 4: Trial Ending (Day 12 — 2 days before expiry)
 
-**Subject:** ⏰ Your optipix trial ends in 2 days
+**Subject:** ⏰ Your pxlsmash trial ends in 2 days
 
 **Body:**
 
 Hey {first_name},
 
-Your 14-day optipix trial ends in 2 days.
+Your 14-day pxlsmash trial ends in 2 days.
 
-If optipix has been useful, grab a license to keep it running:
+If pxlsmash has been useful, grab a license to keep it running:
 
-🔗 **https://optipix.dev/pricing**
+🔗 **https://pxlsmash.dev/pricing**
 
 Also available on:
 - 🛒 **Gumroad:** https://htmeta.gumroad.com
@@ -156,7 +156,7 @@ All plans are **one-time** — no subscription, no recurring fees.
 After purchase, activate in 10 seconds:
 
 ```bash
-optipix --activate OPTX-XXXX-XXXX-XXXX-XXXX --email you@example.com
+pxlsmash --activate PXLS-XXXX-XXXX-XXXX-XXXX --email you@example.com
 ```
 
 Questions? Just reply.
@@ -167,14 +167,14 @@ Jakub
 
 ## Email 5: API Developer Upsell (Day 14)
 
-**Subject:** optipix API — automate image optimization at scale
+**Subject:** pxlsmash API — automate image optimization at scale
 
 **Body:**
 
 Hey {first_name},
 
 If you're processing images programmatically (e.g., user uploads,
-e-commerce catalogs, content pipelines), the optipix API might
+e-commerce catalogs, content pipelines), the pxlsmash API might
 save you serious infrastructure time:
 
 **What you get:**
@@ -190,7 +190,7 @@ save you serious infrastructure time:
 
 14-day free trial on all API plans too.
 
-🔗 **https://optipix.dev/api**
+🔗 **https://pxlsmash.dev/api**
 
 Jakub
 
@@ -198,7 +198,7 @@ Jakub
 
 ## ConvertKit Automation Notes
 
-- **Trigger:** Tag "optipix-trial" added (via download form or CLI telemetry)
+- **Trigger:** Tag "pxlsmash-trial" added (via download form or CLI telemetry)
 - **Sequence:** 5 emails over 14 days
-- **Exit conditions:** User purchases license → tag "optipix-customer" → exit sequence, enter customer onboarding
+- **Exit conditions:** User purchases license → tag "pxlsmash-customer" → exit sequence, enter customer onboarding
 - **Segments:** CLI-only vs Cloud-interested (based on Email 3 reply)

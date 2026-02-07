@@ -1,7 +1,7 @@
 import Foundation
 
-/// Errors thrown by optipix with associated exit codes.
-public enum OptiPixError: Error, CustomStringConvertible {
+/// Errors thrown by pxlsmash with associated exit codes.
+public enum PxlSmashError: Error, CustomStringConvertible {
     /// General processing error.
     case generalError(String)
     /// Invalid input (file not found, unsupported format).

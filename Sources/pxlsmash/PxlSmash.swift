@@ -1,11 +1,11 @@
 import Foundation
 import ArgumentParser
-import OptiPixCore
+import PxlSmashCore
 
 @main
-struct OptiPix: ParsableCommand {
+struct PxlSmash: ParsableCommand {
     static let configuration = CommandConfiguration(
-        commandName: "optipix",
+        commandName: "pxlsmash",
         abstract: "Metal-accelerated image optimizer for macOS",
         version: "1.0.0"
     )
@@ -108,8 +108,8 @@ struct OptiPix: ParsableCommand {
                 print(LicenseManager.shared.trialExpirationMessage())
             case .none:
                 print("❌ No license or trial found")
-                print("   Start trial: run any optipix command")
-                print("   Buy: https://optipix.dev/pricing | htmeta.gumroad.com | etsy.com/shop/htmeta")
+                print("   Start trial: run any pxlsmash command")
+                print("   Buy: https://pxlsmash.dev/pricing | htmeta.gumroad.com | etsy.com/shop/htmeta")
             }
             return
         }
@@ -129,7 +129,7 @@ struct OptiPix: ParsableCommand {
                     Data("⏳ Trial: \(trial.daysRemaining) days remaining\n".utf8))
             }
         case .expired:
-            throw OptiPixError.licenseInvalid(
+            throw PxlSmashError.licenseInvalid(
                 message: LicenseManager.shared.trialExpirationMessage())
         case .none:
             let trial = LicenseManager.shared.startTrial()
@@ -139,7 +139,7 @@ struct OptiPix: ParsableCommand {
             }
         }
 
-        // Build options — merge with .optipixrc if present
+        // Build options — merge with .pxlsmashrc if present
         let config = ProjectConfig.load()
         let options: ProcessingOptions
         if let config = config {
@@ -181,7 +181,7 @@ struct OptiPix: ParsableCommand {
 
         do {
             try ImageProcessor.run(with: options)
-        } catch let error as OptiPixError {
+        } catch let error as PxlSmashError {
             if json {
                 printErrorJSON(error)
             } else {
@@ -191,11 +191,11 @@ struct OptiPix: ParsableCommand {
         }
     }
 
-    private func printError(_ error: OptiPixError) {
+    private func printError(_ error: PxlSmashError) {
         FileHandle.standardError.write(Data("error: \(error.message)\n".utf8))
     }
 
-    private func printErrorJSON(_ error: OptiPixError) {
+    private func printErrorJSON(_ error: PxlSmashError) {
         OutputFormatter.printJSONError(message: error.message, exitCode: error.exitCode)
     }
 }

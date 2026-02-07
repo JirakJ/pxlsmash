@@ -18,17 +18,17 @@ public final class OptimizationPipeline: @unchecked Sendable {
 
         // 1. Validate
         guard fm.fileExists(atPath: filePath) else {
-            throw OptiPixError.invalidInput("File not found: \(filePath)")
+            throw PxlSmashError.invalidInput("File not found: \(filePath)")
         }
         guard fm.isReadableFile(atPath: filePath) else {
-            throw OptiPixError.permissionDenied("Cannot read file: \(filePath)")
+            throw PxlSmashError.permissionDenied("Cannot read file: \(filePath)")
         }
 
         let originalSize = try Self.fileSize(at: filePath)
         let detectedFormat = try ImageFormatDetector.detect(at: filePath)
 
         guard detectedFormat != .unknown else {
-            throw OptiPixError.invalidInput("Unsupported image format: \(filePath)")
+            throw PxlSmashError.invalidInput("Unsupported image format: \(filePath)")
         }
 
         let outputFormat = options.outputFormat ?? Self.outputFormatFromDetected(detectedFormat)
@@ -73,13 +73,13 @@ public final class OptimizationPipeline: @unchecked Sendable {
             do {
                 try fm.createDirectory(atPath: outputDir, withIntermediateDirectories: true)
             } catch {
-                throw OptiPixError.permissionDenied("Cannot create output directory: \(outputDir)")
+                throw PxlSmashError.permissionDenied("Cannot create output directory: \(outputDir)")
             }
         }
 
         // 6. Check writable
         guard fm.isWritableFile(atPath: outputDir) else {
-            throw OptiPixError.permissionDenied("Output directory is not writable: \(outputDir)")
+            throw PxlSmashError.permissionDenied("Output directory is not writable: \(outputDir)")
         }
 
         // 7. Encode with format-specific optimization
@@ -92,12 +92,12 @@ public final class OptimizationPipeline: @unchecked Sendable {
                 quality: effectiveQuality
             )
             ImageProcessor.unregisterTempFile(outputPath)
-        } catch let e as OptiPixError {
+        } catch let e as PxlSmashError {
             ImageProcessor.unregisterTempFile(outputPath)
             throw e
         } catch {
             ImageProcessor.unregisterTempFile(outputPath)
-            throw OptiPixError.diskFull("Failed to write file (disk full?): \(outputPath)")
+            throw PxlSmashError.diskFull("Failed to write file (disk full?): \(outputPath)")
         }
 
         // 7b. Preserve metadata if requested

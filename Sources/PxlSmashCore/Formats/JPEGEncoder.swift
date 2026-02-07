@@ -24,7 +24,7 @@ public enum JPEGEncoder {
     public static func encode(_ image: CGImage, options: Options = Options()) throws -> Data {
         let data = NSMutableData()
         guard let dest = CGImageDestinationCreateWithData(data as CFMutableData, "public.jpeg" as CFString, 1, nil) else {
-            throw OptiPixError.generalError("Failed to create JPEG encoder")
+            throw PxlSmashError.generalError("Failed to create JPEG encoder")
         }
 
         var properties: [CFString: Any] = [
@@ -41,7 +41,7 @@ public enum JPEGEncoder {
         CGImageDestinationAddImage(dest, image, properties as CFDictionary)
 
         guard CGImageDestinationFinalize(dest) else {
-            throw OptiPixError.generalError("Failed to finalize JPEG encoding")
+            throw PxlSmashError.generalError("Failed to finalize JPEG encoding")
         }
 
         return data as Data

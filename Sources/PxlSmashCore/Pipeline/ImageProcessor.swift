@@ -12,7 +12,7 @@ public enum ImageProcessor {
     private static let tempFilesLock = NSLock()
     private static var sigintInstalled = false
 
-    /// Run optipix with the given options.
+    /// Run pxlsmash with the given options.
     public static func run(with options: ProcessingOptions) throws {
         installSIGINTHandler()
 
@@ -21,7 +21,7 @@ public enum ImageProcessor {
 
         var isDir: ObjCBool = false
         guard fileManager.fileExists(atPath: path, isDirectory: &isDir) else {
-            throw OptiPixError.invalidInput("Path not found: \(path)")
+            throw PxlSmashError.invalidInput("Path not found: \(path)")
         }
 
         let files: [String]
@@ -96,7 +96,7 @@ public enum ImageProcessor {
                 } catch {
                     let fileError = FileError(
                         file: file,
-                        error: (error as? OptiPixError)?.message ?? error.localizedDescription
+                        error: (error as? PxlSmashError)?.message ?? error.localizedDescription
                     )
                     resultsLock.lock()
                     errors.append(fileError)
@@ -123,7 +123,7 @@ public enum ImageProcessor {
                 } catch {
                     let fileError = FileError(
                         file: file,
-                        error: (error as? OptiPixError)?.message ?? error.localizedDescription
+                        error: (error as? PxlSmashError)?.message ?? error.localizedDescription
                     )
                     errors.append(fileError)
                     if !options.jsonOutput {
@@ -179,7 +179,7 @@ public enum ImageProcessor {
            let available = values.volumeAvailableCapacityForImportantUsage {
             // Warn if less than 100MB free
             if available < 100 * 1024 * 1024 {
-                throw OptiPixError.diskFull("Less than 100MB disk space available at \(path)")
+                throw PxlSmashError.diskFull("Less than 100MB disk space available at \(path)")
             }
         }
     }
@@ -194,7 +194,7 @@ public enum ImageProcessor {
 
         if recursive {
             guard let enumerator = fm.enumerator(atPath: directory) else {
-                throw OptiPixError.permissionDenied("Cannot read directory: \(directory)")
+                throw PxlSmashError.permissionDenied("Cannot read directory: \(directory)")
             }
             while let relative = enumerator.nextObject() as? String {
                 let full = (directory as NSString).appendingPathComponent(relative)

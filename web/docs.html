@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>optipix Documentation — Getting Started Guide</title>
-  <meta name="description" content="Complete guide to optipix: installation, configuration, batch processing, CI/CD integration, smart quality, and Cloud API.">
-  <meta property="og:title" content="optipix Documentation">
+  <title>pxlsmash Documentation — Getting Started Guide</title>
+  <meta name="description" content="Complete guide to pxlsmash: installation, configuration, batch processing, CI/CD integration, smart quality, and Cloud API.">
+  <meta property="og:title" content="pxlsmash Documentation">
   <meta property="og:description" content="Complete guide to Metal-accelerated image optimization for macOS.">
-  <meta property="og:url" content="https://optipix.dev/docs">
+  <meta property="og:url" content="https://pxlsmash.dev/docs">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -53,7 +53,7 @@
     <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
       <a href="index.html" class="flex items-center gap-2 font-bold text-lg">
         <span class="text-2xl">⚡</span>
-        <span>optipix</span>
+        <span>pxlsmash</span>
       </a>
       <div class="hidden md:flex items-center gap-8 text-sm text-slate-400">
         <a href="index.html#features" class="hover:text-white transition">Features</a>
@@ -130,7 +130,7 @@
         </h2>
 
         <div class="mb-6">
-          <p class="text-slate-400 mb-4">Install optipix via Homebrew (recommended) or download the binary directly.</p>
+          <p class="text-slate-400 mb-4">Install pxlsmash via Homebrew (recommended) or download the binary directly.</p>
 
           <h3 class="text-lg font-semibold mb-3">Homebrew</h3>
           <div class="terminal rounded-xl overflow-hidden mb-6 screenshot">
@@ -141,13 +141,13 @@
               <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Homebrew install</span>
             </div>
             <div class="p-5 font-mono text-sm leading-relaxed">
-              <p class="text-green-400">$ brew install optipix</p>
-              <p class="text-slate-500 mt-2">==> Downloading optipix-1.0.0.arm64.tar.gz</p>
+              <p class="text-green-400">$ brew install pxlsmash</p>
+              <p class="text-slate-500 mt-2">==> Downloading pxlsmash-1.0.0.arm64.tar.gz</p>
               <p class="text-slate-500">######################################## 100%</p>
-              <p class="text-slate-500">==> Installing optipix</p>
-              <p class="text-slate-300 mt-2">🍺 /opt/homebrew/bin/optipix</p>
-              <p class="text-slate-300 mt-3 text-green-400">$ optipix --version</p>
-              <p class="text-slate-300">optipix 1.0.0</p>
+              <p class="text-slate-500">==> Installing pxlsmash</p>
+              <p class="text-slate-300 mt-2">🍺 /opt/homebrew/bin/pxlsmash</p>
+              <p class="text-slate-300 mt-3 text-green-400">$ pxlsmash --version</p>
+              <p class="text-slate-300">pxlsmash 1.0.0</p>
             </div>
           </div>
 
@@ -160,10 +160,10 @@
               <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Direct install</span>
             </div>
             <div class="p-5 font-mono text-sm leading-relaxed">
-              <p class="text-green-400">$ curl -L https://github.com/optipix/optipix/releases/latest/download/optipix.tar.gz | tar xz</p>
-              <p class="text-green-400">$ sudo mv optipix /usr/local/bin/</p>
-              <p class="text-green-400">$ optipix --version</p>
-              <p class="text-slate-300">optipix 1.0.0</p>
+              <p class="text-green-400">$ curl -L https://github.com/pxlsmash/pxlsmash/releases/latest/download/pxlsmash.tar.gz | tar xz</p>
+              <p class="text-green-400">$ sudo mv pxlsmash /usr/local/bin/</p>
+              <p class="text-green-400">$ pxlsmash --version</p>
+              <p class="text-slate-300">pxlsmash 1.0.0</p>
             </div>
           </div>
 
@@ -176,12 +176,12 @@
               <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Build from source</span>
             </div>
             <div class="p-5 font-mono text-sm leading-relaxed">
-              <p class="text-green-400">$ git clone https://github.com/optipix/optipix.git</p>
-              <p class="text-green-400">$ cd optipix</p>
+              <p class="text-green-400">$ git clone https://github.com/pxlsmash/pxlsmash.git</p>
+              <p class="text-green-400">$ cd pxlsmash</p>
               <p class="text-green-400">$ make install</p>
               <p class="text-slate-500 mt-2">Building for release...</p>
               <p class="text-slate-500">Build complete! (2.3s)</p>
-              <p class="text-slate-300 mt-1">✓ Installed to /usr/local/bin/optipix</p>
+              <p class="text-slate-300 mt-1">✓ Installed to /usr/local/bin/pxlsmash</p>
             </div>
           </div>
 
@@ -211,11 +211,11 @@
           </div>
           <div class="p-5 font-mono text-sm leading-relaxed">
             <p class="text-slate-500"># Optimize a single image</p>
-            <p class="text-green-400">$ optipix photo.png</p>
+            <p class="text-green-400">$ pxlsmash photo.png</p>
             <p class="text-slate-300 mt-2"><span class="text-brand-400">⚡</span> Processing 1 file with <span class="text-white font-bold">Metal GPU</span>...</p>
             <p class="text-green-400 mt-1">✓ photo.png  2.1MB → 680KB  <span class="text-brand-400 font-bold">(68% saved)</span>  0.03s</p>
             <p class="text-slate-300 mt-3 text-slate-500"># Optimize an entire directory</p>
-            <p class="text-green-400">$ optipix ./images/ --recursive</p>
+            <p class="text-green-400">$ pxlsmash ./images/ --recursive</p>
             <p class="text-slate-300 mt-2"><span class="text-brand-400">⚡</span> Processing 47 files with <span class="text-white font-bold">Metal GPU</span>...</p>
             <p class="text-slate-500">████████████████████████████████████████ 100%</p>
             <p class="text-green-400 mt-1">✓ 47 files optimized, <span class="text-brand-400 font-bold">84MB saved</span> (62%), 0.9s</p>
@@ -223,7 +223,7 @@
         </div>
 
         <p class="text-slate-400 mb-8">
-          optipix automatically detects your image format, applies optimal compression, and overwrites in-place.
+          pxlsmash automatically detects your image format, applies optimal compression, and overwrites in-place.
           Use <code class="text-brand-400 bg-brand-500/10 px-1.5 py-0.5 rounded text-sm">--output</code> to save to a different directory.
         </p>
 
@@ -243,17 +243,17 @@
           </div>
           <div class="p-5 font-mono text-sm leading-relaxed">
             <p class="text-slate-500"># Set output quality (1-100)</p>
-            <p class="text-green-400">$ optipix photo.jpg --quality 85</p>
+            <p class="text-green-400">$ pxlsmash photo.jpg --quality 85</p>
             <p class="text-slate-300 mt-3 text-slate-500"># Convert format</p>
-            <p class="text-green-400">$ optipix photo.png --format webp</p>
+            <p class="text-green-400">$ pxlsmash photo.png --format webp</p>
             <p class="text-slate-300 mt-3 text-slate-500"># Resize to specific dimensions</p>
-            <p class="text-green-400">$ optipix hero.jpg --resize 1920x1080</p>
+            <p class="text-green-400">$ pxlsmash hero.jpg --resize 1920x1080</p>
             <p class="text-slate-300 mt-3 text-slate-500"># Output to a different directory</p>
-            <p class="text-green-400">$ optipix ./images/ --output ./optimized/</p>
+            <p class="text-green-400">$ pxlsmash ./images/ --output ./optimized/</p>
             <p class="text-slate-300 mt-3 text-slate-500"># Preview changes without writing files</p>
-            <p class="text-green-400">$ optipix ./images/ --dry-run</p>
+            <p class="text-green-400">$ pxlsmash ./images/ --dry-run</p>
             <p class="text-slate-300 mt-3 text-slate-500"># Show detailed info (GPU, timing, memory)</p>
-            <p class="text-green-400">$ optipix photo.png --verbose</p>
+            <p class="text-green-400">$ pxlsmash photo.png --verbose</p>
             <p class="text-slate-300 mt-1">  <span class="text-slate-500">[Metal] Apple M2 Pro, 16.0GB max memory</span></p>
             <p class="text-green-400 mt-1">✓ photo.png  2.1MB → 680KB  (68% saved)  0.03s</p>
           </div>
@@ -267,7 +267,7 @@
         </h2>
 
         <p class="text-slate-400 mb-4">
-          Point optipix at a directory and it processes all images in parallel using your CPU cores.
+          Point pxlsmash at a directory and it processes all images in parallel using your CPU cores.
           Add <code class="text-brand-400 bg-brand-500/10 px-1.5 py-0.5 rounded text-sm">--recursive</code> to include subdirectories.
         </p>
 
@@ -279,7 +279,7 @@
             <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Batch optimization</span>
           </div>
           <div class="p-5 font-mono text-sm leading-relaxed">
-            <p class="text-green-400">$ optipix ~/Photos/vacation/ --recursive --format webp --quality 80 --output ~/optimized/</p>
+            <p class="text-green-400">$ pxlsmash ~/Photos/vacation/ --recursive --format webp --quality 80 --output ~/optimized/</p>
             <p class="text-slate-300 mt-3"><span class="text-brand-400">⚡</span> Processing 238 files with <span class="text-white font-bold">Metal GPU</span>...</p>
             <p class="text-slate-500 mt-1">████████████████████████████████████████ 100%</p>
             <p class="text-slate-300 mt-3">
@@ -299,7 +299,7 @@
 
         <div class="bg-slate-900/50 border border-white/5 rounded-xl p-5 mb-8">
           <p class="text-sm text-slate-300">
-            <strong class="text-white">💡 Tip:</strong> optipix automatically skips symlinks, non-image files, and
+            <strong class="text-white">💡 Tip:</strong> pxlsmash automatically skips symlinks, non-image files, and
             uses parallel processing for batches of 5+ files. Press <kbd class="bg-slate-800 text-xs px-1.5 py-0.5 rounded">Ctrl+C</kbd>
             to gracefully stop — partially written files are cleaned up.
           </p>
@@ -346,11 +346,11 @@
           </div>
           <div class="p-5 font-mono text-sm leading-relaxed">
             <p class="text-slate-500"># Convert all PNGs to WebP for web deployment</p>
-            <p class="text-green-400">$ optipix ./assets/ --format webp --quality 80 --output ./dist/</p>
+            <p class="text-green-400">$ pxlsmash ./assets/ --format webp --quality 80 --output ./dist/</p>
             <p class="text-slate-300 mt-3 text-slate-500"># Convert iPhone HEIC photos to JPEG for sharing</p>
-            <p class="text-green-400">$ optipix ~/Photos/ --format jpeg --quality 90 --recursive</p>
+            <p class="text-green-400">$ pxlsmash ~/Photos/ --format jpeg --quality 90 --recursive</p>
             <p class="text-slate-300 mt-3 text-slate-500"># Use next-gen AVIF format (macOS 14+)</p>
-            <p class="text-green-400">$ optipix hero.png --format avif --quality 75</p>
+            <p class="text-green-400">$ pxlsmash hero.png --format avif --quality 75</p>
           </div>
         </div>
 
@@ -375,12 +375,12 @@
             <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Smart quality</span>
           </div>
           <div class="p-5 font-mono text-sm leading-relaxed">
-            <p class="text-slate-500"># Let optipix find the optimal quality automatically</p>
-            <p class="text-green-400">$ optipix photo.jpg --smart-quality</p>
+            <p class="text-slate-500"># Let pxlsmash find the optimal quality automatically</p>
+            <p class="text-green-400">$ pxlsmash photo.jpg --smart-quality</p>
             <p class="text-slate-300 mt-2"><span class="text-brand-400">⚡</span> Processing 1 file with <span class="text-white font-bold">Metal GPU</span>...</p>
             <p class="text-green-400 mt-1">✓ photo.jpg  3.8MB → 620KB  <span class="text-brand-400 font-bold">(84% saved)</span>  0.12s</p>
             <p class="text-slate-300 mt-3 text-slate-500"># Works with batch processing too</p>
-            <p class="text-green-400">$ optipix ./gallery/ --smart-quality --format webp</p>
+            <p class="text-green-400">$ pxlsmash ./gallery/ --smart-quality --format webp</p>
           </div>
         </div>
 
@@ -423,11 +423,11 @@
           </div>
           <div class="p-5 font-mono text-sm leading-relaxed">
             <p class="text-slate-500"># Resize to exact dimensions</p>
-            <p class="text-green-400">$ optipix hero.jpg --resize 1200x630</p>
+            <p class="text-green-400">$ pxlsmash hero.jpg --resize 1200x630</p>
             <p class="text-slate-300 mt-3 text-slate-500"># Generate thumbnails for a gallery</p>
-            <p class="text-green-400">$ optipix ./photos/ --resize 400x400 --format webp --quality 80 --output ./thumbs/</p>
+            <p class="text-green-400">$ pxlsmash ./photos/ --resize 400x400 --format webp --quality 80 --output ./thumbs/</p>
             <p class="text-slate-300 mt-3 text-slate-500"># Combine resize + smart quality for maximum compression</p>
-            <p class="text-green-400">$ optipix banner.png --resize 1920x1080 --smart-quality --format webp</p>
+            <p class="text-green-400">$ pxlsmash banner.png --resize 1920x1080 --smart-quality --format webp</p>
           </div>
         </div>
 
@@ -439,7 +439,7 @@
         </h2>
 
         <p class="text-slate-400 mb-4">
-          By default, optipix strips EXIF metadata for smaller files. Use
+          By default, pxlsmash strips EXIF metadata for smaller files. Use
           <code class="text-brand-400 bg-brand-500/10 px-1.5 py-0.5 rounded text-sm">--keep-metadata</code>
           to preserve GPS, camera info, orientation, and other EXIF data.
         </p>
@@ -453,9 +453,9 @@
           </div>
           <div class="p-5 font-mono text-sm leading-relaxed">
             <p class="text-slate-500"># Optimize photos while keeping EXIF data</p>
-            <p class="text-green-400">$ optipix ~/Photos/ --keep-metadata --quality 85</p>
+            <p class="text-green-400">$ pxlsmash ~/Photos/ --keep-metadata --quality 85</p>
             <p class="text-slate-300 mt-3 text-slate-500"># Perfect for photographers — preserve camera info + GPS</p>
-            <p class="text-green-400">$ optipix shoot/ --keep-metadata --smart-quality --output optimized/</p>
+            <p class="text-green-400">$ pxlsmash shoot/ --keep-metadata --smart-quality --output optimized/</p>
           </div>
         </div>
 
@@ -478,7 +478,7 @@
             <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Watch mode</span>
           </div>
           <div class="p-5 font-mono text-sm leading-relaxed">
-            <p class="text-green-400">$ optipix ./assets/ --watch --format webp --quality 80</p>
+            <p class="text-green-400">$ pxlsmash ./assets/ --watch --format webp --quality 80</p>
             <p class="text-slate-300 mt-2"><span class="text-brand-400">👁</span> Watching ./assets/ for changes...</p>
             <p class="text-slate-300 mt-2"><span class="text-green-400">✓</span> new-logo.png  → new-logo.webp  (71% saved)</p>
             <p class="text-slate-300"><span class="text-green-400">✓</span> hero-v2.png   → hero-v2.webp   (68% saved)</p>
@@ -506,7 +506,7 @@
             <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — JSON output</span>
           </div>
           <div class="p-5 font-mono text-sm leading-relaxed">
-            <p class="text-green-400">$ optipix ./images/ --json | jq .</p>
+            <p class="text-green-400">$ pxlsmash ./images/ --json | jq .</p>
             <p class="text-slate-300 mt-2">{</p>
             <p class="text-slate-300 pl-4"><span class="text-brand-400">"results"</span>: [</p>
             <p class="text-slate-300 pl-8">{</p>
@@ -556,8 +556,8 @@
             <p class="text-slate-500 pl-8">runs-on: <span class="text-brand-400">macos-latest</span></p>
             <p class="text-slate-500 pl-8">steps:</p>
             <p class="text-slate-500 pl-12">- uses: actions/checkout@v4</p>
-            <p class="text-slate-500 pl-12">- run: brew install optipix</p>
-            <p class="text-slate-300 pl-12">- run: <span class="text-green-400">optipix ./assets/ --recursive --json > results.json</span></p>
+            <p class="text-slate-500 pl-12">- run: brew install pxlsmash</p>
+            <p class="text-slate-300 pl-12">- run: <span class="text-green-400">pxlsmash ./assets/ --recursive --json > results.json</span></p>
             <p class="text-slate-500 pl-12">- run: cat results.json | jq '.summary'</p>
           </div>
         </div>
@@ -577,7 +577,7 @@
         </h2>
 
         <p class="text-slate-400 mb-4">
-          Create a <code class="text-brand-400 bg-brand-500/10 px-1.5 py-0.5 rounded text-sm">.optipixrc</code>
+          Create a <code class="text-brand-400 bg-brand-500/10 px-1.5 py-0.5 rounded text-sm">.pxlsmashrc</code>
           file in your project root to set default options. CLI flags override config values.
         </p>
 
@@ -586,7 +586,7 @@
             <span class="terminal-dot bg-red-500/80"></span>
             <span class="terminal-dot bg-yellow-500/80"></span>
             <span class="terminal-dot bg-green-500/80"></span>
-            <span class="text-xs text-slate-500 ml-2 font-mono">.optipixrc</span>
+            <span class="text-xs text-slate-500 ml-2 font-mono">.pxlsmashrc</span>
           </div>
           <div class="p-5 font-mono text-sm leading-relaxed">
             <p class="text-slate-300">{</p>
@@ -607,11 +607,11 @@
             <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — Using config file</span>
           </div>
           <div class="p-5 font-mono text-sm leading-relaxed">
-            <p class="text-slate-500"># With .optipixrc present, just run:</p>
-            <p class="text-green-400">$ optipix ./images/</p>
+            <p class="text-slate-500"># With .pxlsmashrc present, just run:</p>
+            <p class="text-green-400">$ pxlsmash ./images/</p>
             <p class="text-slate-500 mt-1"># ↑ Uses format=webp, quality=85, output=./dist/images/, recursive=true from config</p>
             <p class="text-slate-300 mt-3 text-slate-500"># CLI flags override config values:</p>
-            <p class="text-green-400">$ optipix ./images/ --quality 60 --format jpeg</p>
+            <p class="text-green-400">$ pxlsmash ./images/ --quality 60 --format jpeg</p>
           </div>
         </div>
 
@@ -623,7 +623,7 @@
         </h2>
 
         <p class="text-slate-400 mb-4">
-          Optimize images via HTTP with the optipix Cloud API. Perfect for web apps,
+          Optimize images via HTTP with the pxlsmash Cloud API. Perfect for web apps,
           serverless functions, and mobile backends.
         </p>
 
@@ -663,7 +663,7 @@
           </div>
           <div class="p-5 font-mono text-sm leading-relaxed">
             <p class="text-slate-500"># Optimize a single image</p>
-            <p class="text-green-400">$ curl -X POST https://api.optipix.dev/v1/optimize \</p>
+            <p class="text-green-400">$ curl -X POST https://api.pxlsmash.dev/v1/optimize \</p>
             <p class="text-green-400 pl-4">-H "X-API-Key: your-api-key" \</p>
             <p class="text-green-400 pl-4">-F "file=@photo.jpg" \</p>
             <p class="text-green-400 pl-4">-F "format=webp" \</p>
@@ -692,7 +692,7 @@
             <p class="text-slate-300">form.append(<span class="text-orange-300">"file"</span>, fs.createReadStream(<span class="text-orange-300">"photo.jpg"</span>));</p>
             <p class="text-slate-300">form.append(<span class="text-orange-300">"format"</span>, <span class="text-orange-300">"webp"</span>);</p>
             <p class="text-slate-300">form.append(<span class="text-orange-300">"quality"</span>, <span class="text-orange-300">"85"</span>);</p>
-            <p class="text-slate-300 mt-2"><span class="text-blue-400">const</span> res = <span class="text-blue-400">await</span> fetch(<span class="text-orange-300">"https://api.optipix.dev/v1/optimize"</span>, {</p>
+            <p class="text-slate-300 mt-2"><span class="text-blue-400">const</span> res = <span class="text-blue-400">await</span> fetch(<span class="text-orange-300">"https://api.pxlsmash.dev/v1/optimize"</span>, {</p>
             <p class="text-slate-300 pl-4">method: <span class="text-orange-300">"POST"</span>,</p>
             <p class="text-slate-300 pl-4">headers: { <span class="text-orange-300">"X-API-Key"</span>: apiKey },</p>
             <p class="text-slate-300 pl-4">body: form,</p>
@@ -712,7 +712,7 @@
           <div class="p-5 font-mono text-sm leading-relaxed">
             <p class="text-blue-400">import</p><p class="text-slate-300"> requests</p>
             <p class="text-slate-300 mt-2">resp = requests.post(</p>
-            <p class="text-slate-300 pl-4"><span class="text-orange-300">"https://api.optipix.dev/v1/optimize"</span>,</p>
+            <p class="text-slate-300 pl-4"><span class="text-orange-300">"https://api.pxlsmash.dev/v1/optimize"</span>,</p>
             <p class="text-slate-300 pl-4">headers={<span class="text-orange-300">"X-API-Key"</span>: api_key},</p>
             <p class="text-slate-300 pl-4">files={<span class="text-orange-300">"file"</span>: <span class="text-blue-400">open</span>(<span class="text-orange-300">"photo.jpg"</span>, <span class="text-orange-300">"rb"</span>)},</p>
             <p class="text-slate-300 pl-4">data={<span class="text-orange-300">"format"</span>: <span class="text-orange-300">"webp"</span>, <span class="text-orange-300">"quality"</span>: <span class="text-orange-300">"85"</span>},</p>
@@ -731,7 +731,7 @@
         </h2>
 
         <p class="text-slate-400 mb-4">
-          optipix includes a 14-day free trial with full functionality. Activate with your license key:
+          pxlsmash includes a 14-day free trial with full functionality. Activate with your license key:
         </p>
 
         <div class="terminal rounded-xl overflow-hidden mb-6 screenshot">
@@ -742,14 +742,14 @@
             <span class="text-xs text-slate-500 ml-2 font-mono">Terminal — License activation</span>
           </div>
           <div class="p-5 font-mono text-sm leading-relaxed">
-            <p class="text-green-400">$ optipix --activate OPTX-A1B2-C3D4-E5F6-G7H8 --email you@example.com</p>
+            <p class="text-green-400">$ pxlsmash --activate PXLS-A1B2-C3D4-E5F6-G7H8 --email you@example.com</p>
             <p class="text-slate-300 mt-2">✅ License activated successfully!</p>
             <p class="text-slate-300">   Tier: personal</p>
             <p class="text-slate-300">   Email: you@example.com</p>
-            <p class="text-slate-300 mt-4 text-green-400">$ optipix --license-status</p>
+            <p class="text-slate-300 mt-4 text-green-400">$ pxlsmash --license-status</p>
             <p class="text-slate-300 mt-1">✅ Licensed (personal)</p>
             <p class="text-slate-300">   Email: you@example.com</p>
-            <p class="text-slate-300">   Key: OPTX-A1B2-C3D4-E5F6-G7H8</p>
+            <p class="text-slate-300">   Key: PXLS-A1B2-C3D4-E5F6-G7H8</p>
           </div>
         </div>
 
@@ -817,7 +817,7 @@
               <span class="text-slate-500 group-open:rotate-180 transition-transform">▼</span>
             </summary>
             <div class="px-5 pb-4 text-sm text-slate-400">
-              <p>This is normal on Intel Macs or in CI/CD environments without a GPU. optipix automatically
+              <p>This is normal on Intel Macs or in CI/CD environments without a GPU. pxlsmash automatically
               falls back to <code class="text-brand-400">vImage</code> (Accelerate framework). Performance is still
               excellent — just not GPU-accelerated.</p>
             </div>
@@ -851,7 +851,7 @@
               <span class="text-slate-500 group-open:rotate-180 transition-transform">▼</span>
             </summary>
             <div class="px-5 pb-4 text-sm text-slate-400">
-              <p>Make sure the output directory is writable. optipix checks permissions before processing.
+              <p>Make sure the output directory is writable. pxlsmash checks permissions before processing.
               On macOS, you may need to grant Full Disk Access in System Settings → Privacy & Security.</p>
             </div>
           </details>
@@ -862,7 +862,7 @@
               <span class="text-slate-500 group-open:rotate-180 transition-transform">▼</span>
             </summary>
             <div class="px-5 pb-4 text-sm text-slate-400">
-              <p>optipix handles large files with per-file error handling. If a single file fails due to
+              <p>pxlsmash handles large files with per-file error handling. If a single file fails due to
               memory constraints, the rest of the batch continues. Use <code class="text-brand-400">--verbose</code> to see
               memory usage information.</p>
             </div>
@@ -875,7 +875,7 @@
           <p class="text-slate-400 mb-6">Start your free 14-day trial. No credit card required.</p>
           <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="index.html#pricing" class="bg-brand-500 hover:bg-brand-400 text-white font-semibold px-8 py-3 rounded-xl transition">
-              Download optipix
+              Download pxlsmash
             </a>
             <a href="demo.html" class="text-slate-400 hover:text-white text-sm transition">
               Try the browser demo →
@@ -892,7 +892,7 @@
     <div class="max-w-4xl mx-auto px-6">
       <div class="flex flex-col md:flex-row items-center justify-between gap-6">
         <div class="flex items-center gap-2 text-sm text-slate-500">
-          <span class="text-lg">⚡</span> optipix
+          <span class="text-lg">⚡</span> pxlsmash
           <span class="mx-2">·</span>
           Built by <a href="https://htmeta.dev" class="text-slate-400 hover:text-white transition">HTMETA.dev</a>
         </div>

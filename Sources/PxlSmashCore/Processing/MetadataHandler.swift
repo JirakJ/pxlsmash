@@ -23,7 +23,7 @@ public enum MetadataHandler {
         CGImageDestinationAddImage(dest, destImage, metadata)
 
         guard CGImageDestinationFinalize(dest) else {
-            throw OptiPixError.generalError("Failed to write metadata to: \(destPath)")
+            throw PxlSmashError.generalError("Failed to write metadata to: \(destPath)")
         }
     }
 

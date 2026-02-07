@@ -1,8 +1,8 @@
-# optipix
+# pxlsmash
 
 **Metal-accelerated image optimizer for macOS.** 20× faster than ImageMagick.
 
-[![CI](https://github.com/htmeta/optipix/actions/workflows/ci.yml/badge.svg)](https://github.com/htmeta/optipix/actions/workflows/ci.yml)
+[![CI](https://github.com/htmeta/pxlsmash/actions/workflows/ci.yml/badge.svg)](https://github.com/htmeta/pxlsmash/actions/workflows/ci.yml)
 
 ## Features
 
@@ -25,23 +25,23 @@
 ### Homebrew (recommended)
 
 ```bash
-brew install htmeta/tap/optipix
+brew install htmeta/tap/pxlsmash
 ```
 
 ### Direct download
 
-Download the latest universal binary from [GitHub Releases](https://github.com/htmeta/optipix/releases) or [optipix.dev](https://optipix.dev).
+Download the latest universal binary from [GitHub Releases](https://github.com/htmeta/pxlsmash/releases) or [pxlsmash.dev](https://pxlsmash.dev).
 
 ```bash
-curl -L https://github.com/htmeta/optipix/releases/latest/download/optipix-macos-universal.tar.gz | tar xz
-sudo mv optipix /usr/local/bin/
+curl -L https://github.com/htmeta/pxlsmash/releases/latest/download/pxlsmash-macos-universal.tar.gz | tar xz
+sudo mv pxlsmash /usr/local/bin/
 ```
 
 ### Build from source
 
 ```bash
-git clone https://github.com/htmeta/optipix.git
-cd optipix
+git clone https://github.com/htmeta/pxlsmash.git
+cd pxlsmash
 make install
 ```
 
@@ -49,28 +49,28 @@ make install
 
 ```bash
 # Optimize a single image (in-place)
-optipix photo.png
+pxlsmash photo.png
 
 # Convert PNG to WebP
-optipix photo.png --format webp
+pxlsmash photo.png --format webp
 
 # Batch optimize entire directory
-optipix ./images/ --quality 85
+pxlsmash ./images/ --quality 85
 
 # Recursive with resize
-optipix ./assets/ --recursive --resize 1200x800
+pxlsmash ./assets/ --recursive --resize 1200x800
 
 # Preview changes without modifying files
-optipix ./images/ --dry-run
+pxlsmash ./images/ --dry-run
 
 # CI/CD mode (JSON output, proper exit codes)
-optipix ./images/ --json
+pxlsmash ./images/ --json
 ```
 
 ## CLI Reference
 
 ```
-USAGE: optipix <input> [options]
+USAGE: pxlsmash <input> [options]
 
 ARGUMENTS:
   <input>                 File or directory to optimize
@@ -96,7 +96,7 @@ OPTIONS:
 ### Batch optimize for web
 
 ```bash
-optipix ./public/images/ --quality 80 --format webp --recursive
+pxlsmash ./public/images/ --quality 80 --format webp --recursive
 ```
 
 ### CI/CD integration (GitHub Actions)
@@ -104,31 +104,31 @@ optipix ./public/images/ --quality 80 --format webp --recursive
 ```yaml
 - name: Optimize images
   run: |
-    brew install htmeta/tap/optipix
-    optipix ./src/assets/ --quality 85 --json --recursive
+    brew install htmeta/tap/pxlsmash
+    pxlsmash ./src/assets/ --quality 85 --json --recursive
 ```
 
 ### Process and resize thumbnails
 
 ```bash
-optipix ./uploads/ --resize 400x300 --format jpeg --quality 75 --output ./thumbs/
+pxlsmash ./uploads/ --resize 400x300 --format jpeg --quality 75 --output ./thumbs/
 ```
 
 ### Dry run with verbose output
 
 ```bash
-optipix ./images/ --dry-run --verbose
+pxlsmash ./images/ --dry-run --verbose
 # Shows: Metal device, file sizes, estimated savings
 ```
 
 ## Performance
 
-optipix uses Apple Metal compute shaders for image processing, achieving
+pxlsmash uses Apple Metal compute shaders for image processing, achieving
 significant speedups over CPU-only tools:
 
 | Tool | 100 PNGs (avg) | Speedup |
 |------|---------------|---------|
-| **optipix (Metal)** | ~2.1s | **1×** |
+| **pxlsmash (Metal)** | ~2.1s | **1×** |
 | ImageMagick | ~38s | 18× slower |
 | sharp (Node.js) | ~12s | 6× slower |
 | PIL/Pillow | ~45s | 21× slower |
@@ -137,14 +137,14 @@ significant speedups over CPU-only tools:
 
 ## Licensing
 
-optipix includes a **14-day free trial** with full functionality.
+pxlsmash includes a **14-day free trial** with full functionality.
 
 ```bash
 # Check license status
-optipix --license-status
+pxlsmash --license-status
 
 # Activate a purchased license
-optipix --activate OPTX-XXXX-XXXX-XXXX-XXXX --email you@example.com
+pxlsmash --activate PXLS-XXXX-XXXX-XXXX-XXXX --email you@example.com
 ```
 
 ### Pricing
@@ -155,13 +155,13 @@ optipix --activate OPTX-XXXX-XXXX-XXXX-XXXX --email you@example.com
 | **Team** | $99 one-time | 5 users, priority support |
 | **Enterprise** | $249 one-time | Unlimited users, SLA |
 
-Purchase at [optipix.dev](https://optipix.dev/#pricing), [Gumroad](https://htmeta.gumroad.com), or [Etsy](https://www.etsy.com/shop/htmeta).
+Purchase at [pxlsmash.dev](https://pxlsmash.dev/#pricing), [Gumroad](https://htmeta.gumroad.com), or [Etsy](https://www.etsy.com/shop/htmeta).
 
 ## Troubleshooting
 
 ### Metal not available (Intel Mac)
 
-optipix automatically falls back to CPU processing via Accelerate/vImage.
+pxlsmash automatically falls back to CPU processing via Accelerate/vImage.
 Use `--verbose` to see which backend is active.
 
 ### Permission denied
@@ -169,7 +169,7 @@ Use `--verbose` to see which backend is active.
 Ensure you have write access to the output directory:
 
 ```bash
-optipix ./images/ --output ~/Desktop/optimized/
+pxlsmash ./images/ --output ~/Desktop/optimized/
 ```
 
 ### Large files / memory
@@ -181,4 +181,4 @@ memory pressure. Use `--verbose` to monitor memory usage.
 
 Commercial software. © 2025 [HTMETA.dev](https://htmeta.dev)
 
-See [optipix.dev](https://optipix.dev) for pricing and terms.
+See [pxlsmash.dev](https://pxlsmash.dev) for pricing and terms.

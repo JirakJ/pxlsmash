@@ -16,11 +16,11 @@ public enum ImageFormatDetector {
         let url = URL(fileURLWithPath: path)
 
         guard FileManager.default.fileExists(atPath: path) else {
-            throw OptiPixError.invalidInput("File not found: \(path)")
+            throw PxlSmashError.invalidInput("File not found: \(path)")
         }
 
         guard FileManager.default.isReadableFile(atPath: path) else {
-            throw OptiPixError.permissionDenied("Cannot read file: \(path)")
+            throw PxlSmashError.permissionDenied("Cannot read file: \(path)")
         }
 
         // Try magic bytes first
@@ -91,10 +91,10 @@ public enum ImageLoader {
     public static func load(at path: String) throws -> CGImage {
         let url = URL(fileURLWithPath: path) as CFURL
         guard let source = CGImageSourceCreateWithURL(url, nil) else {
-            throw OptiPixError.invalidInput("Cannot create image source: \(path)")
+            throw PxlSmashError.invalidInput("Cannot create image source: \(path)")
         }
         guard let image = CGImageSourceCreateImageAtIndex(source, 0, nil) else {
-            throw OptiPixError.invalidInput("Cannot decode image: \(path)")
+            throw PxlSmashError.invalidInput("Cannot decode image: \(path)")
         }
         return image
     }
@@ -109,7 +109,7 @@ public enum ImageSaver {
         let uti = utiForFormat(format)
 
         guard let dest = CGImageDestinationCreateWithURL(url, uti as CFString, 1, nil) else {
-            throw OptiPixError.generalError("Cannot create image destination: \(path)")
+            throw PxlSmashError.generalError("Cannot create image destination: \(path)")
         }
 
         var properties: [CFString: Any] = [:]
@@ -121,7 +121,7 @@ public enum ImageSaver {
         CGImageDestinationAddImage(dest, image, properties as CFDictionary)
 
         guard CGImageDestinationFinalize(dest) else {
-            throw OptiPixError.generalError("Failed to write image: \(path)")
+            throw PxlSmashError.generalError("Failed to write image: \(path)")
         }
     }
 
