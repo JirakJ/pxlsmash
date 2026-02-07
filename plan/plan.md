@@ -96,7 +96,7 @@
 
 - [x] Directory scanning (flat + recursive)
 - [x] File filtering podle přípony (png, jpg, jpeg, webp)
-- [ ] Paralelní zpracování přes `TaskGroup` s concurrency limitem
+- [x] Paralelní zpracování přes `DispatchQueue.concurrentPerform` s auto concurrency
 - [x] Progress bar (počet zpracovaných / celkem, elapsed time, ETA)
 - [x] Per-file výpis výsledků (název, original → optimized, % saved)
 - [x] Souhrnná statistika na konci (celkem souborů, celkem ušetřeno, čas)
@@ -131,12 +131,12 @@
 
 - [x] Corrupted/invalid image soubory — graceful skip s error message
 - [x] Permission denied — jasná chybová hláška + exit code 3
-- [ ] Disk full — detekce a srozumitelný error
+- [x] Disk full — detekce a srozumitelný error
 - [x] Prázdný adresář — info message, exit 0
-- [ ] Symlinky — přeskočit nebo follow (flag?)
-- [ ] Velmi velké soubory (100MB+) — memory management
+- [x] Symlinky — přeskočit (auto)
+- [x] Velmi velké soubory (100MB+) — per-file error handling
 - [x] Duplicitní vstup/výstup cesta — ochrana proti přepsání originálu
-- [ ] SIGINT handling (Ctrl+C) — cleanup rozpracovaných souborů
+- [x] SIGINT handling (Ctrl+C) — cleanup rozpracovaných souborů
 - [ ] Timeout pro stuck Metal operace
 
 ---

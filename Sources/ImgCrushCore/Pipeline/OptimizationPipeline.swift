@@ -3,7 +3,7 @@ import CoreGraphics
 
 /// Orchestrates the full optimization pipeline for a single image:
 /// load → detect → resize → optimize → encode → save.
-public final class OptimizationPipeline {
+public final class OptimizationPipeline: @unchecked Sendable {
 
     private let options: ProcessingOptions
 
@@ -76,6 +76,7 @@ public final class OptimizationPipeline {
         }
 
         // 7. Encode with format-specific optimization
+        ImageProcessor.registerTempFile(outputPath)
         do {
             try ImageEncoder.save(
                 image,
@@ -83,9 +84,12 @@ public final class OptimizationPipeline {
                 format: outputFormat,
                 quality: options.quality
             )
+            ImageProcessor.unregisterTempFile(outputPath)
         } catch let e as ImgCrushError {
+            ImageProcessor.unregisterTempFile(outputPath)
             throw e
         } catch {
+            ImageProcessor.unregisterTempFile(outputPath)
             throw ImgCrushError.diskFull("Failed to write file (disk full?): \(outputPath)")
         }
 
