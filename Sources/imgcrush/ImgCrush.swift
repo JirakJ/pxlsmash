@@ -37,6 +37,12 @@ struct ImgCrush: ParsableCommand {
     @Flag(name: .long, help: "Show detailed processing information")
     var verbose = false
 
+    @Flag(name: .long, help: "Auto-detect optimal quality (SSIM-based)")
+    var smartQuality = false
+
+    @Flag(name: .long, help: "Preserve EXIF/metadata in output")
+    var keepMetadata = false
+
     @Flag(name: .long, help: "Watch directory for changes")
     var watch = false
 
@@ -146,7 +152,9 @@ struct ImgCrush: ParsableCommand {
                 recursive: recursive,
                 jsonOutput: json,
                 dryRun: dryRun,
-                verbose: verbose
+                verbose: verbose,
+                smartQuality: smartQuality,
+                keepMetadata: keepMetadata
             )
         } else {
             options = ProcessingOptions(
@@ -158,7 +166,9 @@ struct ImgCrush: ParsableCommand {
                 recursive: recursive,
                 jsonOutput: json,
                 dryRun: dryRun,
-                verbose: verbose
+                verbose: verbose,
+                smartQuality: smartQuality,
+                keepMetadata: keepMetadata
             )
         }
 

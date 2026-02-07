@@ -257,4 +257,145 @@ final class ImgCrushTests: XCTestCase {
             XCTAssertTrue(engine.maxMemory > 0)
         }
     }
+
+    // MARK: - SmartQuality SSIM
+
+    func testSSIMIdentical() throws {
+        let image = try TestImageFactory.createCGImage(width: 64, height: 64, r: 200, g: 100, b: 50)
+        let ssim = SmartQuality.computeSSIM(original: image, compressed: image)
+        XCTAssertEqual(ssim, 1.0, accuracy: 0.001)
+    }
+
+    func testSSIMDifferent() throws {
+        let image1 = try TestImageFactory.createCGImage(width: 64, height: 64, r: 255, g: 0, b: 0)
+        let image2 = try TestImageFactory.createCGImage(width: 64, height: 64, r: 0, g: 255, b: 0)
+        let ssim = SmartQuality.computeSSIM(original: image1, compressed: image2)
+        XCTAssertLessThan(ssim, 1.0)
+    }
+
+    func testSmartQualityPNG() throws {
+        let image = try TestImageFactory.createCGImage(width: 64, height: 64, r: 128, g: 128, b: 128)
+        let quality = SmartQuality.findOptimalQuality(for: image, format: .png)
+        // PNG is lossless, should return 100
+        XCTAssertEqual(quality, 100)
+    }
+
+    func testSmartQualityJPEG() throws {
+        let image = try TestImageFactory.createCGImage(width: 64, height: 64, r: 128, g: 128, b: 128)
+        let quality = SmartQuality.findOptimalQuality(for: image, format: .jpeg)
+        XCTAssertTrue(quality >= 30 && quality <= 95)
+    }
+
+    // MARK: - MetadataHandler
+
+    func testMetadataExtract() throws {
+        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: dir) }
+
+        let path = dir + "test.jpg"
+        try TestImageFactory.createJPEG(at: path)
+
+        // Should succeed without crash regardless of EXIF presence
+        let metadata = MetadataHandler.extractMetadata(from: path)
+        XCTAssertNotNil(metadata)
+    }
+
+    func testMetadataCopy() throws {
+        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: dir) }
+
+        let srcPath = dir + "src.jpg"
+        let dstPath = dir + "dst.jpg"
+        try TestImageFactory.createJPEG(at: srcPath)
+        try TestImageFactory.createJPEG(at: dstPath)
+
+        // Should not throw
+        try MetadataHandler.copyMetadata(from: srcPath, to: dstPath)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: dstPath))
+    }
+
+    // MARK: - ProcessingOptions new fields
+
+    func testProcessingOptionsSmartQuality() {
+        let opts = ProcessingOptions(inputPath: "/tmp/test.png", smartQuality: true, keepMetadata: true)
+        XCTAssertTrue(opts.smartQuality)
+        XCTAssertTrue(opts.keepMetadata)
+    }
+
+    func testProcessingOptionsSmartQualityDefaults() {
+        let opts = ProcessingOptions(inputPath: "/tmp/test.png")
+        XCTAssertFalse(opts.smartQuality)
+        XCTAssertFalse(opts.keepMetadata)
+    }
+
+    // MARK: - OutputFormat AVIF/HEIC
+
+    func testOutputFormatAVIF() {
+        XCTAssertEqual(OutputFormat(rawValue: "avif"), .avif)
+        XCTAssertEqual(OutputFormat(rawValue: "heic"), .heic)
+    }
+
+    // MARK: - E2E Pipeline with smart quality
+
+    func testPipelineSmartQuality() throws {
+        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: dir) }
+
+        let inputPath = dir + "input.jpg"
+        try TestImageFactory.createJPEG(at: inputPath, width: 100, height: 100)
+
+        let outDir = dir + "out/"
+        let opts = ProcessingOptions(inputPath: inputPath, outputFormat: .jpeg, outputPath: outDir, smartQuality: true)
+        let pipeline = OptimizationPipeline(options: opts)
+        let result = try pipeline.process(filePath: inputPath)
+
+        XCTAssertFalse(result.dryRun)
+        XCTAssertTrue(result.optimizedSize > 0)
+        XCTAssertEqual(result.format, "jpeg")
+    }
+
+    func testPipelineKeepMetadata() throws {
+        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(atPath: dir) }
+
+        let inputPath = dir + "input.jpg"
+        try TestImageFactory.createJPEG(at: inputPath, width: 100, height: 100)
+
+        let outDir = dir + "out/"
+        let opts = ProcessingOptions(inputPath: inputPath, outputFormat: .jpeg, quality: 80, outputPath: outDir, keepMetadata: true)
+        let pipeline = OptimizationPipeline(options: opts)
+        let result = try pipeline.process(filePath: inputPath)
+
+        XCTAssertFalse(result.dryRun)
+        XCTAssertTrue(FileManager.default.fileExists(atPath: result.outputFile))
+    }
+
+    // MARK: - OutputPath resolution
+
+    func testResolveOutputPathFormats() {
+        let path = OptimizationPipeline.resolveOutputPath(input: "/dir/photo.png", outputDir: "/out", format: .webp)
+        XCTAssertEqual(path, "/out/photo.webp")
+
+        let jpegPath = OptimizationPipeline.resolveOutputPath(input: "/dir/photo.png", outputDir: nil, format: .jpeg)
+        XCTAssertEqual(jpegPath, "/dir/photo.jpg")
+
+        let avifPath = OptimizationPipeline.resolveOutputPath(input: "/dir/photo.png", outputDir: "/out", format: .avif)
+        XCTAssertEqual(avifPath, "/out/photo.avif")
+
+        let heicPath = OptimizationPipeline.resolveOutputPath(input: "/dir/photo.png", outputDir: "/out", format: .heic)
+        XCTAssertEqual(heicPath, "/out/photo.heic")
+    }
+
+    // MARK: - JSON output format
+
+    func testJSONOutputFormatter() {
+        // Test that OutputFormatter.formatBytes returns consistent results
+        XCTAssertEqual(OutputFormatter.formatBytes(10485760), "10.0MB")
+        // formatBytes uses MB as the largest unit
+        XCTAssertEqual(OutputFormatter.formatBytes(1073741824), "1024.0MB")
+    }
 }

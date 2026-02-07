@@ -42,6 +42,8 @@ public struct ProcessingOptions: Sendable {
     public let jsonOutput: Bool
     public let dryRun: Bool
     public let verbose: Bool
+    public let smartQuality: Bool
+    public let keepMetadata: Bool
 
     public init(
         inputPath: String,
@@ -52,7 +54,9 @@ public struct ProcessingOptions: Sendable {
         recursive: Bool = false,
         jsonOutput: Bool = false,
         dryRun: Bool = false,
-        verbose: Bool = false
+        verbose: Bool = false,
+        smartQuality: Bool = false,
+        keepMetadata: Bool = false
     ) {
         self.inputPath = inputPath
         self.outputFormat = outputFormat
@@ -63,5 +67,7 @@ public struct ProcessingOptions: Sendable {
         self.jsonOutput = jsonOutput
         self.dryRun = dryRun
         self.verbose = verbose
+        self.smartQuality = smartQuality
+        self.keepMetadata = keepMetadata
     }
 }

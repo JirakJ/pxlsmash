@@ -1,0 +1,364 @@
+openapi: 3.1.0
+info:
+  title: imgcrush Cloud API
+  description: |
+    Metal GPU-accelerated image optimization API.
+    Optimize, resize, and convert images via HTTP.
+  version: 1.0.0
+  contact:
+    name: imgcrush Support
+    url: https://imgcrush.dev
+    email: support@imgcrush.dev
+  license:
+    name: Proprietary
+    url: https://imgcrush.dev/terms
+
+servers:
+  - url: https://api.imgcrush.dev/v1
+    description: Production
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /optimize:
+    post:
+      operationId: optimizeImage
+      summary: Optimize an image
+      description: |
+        Upload an image for optimization. Returns the optimized image
+        or a job ID for async processing of large files.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Image file (PNG, JPEG, WebP, AVIF, HEIC)
+                format:
+                  type: string
+                  enum: [png, jpeg, webp, avif, heic]
+                  description: Output format (default: same as input)
+                quality:
+                  type: integer
+                  minimum: 1
+                  maximum: 100
+                  description: Output quality 1-100 (default: 85)
+                resize:
+                  type: string
+                  pattern: '^\d+x\d+$'
+                  description: Resize dimensions (e.g. "800x600")
+                smart_quality:
+                  type: boolean
+                  default: false
+                  description: Auto-detect optimal quality via SSIM
+                keep_metadata:
+                  type: boolean
+                  default: false
+                  description: Preserve EXIF/metadata in output
+      responses:
+        '200':
+          description: Optimized image
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+          headers:
+            X-Original-Size:
+              schema:
+                type: integer
+              description: Original file size in bytes
+            X-Optimized-Size:
+              schema:
+                type: integer
+              description: Optimized file size in bytes
+            X-Savings-Percent:
+              schema:
+                type: number
+              description: Size reduction percentage
+            X-Processing-Time-Ms:
+              schema:
+                type: number
+              description: Processing time in milliseconds
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '413':
+          $ref: '#/components/responses/PayloadTooLarge'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+
+  /batch:
+    post:
+      operationId: batchOptimize
+      summary: Batch optimize multiple images
+      description: Upload multiple images for optimization. Returns a job ID.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - files
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Image files (max 20)
+                format:
+                  type: string
+                  enum: [png, jpeg, webp, avif, heic]
+                quality:
+                  type: integer
+                  minimum: 1
+                  maximum: 100
+                resize:
+                  type: string
+                  pattern: '^\d+x\d+$'
+      responses:
+        '202':
+          description: Batch job created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchJob'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /batch/{jobId}:
+    get:
+      operationId: getBatchStatus
+      summary: Get batch job status
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Job status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchJob'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /batch/{jobId}/download:
+    get:
+      operationId: downloadBatchResults
+      summary: Download batch results as ZIP
+      parameters:
+        - name: jobId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: ZIP archive of optimized images
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /usage:
+    get:
+      operationId: getUsage
+      summary: Get API usage statistics
+      parameters:
+        - name: period
+          in: query
+          schema:
+            type: string
+            enum: [day, week, month]
+            default: month
+      responses:
+        '200':
+          description: Usage statistics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usage'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /health:
+    get:
+      operationId: healthCheck
+      summary: API health check
+      security: []
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  version:
+                    type: string
+                    example: 1.0.0
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key from your imgcrush Cloud dashboard
+
+  schemas:
+    BatchJob:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [pending, processing, completed, failed]
+        total:
+          type: integer
+          description: Total number of images
+        completed:
+          type: integer
+          description: Number of processed images
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageResult'
+        created_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - status
+        - total
+
+    ImageResult:
+      type: object
+      properties:
+        filename:
+          type: string
+        original_size:
+          type: integer
+        optimized_size:
+          type: integer
+        savings_percent:
+          type: number
+        format:
+          type: string
+        download_url:
+          type: string
+          format: uri
+
+    Usage:
+      type: object
+      properties:
+        period:
+          type: string
+        images_processed:
+          type: integer
+        bytes_saved:
+          type: integer
+        api_calls:
+          type: integer
+        quota_remaining:
+          type: integer
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+      required:
+        - error
+        - message
+
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: bad_request
+            message: 'Unsupported image format'
+            code: 400
+
+    Unauthorized:
+      description: Missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: unauthorized
+            message: 'Invalid API key'
+            code: 401
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: not_found
+            message: 'Job not found'
+            code: 404
+
+    PayloadTooLarge:
+      description: Image exceeds size limit
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: payload_too_large
+            message: 'Image exceeds 50MB limit'
+            code: 413
+
+    RateLimited:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: rate_limited
+            message: 'Rate limit exceeded. Try again in 60 seconds.'
+            code: 429
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds until rate limit resets

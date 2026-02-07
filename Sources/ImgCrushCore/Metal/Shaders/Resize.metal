@@ -1,8 +1,9 @@
 // imgcrush Metal Shaders
-// Placeholder — kernels will be added in Phase 2
 
 #include <metal_stdlib>
 using namespace metal;
+
+// MARK: - Bilinear resize kernel
 
 kernel void resize_bilinear(
     texture2d<float, access::read> input [[texture(0)]],
@@ -35,4 +36,37 @@ kernel void resize_bilinear(
     float4 result = mix(top, bottom, frac.y);
 
     output.write(result, gid);
+}
+
+// MARK: - Color space conversion kernel (sRGB ↔ Linear)
+
+kernel void color_space_convert(
+    texture2d<float, access::read> input [[texture(0)]],
+    texture2d<float, access::write> output [[texture(1)]],
+    constant int &mode [[buffer(0)]],
+    uint2 gid [[thread_position_in_grid]]
+) {
+    if (gid.x >= output.get_width() || gid.y >= output.get_height()) {
+        return;
+    }
+
+    float4 color = input.read(gid);
+
+    if (mode == 0) {
+        // sRGB → Linear
+        color.rgb = select(
+            pow((color.rgb + 0.055) / 1.055, 2.4),
+            color.rgb / 12.92,
+            color.rgb <= 0.04045
+        );
+    } else {
+        // Linear → sRGB
+        color.rgb = select(
+            1.055 * pow(color.rgb, 1.0 / 2.4) - 0.055,
+            color.rgb * 12.92,
+            color.rgb <= 0.0031308
+        );
+    }
+
+    output.write(color, gid);
 }

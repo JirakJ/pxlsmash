@@ -50,7 +50,9 @@ public struct ProjectConfig: Codable {
         recursive: Bool,
         jsonOutput: Bool,
         dryRun: Bool,
-        verbose: Bool
+        verbose: Bool,
+        smartQuality: Bool = false,
+        keepMetadata: Bool = false
     ) -> ProcessingOptions {
         ProcessingOptions(
             inputPath: inputPath,
@@ -61,7 +63,9 @@ public struct ProjectConfig: Codable {
             recursive: recursive || (self.recursive ?? false),
             jsonOutput: jsonOutput,
             dryRun: dryRun,
-            verbose: verbose || (self.verbose ?? false)
+            verbose: verbose || (self.verbose ?? false),
+            smartQuality: smartQuality,
+            keepMetadata: keepMetadata
         )
     }
 }

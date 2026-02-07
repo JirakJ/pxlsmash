@@ -60,6 +60,13 @@ public final class OptimizationPipeline: @unchecked Sendable {
             image = try ImageResizer.resize(image, to: spec, verbose: options.verbose)
         }
 
+        // 4b. Smart quality — find optimal quality via SSIM binary search
+        var effectiveQuality = options.quality
+        if options.smartQuality && effectiveQuality == nil {
+            let optimal = SmartQuality.findOptimalQuality(for: image, format: outputFormat)
+            effectiveQuality = optimal
+        }
+
         // 5. Ensure output directory
         let outputDir = (outputPath as NSString).deletingLastPathComponent
         if !fm.fileExists(atPath: outputDir) {
@@ -82,7 +89,7 @@ public final class OptimizationPipeline: @unchecked Sendable {
                 image,
                 to: outputPath,
                 format: outputFormat,
-                quality: options.quality
+                quality: effectiveQuality
             )
             ImageProcessor.unregisterTempFile(outputPath)
         } catch let e as ImgCrushError {
@@ -91,6 +98,11 @@ public final class OptimizationPipeline: @unchecked Sendable {
         } catch {
             ImageProcessor.unregisterTempFile(outputPath)
             throw ImgCrushError.diskFull("Failed to write file (disk full?): \(outputPath)")
+        }
+
+        // 7b. Preserve metadata if requested
+        if options.keepMetadata {
+            try? MetadataHandler.copyMetadata(from: filePath, to: outputPath)
         }
 
         // 7. Check if optimization actually helped (skip if larger)
