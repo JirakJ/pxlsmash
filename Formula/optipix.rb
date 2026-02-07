@@ -1,7 +1,7 @@
 class Imgcrush < Formula
   desc "Metal-accelerated image optimizer for macOS"
-  homepage "https://imgcrush.dev"
-  url "https://github.com/htmeta/imgcrush/archive/refs/tags/v__VERSION__.tar.gz"
+  homepage "https://optipix.dev"
+  url "https://github.com/htmeta/optipix/archive/refs/tags/v__VERSION__.tar.gz"
   sha256 "__SHA256__"
   license "Commercial"
 
@@ -9,10 +9,10 @@ class Imgcrush < Formula
 
   def install
     system "swift", "build", "-c", "release", "--disable-sandbox"
-    bin.install ".build/release/imgcrush"
+    bin.install ".build/release/optipix"
   end
 
   test do
-    assert_match "imgcrush", shell_output("#{bin}/imgcrush --version")
+    assert_match "optipix", shell_output("#{bin}/optipix --version")
   end
 end

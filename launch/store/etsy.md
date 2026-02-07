@@ -1,13 +1,13 @@
-# imgcrush — Etsy Listing Setup
+# optipix — Etsy Listing Setup
 
-## Listing 1: imgcrush Personal License (€29)
+## Listing 1: optipix Personal License (€29)
 
 ### Title
-imgcrush macOS Image Optimizer — Personal License | Metal GPU CLI Tool | PNG JPEG WebP AVIF Optimizer | Developer Tool
+optipix macOS Image Optimizer — Personal License | Metal GPU CLI Tool | PNG JPEG WebP AVIF Optimizer | Developer Tool
 
 ### Description
 ```
-⚡ imgcrush — Metal GPU-Accelerated Image Optimizer for macOS
+⚡ optipix — Metal GPU-Accelerated Image Optimizer for macOS
 
 Optimize your images 25× faster than ImageMagick with Apple Metal GPU acceleration. Professional CLI tool for developers, designers, and photographers.
 
@@ -31,17 +31,17 @@ KEY FEATURES
 🧠 Smart quality — AI-powered optimal compression (SSIM)
 📊 CI/CD ready — JSON output for build pipelines
 👁 Watch mode — auto-optimize when files change
-📁 Per-project config — .imgcrushrc settings files
+📁 Per-project config — .optipixrc settings files
 🔐 Metadata control — keep or strip EXIF data
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 EXAMPLE USAGE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-$ imgcrush photo.png                     → optimizes in-place
-$ imgcrush ./images/ --recursive         → batch optimize entire directory
-$ imgcrush ./assets/ --format webp -q 85 → convert to WebP
-$ imgcrush photo.jpg --smart-quality     → auto-detect best quality
+$ optipix photo.png                     → optimizes in-place
+$ optipix ./images/ --recursive         → batch optimize entire directory
+$ optipix ./assets/ --format webp -q 85 → convert to WebP
+$ optipix photo.jpg --smart-quality     → auto-detect best quality
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 SYSTEM REQUIREMENTS
@@ -56,19 +56,19 @@ HOW TO INSTALL
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 1. Download the ZIP file from your Etsy purchases
-2. Extract and copy imgcrush to /usr/local/bin/
-3. Run: imgcrush --activate YOUR-KEY --email your@email.com
+2. Extract and copy optipix to /usr/local/bin/
+3. Run: optipix --activate YOUR-KEY --email your@email.com
 4. Start optimizing!
 
 Or use our install script:
-  curl -fsSL https://imgcrush.dev/install.sh | sh
+  curl -fsSL https://optipix.dev/install.sh | sh
 
-Full documentation: https://imgcrush.dev/docs
+Full documentation: https://optipix.dev/docs
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Built by HTMETA.dev — professional developer tools for macOS.
-Questions? support@imgcrush.dev
+Questions? support@optipix.dev
 ```
 
 ### Tags (13 max)
@@ -87,33 +87,33 @@ Digital Downloads → Software
 None (single license)
 
 ### Digital file
-`imgcrush-1.0.0-macos-universal.zip`
+`optipix-1.0.0-macos-universal.zip`
 
 ### Personalization
 Enabled — buyer provides email for license key delivery
 
 ### Message to buyer
 ```
-Thank you for purchasing imgcrush! 🎉
+Thank you for purchasing optipix! 🎉
 
 Your license key will be emailed within 1 hour.
 
 Quick install:
-  curl -fsSL https://imgcrush.dev/install.sh | sh
+  curl -fsSL https://optipix.dev/install.sh | sh
 
-Documentation: https://imgcrush.dev/docs
-Support: support@imgcrush.dev
+Documentation: https://optipix.dev/docs
+Support: support@optipix.dev
 
 If you haven't received your license key within 1 hour,
-please contact us at support@imgcrush.dev with your order number.
+please contact us at support@optipix.dev with your order number.
 ```
 
 ---
 
-## Listing 2: imgcrush Team License (€99)
+## Listing 2: optipix Team License (€99)
 
 ### Title
-imgcrush Team License — 5 Developers | macOS Image Optimizer | Metal GPU CLI Tool | Developer Team License
+optipix Team License — 5 Developers | macOS Image Optimizer | Metal GPU CLI Tool | Developer Team License
 
 ### Description
 Same as Personal but highlights:
@@ -127,24 +127,24 @@ Same as Personal but highlights:
 
 ### Message to buyer
 ```
-Thank you for purchasing imgcrush Team License! 🎉
+Thank you for purchasing optipix Team License! 🎉
 
 5 license keys will be emailed within 1 hour.
 Share them with your team members.
 
 Each team member activates with:
-  imgcrush --activate THEIR-KEY --email their@email.com
+  optipix --activate THEIR-KEY --email their@email.com
 
-Documentation: https://imgcrush.dev/docs
-Support (priority): support@imgcrush.dev
+Documentation: https://optipix.dev/docs
+Support (priority): support@optipix.dev
 ```
 
 ---
 
-## Listing 3: imgcrush Enterprise License (€299)
+## Listing 3: optipix Enterprise License (€299)
 
 ### Title
-imgcrush Enterprise License — Unlimited Devs | macOS Image Optimizer | Metal GPU CLI Tool | Organization License
+optipix Enterprise License — Unlimited Devs | macOS Image Optimizer | Metal GPU CLI Tool | Organization License
 
 ### Description
 Same as Personal but highlights:
@@ -158,7 +158,7 @@ Same as Personal but highlights:
 
 ### Message to buyer
 ```
-Thank you for purchasing imgcrush Enterprise License! 🎉
+Thank you for purchasing optipix Enterprise License! 🎉
 
 We'll contact you within 2 hours to set up your organization license.
 Please reply with:
@@ -166,8 +166,8 @@ Please reply with:
   2. Organization name
   3. Billing contact email
 
-Documentation: https://imgcrush.dev/docs
-Enterprise support: support@imgcrush.dev
+Documentation: https://optipix.dev/docs
+Enterprise support: support@optipix.dev
 ```
 
 ---

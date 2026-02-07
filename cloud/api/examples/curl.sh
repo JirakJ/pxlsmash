@@ -1,8 +1,8 @@
 #!/bin/bash
-# imgcrush Cloud API — cURL examples
+# optipix Cloud API — cURL examples
 
 API_KEY="your-api-key"
-BASE_URL="https://api.imgcrush.dev/v1"
+BASE_URL="https://api.optipix.dev/v1"
 
 # Optimize a single image
 echo "=== Optimize single image ==="

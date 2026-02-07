@@ -1,8 +1,8 @@
-# Copilot Instructions – imgcrush
+# Copilot Instructions – optipix
 
 ## Projekt
 
-**imgcrush** je Metal-akcelerovaný image optimizer pro macOS napsaný ve Swiftu. CLI nástroj využívá Apple Metal GPU pro 10–50× rychlejší zpracování obrázků oproti ImageMagick. Cílí na vývojáře, designéry a CI/CD pipeline.
+**optipix** je Metal-akcelerovaný image optimizer pro macOS napsaný ve Swiftu. CLI nástroj využívá Apple Metal GPU pro 10–50× rychlejší zpracování obrázků oproti ImageMagick. Cílí na vývojáře, designéry a CI/CD pipeline.
 
 ## Tech Stack
 
@@ -19,14 +19,14 @@
 
 ```
 Sources/
-├── imgcrush/          # CLI entry point, argument parsing
-├── ImgCrushCore/      # Core business logic
+├── optipix/          # CLI entry point, argument parsing
+├── OptiPixCore/      # Core business logic
 │   ├── Pipeline/      # Optimization pipeline orchestrace
 │   ├── Metal/         # Metal compute kernely a GPU engine
 │   ├── Formats/       # PNG, JPEG, WebP encodéry/dekodéry
 │   ├── Processing/    # Resize, quality optimization, batch processing
 │   └── Output/        # JSON formatter, progress bar, reporting
-└── ImgCrushTests/     # Testy
+└── OptiPixTests/     # Testy
 ```
 
 ## Konvence
@@ -36,19 +36,19 @@ Sources/
 - Metal kernely piš v MSL (Metal Shading Language) v `.metal` souborech
 - Batch processing přes DispatchQueue / TaskGroup pro paralelní zpracování
 - Všechny public API musí mít dokumentační komentáře (///)
-- Error handling přes custom enum `ImgCrushError` (ne force unwrap)
+- Error handling přes custom enum `OptiPixError` (ne force unwrap)
 - Exit kódy: 0 = success, 1 = general error, 2 = invalid input, 3 = permission error
 
 ### CLI interface
 ```bash
-imgcrush <input>                     # Optimize single file or directory
-imgcrush <input> --format webp       # Convert format
-imgcrush <input> --quality 85        # Set quality (1-100)
-imgcrush <input> --resize 800x600    # Resize
-imgcrush <input> --json              # JSON output for CI/CD
-imgcrush <input> --dry-run           # Preview without changes
-imgcrush <input> --output <dir>      # Output directory
-imgcrush <input> --recursive         # Process subdirectories
+optipix <input>                     # Optimize single file or directory
+optipix <input> --format webp       # Convert format
+optipix <input> --quality 85        # Set quality (1-100)
+optipix <input> --resize 800x600    # Resize
+optipix <input> --json              # JSON output for CI/CD
+optipix <input> --dry-run           # Preview without changes
+optipix <input> --output <dir>      # Output directory
+optipix <input> --recursive         # Process subdirectories
 ```
 
 ### Naming
@@ -71,8 +71,8 @@ imgcrush <input> --recursive         # Process subdirectories
 ## Business kontext
 
 - Produkt je komerční CLI tool s licenčním modelem (Personal €29, Team €99, Enterprise €299)
-- Plánovaný SaaS upsell: imgcrush Cloud (API + web dashboard)
-- Landing page: imgcrush.dev
+- Plánovaný SaaS upsell: optipix Cloud (API + web dashboard)
+- Landing page: optipix.dev
 - Cílová audience: macOS vývojáři, designéři, CI/CD pipelines
 - Klíčový selling point: rychlost díky Metal GPU vs CPU-based alternativy
 

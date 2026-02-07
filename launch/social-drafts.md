@@ -1,12 +1,12 @@
 # Twitter/X Launch Thread
 
 ## Tweet 1 (Main)
-🚀 Just launched imgcrush — a Metal GPU-accelerated image optimizer for macOS.
+🚀 Just launched optipix — a Metal GPU-accelerated image optimizer for macOS.
 
 20× faster than ImageMagick. One command.
 
 ```
-imgcrush ./images/ --quality 85
+optipix ./images/ --quality 85
 ```
 
 ⚡ Apple Metal GPU acceleration
@@ -23,7 +23,7 @@ Here's what 20× faster looks like:
 
 ImageMagick: ~38 seconds
 sharp (Node): ~12 seconds
-imgcrush (Metal): ~2.1 seconds
+optipix (Metal): ~2.1 seconds
 
 The GPU was just sitting there. Now it's not.
 
@@ -62,14 +62,14 @@ Use cases I've seen so far:
 Get it:
 
 ```
-brew install htmeta/tap/imgcrush
+brew install htmeta/tap/optipix
 ```
 
-Or download: https://imgcrush.dev
+Or download: https://optipix.dev
 
 14-day free trial, then $29 one-time.
 
-Source: https://github.com/htmeta/imgcrush
+Source: https://github.com/htmeta/optipix
 
 ---
 
@@ -78,7 +78,7 @@ Source: https://github.com/htmeta/imgcrush
 ## r/swift
 **Title:** I built a Metal GPU-accelerated image optimizer CLI in Swift — 20× faster than ImageMagick
 
-Sharing a project I've been working on: imgcrush, a CLI tool that uses Metal compute shaders to optimize images.
+Sharing a project I've been working on: optipix, a CLI tool that uses Metal compute shaders to optimize images.
 
 The idea: instead of CPU-based processing (ImageMagick, PIL), push everything to the GPU via Metal. Result: ~2 seconds for 100 PNG files vs ~38 seconds with ImageMagick.
 
@@ -86,29 +86,29 @@ Tech stack: Swift 6, SwiftPM, Metal compute shaders, Accelerate/vImage fallback.
 
 Would love feedback on the architecture — the Metal shader loading has a 3-tier fallback (bundle resource → default library → embedded source), and I'm not sure that's the best approach.
 
-GitHub: https://github.com/htmeta/imgcrush
+GitHub: https://github.com/htmeta/optipix
 
 ## r/macOS
-**Title:** imgcrush — optimize images 20× faster using your Mac's GPU
+**Title:** optipix — optimize images 20× faster using your Mac's GPU
 
 Built a tool that uses Apple Metal to optimize images way faster than traditional tools. If you process a lot of images (photography, web dev, CI/CD), this might be useful.
 
-One command: `imgcrush ./images/ --quality 85`
+One command: `optipix ./images/ --quality 85`
 
 Supports PNG, JPEG, WebP. Batch processing. Format conversion. 14-day free trial.
 
-https://imgcrush.dev
+https://optipix.dev
 
 ## r/webdev
 **Title:** I built a Metal GPU image optimizer that's 20× faster than ImageMagick (macOS)
 
-If you're on macOS and tired of slow image optimization in your build pipeline, I made imgcrush — it uses Apple Metal GPU acceleration for image processing.
+If you're on macOS and tired of slow image optimization in your build pipeline, I made optipix — it uses Apple Metal GPU acceleration for image processing.
 
 Quick comparison on 100 PNGs:
 - ImageMagick: ~38s
 - sharp: ~12s
-- imgcrush: ~2.1s
+- optipix: ~2.1s
 
 Works great in CI/CD with `--json` output. GitHub Actions example in the README.
 
-https://github.com/htmeta/imgcrush
+https://github.com/htmeta/optipix

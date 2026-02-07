@@ -1,20 +1,20 @@
 openapi: 3.1.0
 info:
-  title: imgcrush Cloud API
+  title: optipix Cloud API
   description: |
     Metal GPU-accelerated image optimization API.
     Optimize, resize, and convert images via HTTP.
   version: 1.0.0
   contact:
-    name: imgcrush Support
-    url: https://imgcrush.dev
-    email: support@imgcrush.dev
+    name: optipix Support
+    url: https://optipix.dev
+    email: support@optipix.dev
   license:
     name: Proprietary
-    url: https://imgcrush.dev/terms
+    url: https://optipix.dev/terms
 
 servers:
-  - url: https://api.imgcrush.dev/v1
+  - url: https://api.optipix.dev/v1
     description: Production
 
 security:
@@ -228,7 +228,7 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
-      description: API key from your imgcrush Cloud dashboard
+      description: API key from your optipix Cloud dashboard
 
   schemas:
     BatchJob:

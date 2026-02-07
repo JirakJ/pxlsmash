@@ -11,7 +11,7 @@ public enum CPUProcessor {
         let srcHeight = image.height
 
         guard srcWidth > 0 && srcHeight > 0 else {
-            throw ImgCrushError.invalidInput("Invalid image dimensions: \(srcWidth)x\(srcHeight)")
+            throw OptiPixError.invalidInput("Invalid image dimensions: \(srcWidth)x\(srcHeight)")
         }
 
         let bytesPerPixel = 4
@@ -29,7 +29,7 @@ public enum CPUProcessor {
             space: CGColorSpaceCreateDeviceRGB(),
             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
         ) else {
-            throw ImgCrushError.generalError("Failed to create source context for resize")
+            throw OptiPixError.generalError("Failed to create source context for resize")
         }
         srcContext.draw(image, in: CGRect(x: 0, y: 0, width: srcWidth, height: srcHeight))
 
@@ -52,7 +52,7 @@ public enum CPUProcessor {
 
         let error = vImageScale_ARGB8888(&srcBuffer, &dstBuffer, nil, vImage_Flags(kvImageHighQualityResampling))
         guard error == kvImageNoError else {
-            throw ImgCrushError.generalError("vImage resize failed with error \(error)")
+            throw OptiPixError.generalError("vImage resize failed with error \(error)")
         }
 
         // Extract result
@@ -65,11 +65,11 @@ public enum CPUProcessor {
             space: CGColorSpaceCreateDeviceRGB(),
             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
         ) else {
-            throw ImgCrushError.generalError("Failed to create destination context for resize")
+            throw OptiPixError.generalError("Failed to create destination context for resize")
         }
 
         guard let result = dstContext.makeImage() else {
-            throw ImgCrushError.generalError("Failed to extract resized image")
+            throw OptiPixError.generalError("Failed to extract resized image")
         }
 
         return result

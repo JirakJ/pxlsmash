@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "imgcrush",
+    name: "optipix",
     platforms: [
         .macOS(.v13)
     ],
@@ -12,22 +12,22 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "imgcrush",
+            name: "optipix",
             dependencies: [
-                "ImgCrushCore",
+                "OptiPixCore",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ]
         ),
         .target(
-            name: "ImgCrushCore",
+            name: "OptiPixCore",
             dependencies: [],
             resources: [
                 .process("Metal/Shaders"),
             ]
         ),
         .testTarget(
-            name: "ImgCrushTests",
-            dependencies: ["ImgCrushCore"],
+            name: "OptiPixTests",
+            dependencies: ["OptiPixCore"],
             resources: [
                 .copy("Fixtures"),
             ]

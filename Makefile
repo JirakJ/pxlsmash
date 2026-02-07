@@ -11,19 +11,19 @@ release:
 
 universal:
 	swift build -c release --arch arm64 --arch x86_64
-	@echo "Universal binary: .build/apple/Products/Release/imgcrush"
-	@lipo -info .build/apple/Products/Release/imgcrush
+	@echo "Universal binary: .build/apple/Products/Release/optipix"
+	@lipo -info .build/apple/Products/Release/optipix
 
 install: release
 	install -d $(PREFIX)/bin
-	install .build/release/imgcrush $(PREFIX)/bin/imgcrush
+	install .build/release/optipix $(PREFIX)/bin/optipix
 	install -d $(PREFIX)/share/man/man1
-	install -m 644 docs/imgcrush.1 $(PREFIX)/share/man/man1/imgcrush.1
-	@echo "Installed imgcrush to $(PREFIX)/bin/imgcrush"
+	install -m 644 docs/optipix.1 $(PREFIX)/share/man/man1/optipix.1
+	@echo "Installed optipix to $(PREFIX)/bin/optipix"
 
 uninstall:
-	rm -f $(PREFIX)/bin/imgcrush
-	@echo "Uninstalled imgcrush"
+	rm -f $(PREFIX)/bin/optipix
+	@echo "Uninstalled optipix"
 
 test:
 	swift test
@@ -34,9 +34,9 @@ clean:
 
 dist: universal
 	mkdir -p dist
-	cp .build/apple/Products/Release/imgcrush dist/
-	cd dist && tar -czf imgcrush-$(VERSION)-macos-universal.tar.gz imgcrush
-	cd dist && zip -j imgcrush-$(VERSION)-macos-universal.zip imgcrush
-	cd dist && shasum -a 256 imgcrush-$(VERSION)-macos-universal.tar.gz > imgcrush-$(VERSION)-macos-universal.tar.gz.sha256
-	cd dist && shasum -a 256 imgcrush-$(VERSION)-macos-universal.zip > imgcrush-$(VERSION)-macos-universal.zip.sha256
-	@echo "Distribution archives: dist/imgcrush-$(VERSION)-macos-universal.{tar.gz,zip}"
+	cp .build/apple/Products/Release/optipix dist/
+	cd dist && tar -czf optipix-$(VERSION)-macos-universal.tar.gz optipix
+	cd dist && zip -j optipix-$(VERSION)-macos-universal.zip optipix
+	cd dist && shasum -a 256 optipix-$(VERSION)-macos-universal.tar.gz > optipix-$(VERSION)-macos-universal.tar.gz.sha256
+	cd dist && shasum -a 256 optipix-$(VERSION)-macos-universal.zip > optipix-$(VERSION)-macos-universal.zip.sha256
+	@echo "Distribution archives: dist/optipix-$(VERSION)-macos-universal.{tar.gz,zip}"

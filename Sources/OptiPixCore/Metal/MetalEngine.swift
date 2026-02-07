@@ -22,7 +22,7 @@ public final class MetalEngine: @unchecked Sendable {
         self.device = device
 
         guard let queue = device.makeCommandQueue() else {
-            throw ImgCrushError.generalError("Failed to create Metal command queue")
+            throw OptiPixError.generalError("Failed to create Metal command queue")
         }
         self.commandQueue = queue
 
@@ -39,7 +39,7 @@ public final class MetalEngine: @unchecked Sendable {
         }
 
         guard let resizeFunc = library.makeFunction(name: "resize_bilinear") else {
-            throw ImgCrushError.generalError("Metal shader function 'resize_bilinear' not found")
+            throw OptiPixError.generalError("Metal shader function 'resize_bilinear' not found")
         }
         self.resizePipeline = try device.makeComputePipelineState(function: resizeFunc)
     }
@@ -59,7 +59,7 @@ public final class MetalEngine: @unchecked Sendable {
 
         guard let commandBuffer = commandQueue.makeCommandBuffer(),
               let encoder = commandBuffer.makeComputeCommandEncoder() else {
-            throw ImgCrushError.generalError("Failed to create Metal command buffer")
+            throw OptiPixError.generalError("Failed to create Metal command buffer")
         }
 
         encoder.setComputePipelineState(resizePipeline)
@@ -84,7 +84,7 @@ public final class MetalEngine: @unchecked Sendable {
         commandBuffer.waitUntilCompleted()
 
         if let error = commandBuffer.error {
-            throw ImgCrushError.generalError("Metal processing failed: \(error.localizedDescription)")
+            throw OptiPixError.generalError("Metal processing failed: \(error.localizedDescription)")
         }
 
         return try extractCGImage(from: dstTexture)
@@ -105,7 +105,7 @@ public final class MetalEngine: @unchecked Sendable {
         descriptor.usage = [.shaderRead]
 
         guard let texture = device.makeTexture(descriptor: descriptor) else {
-            throw ImgCrushError.generalError("Failed to create Metal texture (\(width)x\(height))")
+            throw OptiPixError.generalError("Failed to create Metal texture (\(width)x\(height))")
         }
 
         // Convert CGImage to RGBA8 pixel data
@@ -122,7 +122,7 @@ public final class MetalEngine: @unchecked Sendable {
             space: CGColorSpaceCreateDeviceRGB(),
             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
         ) else {
-            throw ImgCrushError.generalError("Failed to create bitmap context")
+            throw OptiPixError.generalError("Failed to create bitmap context")
         }
 
         context.draw(image, in: CGRect(x: 0, y: 0, width: width, height: height))
@@ -147,7 +147,7 @@ public final class MetalEngine: @unchecked Sendable {
         descriptor.usage = [.shaderRead, .shaderWrite]
 
         guard let texture = device.makeTexture(descriptor: descriptor) else {
-            throw ImgCrushError.generalError("Failed to create output texture (\(width)x\(height))")
+            throw OptiPixError.generalError("Failed to create output texture (\(width)x\(height))")
         }
         return texture
     }
@@ -175,11 +175,11 @@ public final class MetalEngine: @unchecked Sendable {
             space: CGColorSpaceCreateDeviceRGB(),
             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
         ) else {
-            throw ImgCrushError.generalError("Failed to create output bitmap context")
+            throw OptiPixError.generalError("Failed to create output bitmap context")
         }
 
         guard let cgImage = context.makeImage() else {
-            throw ImgCrushError.generalError("Failed to extract CGImage from Metal texture")
+            throw OptiPixError.generalError("Failed to extract CGImage from Metal texture")
         }
 
         return cgImage

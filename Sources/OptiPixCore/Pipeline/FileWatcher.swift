@@ -19,7 +19,7 @@ public final class FileWatcher {
         var isDir: ObjCBool = false
 
         guard fm.fileExists(atPath: path, isDirectory: &isDir), isDir.boolValue else {
-            throw ImgCrushError.invalidInput("Watch target must be a directory: \(path)")
+            throw OptiPixError.invalidInput("Watch target must be a directory: \(path)")
         }
 
         running = true

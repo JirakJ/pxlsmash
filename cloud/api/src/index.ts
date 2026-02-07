@@ -1,5 +1,5 @@
 /**
- * imgcrush Cloud API — Cloudflare Workers
+ * optipix Cloud API — Cloudflare Workers
  *
  * Endpoints:
  *   POST /optimize     — Upload and optimize an image
@@ -69,7 +69,7 @@ export default {
       // Route handling
       if (path === "/" || path === "/health") {
         return jsonResponse({
-          service: "imgcrush Cloud API",
+          service: "optipix Cloud API",
           version: "1.0.0",
           status: "ok",
         });
@@ -122,7 +122,7 @@ async function authenticateRequest(
   if (data.usedThisMonth >= data.monthlyLimit) {
     return {
       ok: false,
-      error: `Monthly limit reached (${data.monthlyLimit} images). Upgrade at https://imgcrush.dev/pricing`,
+      error: `Monthly limit reached (${data.monthlyLimit} images). Upgrade at https://optipix.dev/pricing`,
     };
   }
 

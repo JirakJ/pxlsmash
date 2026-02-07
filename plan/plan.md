@@ -1,4 +1,4 @@
-# imgcrush — Implementační plán
+# optipix — Implementační plán
 
 **Produkt:** Metal-akcelerovaný image optimizer pro macOS  
 **Autor:** Jakub Jirák | HTMETA.dev  
@@ -9,7 +9,7 @@
 ## Fáze 0: Projekt setup
 
 - [x] Inicializace Swift Package (`Package.swift`)
-- [x] Struktura adresářů (`Sources/imgcrush/`, `Sources/ImgCrushCore/`, `Tests/`)
+- [x] Struktura adresářů (`Sources/optipix/`, `Sources/OptiPixCore/`, `Tests/`)
 - [x] Přidat `swift-argument-parser` dependency
 - [x] `.gitignore` pro Swift / Xcode / .build
 - [x] Základní `README.md`
@@ -34,7 +34,7 @@
 - [x] Načtení obrázku přes `CGImage` / `ImageIO`
 - [x] Detekce formátu vstupního souboru (PNG/JPEG/WebP)
 - [x] Základní validace vstupu (soubor existuje, je obrázek, permissions)
-- [x] Custom `ImgCrushError` enum s exit kódy (0/1/2/3)
+- [x] Custom `OptiPixError` enum s exit kódy (0/1/2/3)
 - [x] Uložení obrázku bez optimalizace (round-trip test)
 
 ---
@@ -188,9 +188,9 @@
 - [x] Code signing (`codesign`)
 - [ ] Notarization (`notarytool`)
 - [x] DMG nebo ZIP balíček pro přímý download
-- [x] Homebrew formula (`brew install imgcrush`)
-- [ ] Homebrew tap (`htmeta/tap/imgcrush`)
-- [ ] Mint support (`mint install imgcrush`)
+- [x] Homebrew formula (`brew install optipix`)
+- [ ] Homebrew tap (`htmeta/tap/optipix`)
+- [ ] Mint support (`mint install optipix`)
 - [x] Automatický release via GitHub Actions (tag → build → upload → Homebrew update)
 
 ---
@@ -204,8 +204,8 @@
 - [x] Gumroad integrace (webhook → license key delivery)
 - [x] Etsy listing setup (Personal €29, Team €99, Enterprise €299)
 - [x] License tiers: Personal (1 user), Team (5 users), Enterprise (unlimited)
-- [x] `imgcrush --activate <KEY>` command
-- [x] `imgcrush --status` — zobrazení stavu licence
+- [x] `optipix --activate <KEY>` command
+- [x] `optipix --status` — zobrazení stavu licence
 
 ---
 
@@ -213,9 +213,9 @@
 
 - [x] `README.md` — instalace, quick start, příklady, benchmarks
 - [x] `CHANGELOG.md` — seznam změn per verze
-- [x] Man page (`imgcrush.1`)
+- [x] Man page (`optipix.1`)
 - [x] `--help` výstup — přehledný, s příklady
-- [x] Web dokumentace na imgcrush.dev/docs (nebo v README)
+- [x] Web dokumentace na optipix.dev/docs (nebo v README)
 - [x] GitHub Actions usage příklad v README
 - [x] Troubleshooting sekce (Intel fallback, permissions, large files)
 
@@ -264,7 +264,7 @@
 
 ---
 
-## Fáze 16: imgcrush Cloud (SaaS upsell)
+## Fáze 16: optipix Cloud (SaaS upsell)
 
 ### Backend
 - [x] Cloudflare Workers API (`POST /optimize`)
@@ -312,7 +312,7 @@
 - [x] HEIC input podpora (macOS native)
 - [ ] SVG → PNG/WebP rasterizace
 - [x] Watch mode (`--watch`) — sledování adresáře pro nové soubory
-- [x] Config file (`.imgcrushrc`) — defaultní nastavení per-projekt
+- [x] Config file (`.optipixrc`) — defaultní nastavení per-projekt
 - [ ] Plugin systém pro custom processing steps
 
 ---

@@ -1,26 +1,26 @@
-# Contributing to imgcrush
+# Contributing to optipix
 
-Thank you for your interest in imgcrush!
+Thank you for your interest in optipix!
 
 ## Bug Reports
 
-Please use the [bug report template](https://github.com/htmeta/imgcrush/issues/new?template=bug_report.yml) and include:
-- imgcrush version (`imgcrush --version`)
+Please use the [bug report template](https://github.com/htmeta/optipix/issues/new?template=bug_report.yml) and include:
+- optipix version (`optipix --version`)
 - macOS version
 - Hardware (Apple Silicon or Intel)
-- Verbose output (`imgcrush ... --verbose`)
+- Verbose output (`optipix ... --verbose`)
 
 ## Feature Requests
 
-Use the [feature request template](https://github.com/htmeta/imgcrush/issues/new?template=feature_request.yml).
+Use the [feature request template](https://github.com/htmeta/optipix/issues/new?template=feature_request.yml).
 
 ## Development
 
 ### Setup
 
 ```bash
-git clone https://github.com/htmeta/imgcrush.git
-cd imgcrush
+git clone https://github.com/htmeta/optipix.git
+cd optipix
 swift build
 swift test
 ```
@@ -29,9 +29,9 @@ swift test
 
 ```
 Sources/
-  imgcrush/           CLI entry point (ArgumentParser)
-  ImgCrushCore/
-    Config/           .imgcrushrc config file
+  optipix/           CLI entry point (ArgumentParser)
+  OptiPixCore/
+    Config/           .optipixrc config file
     Formats/          Image encoders (PNG, JPEG, WebP, AVIF, HEIC)
     License/          License key validation & trial
     Metal/            Metal GPU engine & compute shaders
@@ -45,7 +45,7 @@ Sources/
 - Swift standard naming conventions
 - Minimal comments (only where clarification needed)
 - `public` access for anything used across targets
-- Error handling via `ImgCrushError` enum
+- Error handling via `OptiPixError` enum
 
 ### Testing
 
@@ -57,5 +57,5 @@ Tests create images programmatically — no fixture files needed.
 
 ## License
 
-imgcrush is commercial software. Contributing code means you agree
+optipix is commercial software. Contributing code means you agree
 to assign copyright to HTMETA.dev for inclusion in the product.

@@ -1,7 +1,7 @@
 import XCTest
 import CoreGraphics
 import ImageIO
-@testable import ImgCrushCore
+@testable import OptiPixCore
 
 /// Helper to create test images.
 enum TestImageFactory {
@@ -38,7 +38,7 @@ enum TestImageFactory {
             space: CGColorSpaceCreateDeviceRGB(),
             bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
         ), let image = context.makeImage() else {
-            throw ImgCrushError.generalError("Failed to create test image")
+            throw OptiPixError.generalError("Failed to create test image")
         }
         return image
     }
@@ -46,7 +46,7 @@ enum TestImageFactory {
     static func saveCGImage(_ image: CGImage, to path: String, format: String, quality: Double? = nil) throws {
         let url = URL(fileURLWithPath: path) as CFURL
         guard let dest = CGImageDestinationCreateWithURL(url, format as CFString, 1, nil) else {
-            throw ImgCrushError.generalError("Failed to create destination")
+            throw OptiPixError.generalError("Failed to create destination")
         }
         var props: [CFString: Any] = [:]
         if let q = quality {
@@ -54,7 +54,7 @@ enum TestImageFactory {
         }
         CGImageDestinationAddImage(dest, image, props as CFDictionary)
         guard CGImageDestinationFinalize(dest) else {
-            throw ImgCrushError.generalError("Failed to finalize")
+            throw OptiPixError.generalError("Failed to finalize")
         }
     }
 }

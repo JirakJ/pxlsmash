@@ -30,7 +30,7 @@ public enum WebPEncoder {
     public static func encode(_ image: CGImage, options: Options = Options()) throws -> Data {
         let data = NSMutableData()
         guard let dest = CGImageDestinationCreateWithData(data as CFMutableData, "public.webp" as CFString, 1, nil) else {
-            throw ImgCrushError.generalError("Failed to create WebP encoder (macOS 14+ required for native WebP)")
+            throw OptiPixError.generalError("Failed to create WebP encoder (macOS 14+ required for native WebP)")
         }
 
         var properties: [CFString: Any] = [:]
@@ -43,7 +43,7 @@ public enum WebPEncoder {
         CGImageDestinationAddImage(dest, image, properties as CFDictionary)
 
         guard CGImageDestinationFinalize(dest) else {
-            throw ImgCrushError.generalError("Failed to finalize WebP encoding")
+            throw OptiPixError.generalError("Failed to finalize WebP encoding")
         }
 
         return data as Data

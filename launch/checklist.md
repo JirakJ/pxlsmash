@@ -1,4 +1,4 @@
-# imgcrush Launch Checklist
+# optipix Launch Checklist
 
 ## Pre-launch
 
@@ -9,7 +9,7 @@
 - [ ] Test license activation flow
 - [ ] Verify JSON output parses correctly
 - [ ] Test on Intel Mac (CPU fallback)
-- [ ] Landing page live at imgcrush.dev
+- [ ] Landing page live at optipix.dev
 - [ ] Gumroad product pages live (Personal, Team, Enterprise)
 - [ ] Etsy product listings live (Personal, Team, Enterprise)
 - [ ] Payment flow test — Gumroad (test purchase + license delivery)

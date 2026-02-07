@@ -21,7 +21,7 @@ public enum PNGEncoder {
     public static func encode(_ image: CGImage, options: Options = Options()) throws -> Data {
         let data = NSMutableData()
         guard let dest = CGImageDestinationCreateWithData(data as CFMutableData, "public.png" as CFString, 1, nil) else {
-            throw ImgCrushError.generalError("Failed to create PNG encoder")
+            throw OptiPixError.generalError("Failed to create PNG encoder")
         }
 
         var properties: [CFString: Any] = [:]
@@ -37,7 +37,7 @@ public enum PNGEncoder {
         CGImageDestinationAddImage(dest, image, imageProperties as CFDictionary)
 
         guard CGImageDestinationFinalize(dest) else {
-            throw ImgCrushError.generalError("Failed to finalize PNG encoding")
+            throw OptiPixError.generalError("Failed to finalize PNG encoding")
         }
 
         return data as Data

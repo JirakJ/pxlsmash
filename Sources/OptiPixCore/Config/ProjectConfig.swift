@@ -1,8 +1,8 @@
 import Foundation
 
-/// Project-level config from `.imgcrushrc` (JSON).
+/// Project-level config from `.optipixrc` (JSON).
 ///
-/// Example `.imgcrushrc`:
+/// Example `.optipixrc`:
 /// ```json
 /// {
 ///   "quality": 85,
@@ -19,13 +19,13 @@ public struct ProjectConfig: Codable {
     public var recursive: Bool?
     public var verbose: Bool?
 
-    /// Load config from `.imgcrushrc` in the given directory or any parent.
+    /// Load config from `.optipixrc` in the given directory or any parent.
     public static func load(from directory: String = FileManager.default.currentDirectoryPath) -> ProjectConfig? {
         var dir = directory
         let fm = FileManager.default
 
         while true {
-            let configPath = (dir as NSString).appendingPathComponent(".imgcrushrc")
+            let configPath = (dir as NSString).appendingPathComponent(".optipixrc")
             if fm.fileExists(atPath: configPath),
                let data = fm.contents(atPath: configPath),
                let config = try? JSONDecoder().decode(ProjectConfig.self, from: data) {

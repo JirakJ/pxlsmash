@@ -1,11 +1,11 @@
 import Foundation
 import ArgumentParser
-import ImgCrushCore
+import OptiPixCore
 
 @main
-struct ImgCrush: ParsableCommand {
+struct OptiPix: ParsableCommand {
     static let configuration = CommandConfiguration(
-        commandName: "imgcrush",
+        commandName: "optipix",
         abstract: "Metal-accelerated image optimizer for macOS",
         version: "1.0.0"
     )
@@ -108,8 +108,8 @@ struct ImgCrush: ParsableCommand {
                 print(LicenseManager.shared.trialExpirationMessage())
             case .none:
                 print("❌ No license or trial found")
-                print("   Start trial: run any imgcrush command")
-                print("   Buy: https://imgcrush.dev/pricing | htmeta.gumroad.com | etsy.com/shop/htmeta")
+                print("   Start trial: run any optipix command")
+                print("   Buy: https://optipix.dev/pricing | htmeta.gumroad.com | etsy.com/shop/htmeta")
             }
             return
         }
@@ -129,7 +129,7 @@ struct ImgCrush: ParsableCommand {
                     Data("⏳ Trial: \(trial.daysRemaining) days remaining\n".utf8))
             }
         case .expired:
-            throw ImgCrushError.licenseInvalid(
+            throw OptiPixError.licenseInvalid(
                 message: LicenseManager.shared.trialExpirationMessage())
         case .none:
             let trial = LicenseManager.shared.startTrial()
@@ -139,7 +139,7 @@ struct ImgCrush: ParsableCommand {
             }
         }
 
-        // Build options — merge with .imgcrushrc if present
+        // Build options — merge with .optipixrc if present
         let config = ProjectConfig.load()
         let options: ProcessingOptions
         if let config = config {
@@ -181,7 +181,7 @@ struct ImgCrush: ParsableCommand {
 
         do {
             try ImageProcessor.run(with: options)
-        } catch let error as ImgCrushError {
+        } catch let error as OptiPixError {
             if json {
                 printErrorJSON(error)
             } else {
@@ -191,11 +191,11 @@ struct ImgCrush: ParsableCommand {
         }
     }
 
-    private func printError(_ error: ImgCrushError) {
+    private func printError(_ error: OptiPixError) {
         FileHandle.standardError.write(Data("error: \(error.message)\n".utf8))
     }
 
-    private func printErrorJSON(_ error: ImgCrushError) {
+    private func printErrorJSON(_ error: OptiPixError) {
         OutputFormatter.printJSONError(message: error.message, exitCode: error.exitCode)
     }
 }

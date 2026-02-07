@@ -1,7 +1,7 @@
 import XCTest
-@testable import ImgCrushCore
+@testable import OptiPixCore
 
-final class ImgCrushTests: XCTestCase {
+final class OptiPixTests: XCTestCase {
 
     // MARK: - ResizeSpec
 
@@ -73,33 +73,33 @@ final class ImgCrushTests: XCTestCase {
         XCTAssertTrue(opts.jsonOutput)
     }
 
-    // MARK: - ImgCrushError
+    // MARK: - OptiPixError
 
-    func testImgCrushErrorExitCodes() {
-        let general = ImgCrushError.generalError("test")
+    func testOptiPixErrorExitCodes() {
+        let general = OptiPixError.generalError("test")
         XCTAssertEqual(general.exitCode, 1)
         XCTAssertEqual(general.message, "test")
 
-        let invalid = ImgCrushError.invalidInput("bad")
+        let invalid = OptiPixError.invalidInput("bad")
         XCTAssertEqual(invalid.exitCode, 2)
 
-        let perm = ImgCrushError.permissionDenied("denied")
+        let perm = OptiPixError.permissionDenied("denied")
         XCTAssertEqual(perm.exitCode, 3)
 
-        let disk = ImgCrushError.diskFull("full")
+        let disk = OptiPixError.diskFull("full")
         XCTAssertEqual(disk.exitCode, 1)
         XCTAssertEqual(disk.message, "full")
     }
 
-    func testImgCrushErrorDescription() {
-        let err = ImgCrushError.invalidInput("test message")
+    func testOptiPixErrorDescription() {
+        let err = OptiPixError.invalidInput("test message")
         XCTAssertEqual(String(describing: err), "test message")
     }
 
     // MARK: - Format detection
 
     func testFormatDetectionPNG() throws {
-        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        let dir = NSTemporaryDirectory() + "optipix_test_\(UUID().uuidString)/"
         try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(atPath: dir) }
 
@@ -111,7 +111,7 @@ final class ImgCrushTests: XCTestCase {
     }
 
     func testFormatDetectionJPEG() throws {
-        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        let dir = NSTemporaryDirectory() + "optipix_test_\(UUID().uuidString)/"
         try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(atPath: dir) }
 
@@ -124,14 +124,14 @@ final class ImgCrushTests: XCTestCase {
 
     func testFormatDetectionMissing() {
         XCTAssertThrowsError(try ImageFormatDetector.detect(at: "/nonexistent/file.png")) { error in
-            XCTAssertTrue(error is ImgCrushError)
+            XCTAssertTrue(error is OptiPixError)
         }
     }
 
     // MARK: - Image loading
 
     func testImageLoading() throws {
-        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        let dir = NSTemporaryDirectory() + "optipix_test_\(UUID().uuidString)/"
         try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(atPath: dir) }
 
@@ -150,7 +150,7 @@ final class ImgCrushTests: XCTestCase {
     // MARK: - File collection
 
     func testCollectFilesFlat() throws {
-        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        let dir = NSTemporaryDirectory() + "optipix_test_\(UUID().uuidString)/"
         try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(atPath: dir) }
 
@@ -165,7 +165,7 @@ final class ImgCrushTests: XCTestCase {
     }
 
     func testCollectFilesRecursive() throws {
-        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        let dir = NSTemporaryDirectory() + "optipix_test_\(UUID().uuidString)/"
         let subdir = dir + "sub/"
         try FileManager.default.createDirectory(atPath: subdir, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(atPath: dir) }
@@ -183,7 +183,7 @@ final class ImgCrushTests: XCTestCase {
     // MARK: - Pipeline
 
     func testPipelineSingleFile() throws {
-        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        let dir = NSTemporaryDirectory() + "optipix_test_\(UUID().uuidString)/"
         try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(atPath: dir) }
 
@@ -203,7 +203,7 @@ final class ImgCrushTests: XCTestCase {
     }
 
     func testPipelineDryRun() throws {
-        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        let dir = NSTemporaryDirectory() + "optipix_test_\(UUID().uuidString)/"
         try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(atPath: dir) }
 
@@ -219,7 +219,7 @@ final class ImgCrushTests: XCTestCase {
     }
 
     func testPipelineFormatConversion() throws {
-        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        let dir = NSTemporaryDirectory() + "optipix_test_\(UUID().uuidString)/"
         try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(atPath: dir) }
 
@@ -289,7 +289,7 @@ final class ImgCrushTests: XCTestCase {
     // MARK: - MetadataHandler
 
     func testMetadataExtract() throws {
-        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        let dir = NSTemporaryDirectory() + "optipix_test_\(UUID().uuidString)/"
         try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(atPath: dir) }
 
@@ -302,7 +302,7 @@ final class ImgCrushTests: XCTestCase {
     }
 
     func testMetadataCopy() throws {
-        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        let dir = NSTemporaryDirectory() + "optipix_test_\(UUID().uuidString)/"
         try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(atPath: dir) }
 
@@ -340,7 +340,7 @@ final class ImgCrushTests: XCTestCase {
     // MARK: - E2E Pipeline with smart quality
 
     func testPipelineSmartQuality() throws {
-        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        let dir = NSTemporaryDirectory() + "optipix_test_\(UUID().uuidString)/"
         try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(atPath: dir) }
 
@@ -358,7 +358,7 @@ final class ImgCrushTests: XCTestCase {
     }
 
     func testPipelineKeepMetadata() throws {
-        let dir = NSTemporaryDirectory() + "imgcrush_test_\(UUID().uuidString)/"
+        let dir = NSTemporaryDirectory() + "optipix_test_\(UUID().uuidString)/"
         try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(atPath: dir) }
 
@@ -402,7 +402,7 @@ final class ImgCrushTests: XCTestCase {
     // MARK: - Performance tests
 
     func testPerformancePipelinePNG() throws {
-        let dir = NSTemporaryDirectory() + "imgcrush_perf_\(UUID().uuidString)/"
+        let dir = NSTemporaryDirectory() + "optipix_perf_\(UUID().uuidString)/"
         try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(atPath: dir) }
 
@@ -419,7 +419,7 @@ final class ImgCrushTests: XCTestCase {
     }
 
     func testPerformancePipelineJPEG() throws {
-        let dir = NSTemporaryDirectory() + "imgcrush_perf_\(UUID().uuidString)/"
+        let dir = NSTemporaryDirectory() + "optipix_perf_\(UUID().uuidString)/"
         try FileManager.default.createDirectory(atPath: dir, withIntermediateDirectories: true)
         defer { try? FileManager.default.removeItem(atPath: dir) }
 

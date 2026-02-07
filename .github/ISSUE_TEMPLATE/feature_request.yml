@@ -1,5 +1,5 @@
 name: Feature Request
-description: Suggest a feature for imgcrush
+description: Suggest a feature for optipix
 labels: ["enhancement"]
 body:
   - type: textarea

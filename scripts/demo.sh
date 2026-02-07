@@ -1,14 +1,14 @@
 #!/bin/bash
-# demo.sh — Record a terminal demo of imgcrush for marketing
+# demo.sh — Record a terminal demo of optipix for marketing
 # Usage: ./scripts/demo.sh
-# Requires: imgcrush built and in PATH, sample images
+# Requires: optipix built and in PATH, sample images
 
 set -e
 
-DEMO_DIR="/tmp/imgcrush-demo"
-OUT_DIR="/tmp/imgcrush-demo-out"
+DEMO_DIR="/tmp/optipix-demo"
+OUT_DIR="/tmp/optipix-demo-out"
 
-echo "🎬 imgcrush demo — setting up..."
+echo "🎬 optipix demo — setting up..."
 
 mkdir -p "$DEMO_DIR" "$OUT_DIR"
 
@@ -23,28 +23,28 @@ done
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "  imgcrush — Metal GPU Image Optimizer"
+echo "  optipix — Metal GPU Image Optimizer"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
 echo "▶ Demo 1: Batch optimize directory"
-echo "$ imgcrush $DEMO_DIR/ --verbose"
-imgcrush "$DEMO_DIR/" --verbose
+echo "$ optipix $DEMO_DIR/ --verbose"
+optipix "$DEMO_DIR/" --verbose
 echo ""
 
 echo "▶ Demo 2: Convert PNG → WebP"
-echo "$ imgcrush $DEMO_DIR/photo_1.png --format webp --output $OUT_DIR/"
-imgcrush "$DEMO_DIR/photo_1.png" --format webp --output "$OUT_DIR/"
+echo "$ optipix $DEMO_DIR/photo_1.png --format webp --output $OUT_DIR/"
+optipix "$DEMO_DIR/photo_1.png" --format webp --output "$OUT_DIR/"
 echo ""
 
 echo "▶ Demo 3: JSON output for CI/CD"
-echo "$ imgcrush $DEMO_DIR/ --json"
-imgcrush "$DEMO_DIR/" --json
+echo "$ optipix $DEMO_DIR/ --json"
+optipix "$DEMO_DIR/" --json
 echo ""
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "  ✅ Demo complete!"
-echo "  📦 https://imgcrush.dev"
+echo "  📦 https://optipix.dev"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 rm -rf "$DEMO_DIR" "$OUT_DIR"

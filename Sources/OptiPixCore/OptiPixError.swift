@@ -1,7 +1,7 @@
 import Foundation
 
-/// Errors thrown by imgcrush with associated exit codes.
-public enum ImgCrushError: Error, CustomStringConvertible {
+/// Errors thrown by optipix with associated exit codes.
+public enum OptiPixError: Error, CustomStringConvertible {
     /// General processing error.
     case generalError(String)
     /// Invalid input (file not found, unsupported format).
